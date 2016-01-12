@@ -108,6 +108,9 @@
     <Compile Include="Maestro\ValorTablaBL.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ITB.VENDIX.BE\ITB.VENDIX.BE.csproj">
       <Project>{6a5d29ae-ee19-4b3d-9f24-5b0f427f2a54}</Project>
       <Name>ITB.VENDIX.BE</Name>
@@ -117,10 +120,6 @@
       <Name>ITB.VENDIX.DA</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
