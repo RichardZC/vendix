@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using ITB.VENDIX.BL;
@@ -42,10 +40,10 @@ namespace VendixWeb.Controllers
 
                 VendixGlobal<int>.Crear("BovedaId", BovedaBL.Obtener(x => x.OficinaId == oficinaId).BovedaId);
                 //usuario asginado a oficina
-                var UsuarioAsignadoId =
+                var usuarioAsignadoId =
                     OficinaBL.Obtener(x => x.OficinaId == usuarioOficina.OficinaId && x.Estado).UsuarioAsignadoId;
 
-                VendixGlobal<int>.Crear("UsuarioIdAsignadoOficina", UsuarioAsignadoId);
+                VendixGlobal<int>.Crear("UsuarioIdAsignadoOficina", usuarioAsignadoId);
                 //
                 
                 VendixGlobal<int>.Crear("UsuarioId", usuarioOficina.UsuarioId);
