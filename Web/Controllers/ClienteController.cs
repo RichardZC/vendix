@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ITB.VENDIX.BE;
 using ITB.VENDIX.BL;
-using ITB.VENDIX.BL.Maestro;
 
-namespace VendixWeb.Controllers.Mantenimiento
+namespace Web.Controllers
 {
     public class ClienteController : Controller
     {
@@ -122,8 +119,8 @@ namespace VendixWeb.Controllers.Mantenimiento
                 Cliente = cliente,
                 Persona = persona,
                 Sexo = persona.Sexo != "F" ? "true" : "false",
-                FNacimiento = persona.FechaNacimiento != null ? persona.FechaNacimiento.Value.ToShortDateString() : String.Empty,
-                FCaptacion = cliente.FechaCaptacion != null ? cliente.FechaCaptacion.Value.ToShortDateString() : String.Empty
+                FNacimiento = persona.FechaNacimiento != null ? persona.FechaNacimiento.Value.ToShortDateString() : string.Empty,
+                FCaptacion = cliente.FechaCaptacion != null ? cliente.FechaCaptacion.Value.ToShortDateString() : string.Empty
             }, JsonRequestBehavior.AllowGet);
         }
 
