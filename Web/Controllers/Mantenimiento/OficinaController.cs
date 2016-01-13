@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using ITB.VENDIX.BE;
+using ITB.VENDIX.BL;
+
+namespace VendixWeb.Controllers
+{
+    public class OficinaController : Controller
+    {
+       
+       public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult ListarOficina(GridDataRequest request)
+        {
+            int totalRecords = 0;
+            var lstGrd = OficinaBL.LstOficinaJGrid(request, ref totalRecords);
+            
+            var productsData = new
+            {
+                total = (int)Math.Ceiling((float)totalRecords / (float)request.rows),
+                page = request.page,
+                records = totalRecords,
+                rows = (from item in lstGrd
+                        select new
+                        {
+                            id = item.OficinaId,
+                            cell = new string[] { 
+                                                    item.OficinaId.ToString(),
+                                                    item.Denominacion,
+                                                    item.Descripcion,
+                                                    item.Telefono,
+                                                    item.Estado.ToString(),
+                                                    item.OficinaId.ToString() + "," + (item.Estado ? "1":"0")
+                                                }
+                        }
+                       ).ToArray()
+            };
+            return Json(productsData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GuardarOficina(int pOficinaId, string pDenominacion, string pDescripcion, string pTelefono, bool pActivo)
+        {
+            var item = new Oficina();
+            item.OficinaId = pOficinaId;
+            item.Denominacion = pDenominacion;
+            item.Descripcion = pDescripcion;
+            item.Telefono = pTelefono;
+            item.Estado = pActivo;
+
+            if (pOficinaId == 0)
+                OficinaBL.CrearOficina(item);
+            else
+                OficinaBL.Actualizar(item);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Activar(int pid)
+        {
+            var item = OficinaBL.Obtener(pid);
+            item.Estado = !item.Estado;
+            OficinaBL.Actualizar(item);
+            return Json(true);
+        }
+    }
+}

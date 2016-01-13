@@ -1,0 +1,119 @@
+﻿<div class="grid_4">
+    <form method="post" action="#" class="box validate" >
+        <div class="header">
+           <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Creditos</h2>
+        </div>
+					
+        <div class="content">
+					
+            <p class="_100 small" style="padding-top: 10px;">
+                @Html.DropDownList("cboOficina","TODOS")
+            </p>
+						
+            <p class="_100 small">
+                <label for="txtFechaIni" class="inline">Fecha Inicial:</label>
+                <input data-error-type="inline" type="date" class="required" name="txtFechaIni" id="txtFechaIni" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day + 1).ToShortDateString()" />
+            </p>
+            
+            <p class="_100 small">
+                <label for="txtFechaFin" class="inline">Fecha Final:</label>
+                <input data-error-type="inline" type="date" class="required" name="txtFechaFin" id="txtFechaFin" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day +1).AddMonths(1).AddDays(-1).ToShortDateString()" />
+            </p>
+            
+        </div>
+        <br/>
+        <div class="actions">
+            <div class="right">
+                <input type="submit" value="Créditos Desembolsados" id="btnRptCredito" />
+            </div>
+        </div>
+        <div class="actions">
+            <div class="right">
+                <input type="checkbox" name="chkTodo" id="chkTodo" /><label for="chkTodo">TODOS </label>  
+                <input type="submit" value="Reporte Rentabilidad" id="btnRptRentabilidad" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="grid_4">
+    <form method="post" action="#" class="box validate" >
+        <div class="header">
+           <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Morosidad</h2>
+        </div>
+					
+        <div class="content">
+					
+            <p class="_100 small" style="padding-top: 10px;">
+                @Html.DropDownList("cboOficina1","TODOS")
+            </p>
+						
+            <p class="_100 small">
+                <label for="txtHastaFecha" class="inline">Hasta la fecha:</label>
+                <input data-error-type="inline" type="date" class="required" name="txtHastaFecha" id="txtHastaFecha" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.ToShortDateString()" />
+            </p>
+            
+            <p class="_100 small">
+                <label for="txtDiasAtrazoIni" class="inline">Dias de Atrazo INICIO:</label>
+                <input data-error-type="inline" type="number" class="required" name="txtDiasAtrazoIni" id="txtDiasAtrazoIni" value="1" />
+            </p>
+            <p class="_100 small">
+                <label for="txtDiasAtrazoFin" class="inline">Dias de Atrazo FINAL:</label>
+                <input data-error-type="inline" type="number" class="required" name="txtDiasAtrazoFin" id="txtDiasAtrazoFin" value="9999" />
+            </p>
+            
+        </div>
+        <br/>
+        <div class="actions">
+            <div class="right">
+                <input type="submit" value="Créditos con morosidad" id="btnRptCreditoMora" />
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#btnRptCredito").click(function() {
+            event.preventDefault();
+            var oficina = $('#cboOficina').val();
+            if (oficina.length == 0) oficina = null;
+
+            var ruta = '@Url.Action("ReporteCredito", "Reporte")'
+                + '?pOficinaid=' + oficina  
+                + '&pFechaIni=' + $('#txtFechaIni').val()
+                + '&pFechaFin=' + $('#txtFechaFin').val();
+                
+            //alert(ruta );
+            window.open(ruta);
+            return false;
+        });
+        $("#btnRptRentabilidad").click(function () {
+            event.preventDefault();
+            var oficina = $('#cboOficina').val();
+            if (oficina.length == 0) oficina = null;
+
+            var ruta = '@Url.Action("ReporteCreditoRentabilidad", "Reporte")'
+                + '?pFechaIni=' + $('#txtFechaIni').val()
+                + '&pFechaFin=' + $('#txtFechaFin').val()
+                + '&indTodos=' + $("#chkTodo").prop('checked')
+                + '&pOficinaid=' + oficina;
+             //alert(ruta );
+            window.open(ruta);
+            return false;
+        });
+        $("#btnRptCreditoMora").click(function () {
+            event.preventDefault();
+            var oficina = $('#cboOficina').val();
+            if (oficina.length == 0) oficina = null;
+
+            var ruta = '@Url.Action("ReporteCreditoMorosidad", "Reporte")'
+                + '?pOficinaid=' + oficina
+                + '&pFechaHasta=' + $('#txtHastaFecha').val()
+                + '&pDiasAtrazoIni=' + $('#txtDiasAtrazoIni').val()
+                + '&pDiasAtrazoFin=' + $('#txtDiasAtrazoFin').val();
+            window.open(ruta);
+            return false;
+        });
+    });
+</script>

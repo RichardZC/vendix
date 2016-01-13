@@ -1,0 +1,367 @@
+﻿<h1 class="grid_12">Mantenimiento de Usuarios</h1>
+
+<div class="grid_12">
+    <div class="box">
+        <div class="header">
+            <h2>
+                <img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Lista de Usuarios</h2>
+        </div>
+
+        <div class="searchbox">
+            <input id="txtBuscar" type="text" placeholder="Ingrese Nombre de Usuarios" />
+            <input id="btnBuscar" type="submit" value="Buscar" class="grey" />
+        </div>
+        <a id="btnNuevo" href="#" class="button">Nuevo Usuario</a>
+        <table id="grdBuscar"></table>
+        <div id="grdpBuscar"></div>
+    </div>
+</div>
+
+<div style="display: none;" id="dlgNuevo" title="Mantener Lista de Usuario">
+    <form id="frm1" action="#" class="full validate">
+
+        <div class="row">
+            <label for="txtApePaterno">
+                <strong>Ap.Paterno: </strong>
+            </label>
+            <div>
+                <input class="required" style="width: 38%" type="text" name="txtApePaterno" id="txtApePaterno" />
+                <strong>Ap.Materno</strong>
+                <input class="required" style="width: 38%; float: right" type="text" name="txtApeMaterno" id="txtApeMaterno" />
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtNombre">
+                <strong>Nombre:</strong>
+            </label>
+            <div>
+                <input class="required" style="width: 38%" type="text" name="txtNombre" id="txtNombre" />
+                <strong>DNI</strong>
+                <input class="required" style="width: 38%; float: right" type="text" name="txtNumeroDocumento" id="txtNumeroDocumento" />
+            </div>
+        </div>
+        <div class="row">
+            <label for="drpSexo">
+                <strong>Sexo:</strong>
+            </label>
+            <div>
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width: 38%;">
+                            <select id ="drpSexo" >
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select></td>
+                        <td><strong>&nbsp&nbsp F.Nacimiento:</strong></td>
+                        <td style="text-align:right">
+                            <input type="date" id="txtFechaNacimiento"  placeholder="DD/MM/YYYY" style="width:92%" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtFechaNacimiento">
+                <strong>Movil:</strong>
+            </label>
+            <div>                
+                <input style="width: 38%" type="text" name="txtTelefonoMovil" id="txtTelefonoMovil" />
+                <strong>Email:</strong>
+                <input style="width: 38%; float: right" type="text" name="txtEmailPersonal" id="txtEmailPersonal" />
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtNombreUsuario">
+                <strong>Usuario:</strong>
+            </label>
+            <div>
+                <input class="required" style="width: 38%" type="text" name="txtNombreUsuario" id="txtNombreUsuario" />
+                <strong>ClaveUsuario:</strong>
+                <input class="required" style="width: 38%; float: right" type="password" name="txtClaveUsuario" id="txtClaveUsuario" />
+            </div>
+        </div>
+        <div class="row">
+            <label for="chkActivo">
+                <strong>Estado:</strong>
+            </label>
+            <div>
+                <div><input type="checkbox" id="chkActivo" /> <label for="chkActivo">Activo</label></div>
+            </div>
+        </div>
+       
+    </form>
+    <div class="actions">
+        <div class="left">
+            <button class="grey cancel">Salir</button>
+        </div>
+        <div class="left" style="padding-left:20px">
+            <input id="btnResetear" type="button" value="Resetear Clave" />
+        </div>
+        <div class="right">
+            <button class="submit">Guardar</button>
+        </div>
+    </div>
+   <br/> 
+
+    <div id="divAd" class="box tabbedBox">
+        <div class="header">
+            <h2>Permiso Usuarios</h2>
+            <ul>
+                <li><a href="#t1-c1">Oficinas</a></li>
+                <li><a href="#t1-c2">Roles</a></li>
+            </ul>
+        </div> 
+        <div class="content tabbed">
+           
+            <div id="t1-c1">
+                <br/>
+                <select multiple="" class="dualselects" data-size="small" >
+                </select>
+                <div style="float: right">
+                    <button id="btnAsignarOficina">Asignar Oficina</button>
+                </div>
+            </div>
+						
+            <div id="t1-c2">
+                <br/>
+                @Html.DropDownList("cboOficina","--SELECCIONE--")
+                <select multiple="" class="dualselects" data-size="small" >
+                </select>
+                <div style="float: right">
+                    <button id="btnAsignarRol">Asignar Roles</button>
+                </div>
+            </div>
+        </div>
+					
+        
+    </div>
+
+   
+</div>
+
+<script>
+    $$.ready(function () {
+        $("#btnNuevo").click(function () {
+            $.data(document.body, 'UsuarioId', 0);
+            $("#dlgNuevo").find('form')[0].reset();
+            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtNumeroDocumento,#txtFechaNacimiento,#txtTelefonoMovil,#txtEmailPersonal,#txtNombreUsuario,#txtClaveUsuario").val("");
+            $("#drpSexo").val("M").trigger("liszt:updated");
+            $("#chkActivo").prop("checked", true);
+            $("#cboOficina").val("").trigger("liszt:updated");
+            $("#dlgNuevo").dialog("open");
+            $("#divAd").hide();
+            return false;
+        });
+        $("#txtBuscar").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#grdBuscar").jqGrid('setGridParam', { page: 1 }).trigger("reloadGrid");
+            }
+        });
+        $("#btnBuscar").click(function () { $("#grdBuscar").trigger("reloadGrid"); });
+        $("#btnResetear").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ResetearClave","Usuario")",
+                data: { pUsuarioId: $.data(document.body, 'UsuarioId') },
+                success: function(rpta) {
+                    Vendix.Mensaje("Se reseteó la clave a 123456");
+                    $("#dlgNuevo").find('form')[0].reset();
+                    $("#dlgNuevo").dialog('close');
+                }
+            });
+        });
+        $("#btnAsignarOficina").click(function () {
+            var arr = $("#t1-c1 .dualselect .right select.ignore option");
+            var lstoficina = '';
+            $.each(arr, function (index, valor) {
+                if (lstoficina == '')
+                    lstoficina = valor.value;
+                else
+                    lstoficina += ',' + valor.value;
+            });
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AsignarOficina", "Usuario")",
+                data: { pUsuarioId: $.data(document.body, 'UsuarioId'), pOficinas: lstoficina },
+                success: function (ret) {
+                    Vendix.Mensaje("Se Asignó las oficinas correctamnente");
+                }
+            });
+        });
+        $("#btnAsignarRol").click(function () {
+            var arr = $("#t1-c2 .dualselect .right select.ignore option");
+            var lstrol = '';
+            $.each(arr, function (index, valor) {
+                if (lstrol == '')
+                    lstrol = valor.value;
+                else
+                    lstrol += ',' + valor.value;
+            });
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("AsignarRol", "Usuario")",
+                data: { pUsuarioId: $.data(document.body, 'UsuarioId'), pOficinaId: $("#cboOficina").val(), pRoles: lstrol },
+                success: function (ret) {
+                    Vendix.Mensaje("Se Asignó los roles correctamnente");
+                }
+            });
+        });
+        $("#cboOficina").change(function () {
+            $.ajax({
+                url: "@Url.Action("ObtenerUsuarioRol", "Usuario")",
+                data: { pOficinaId: $("#cboOficina").val(), pUsuarioId: $.data(document.body, 'UsuarioId') },
+                success: function (rpta) {
+                    $("#t1-c2 .right .ignore").html('');
+                    $("#t1-c2 .left .ignore").html('');
+                    $("#t1-c2 .dualselect .right input.ignore").attr({ 'placeholder': '-- ASIGNADOS --', 'readOnly': 'readonly' });
+                    $("#t1-c2 .dualselect .left input.ignore").attr({ 'placeholder': '-- NO ASIGNADOS --', 'readOnly': 'readonly' });
+                    if (rpta == null)
+                        return;
+                    $.each(rpta, function(index, valor) {
+                        if (valor.Asignado == 1)
+                            $("#t1-c2 .right .ignore").append("<option value='" + valor.RolId + "'>" + valor.Denominacion + "</option>");
+                        else
+                            $("#t1-c2 .left .ignore").append("<option value='" + valor.RolId + "'>" + valor.Denominacion + "</option>");
+                    });
+                }
+            });
+        });
+
+        $("#dlgNuevo").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 540,
+            open: function () { $(this).parent().css('overflow', 'visible'); $$.utils.forms.resize(); }
+        }).find('button.submit').click(function () {
+            var $el = $(this).parents('.ui-dialog-content');
+            if ($("#frm1").validate().form()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Action("GuardarUsuario", "Usuario")",
+                    data: {
+                        pUsuarioId: $.data(document.body, 'UsuarioId'),
+                        pApePaterno: $("#txtApePaterno").val(),
+                        pApeMaterno: $("#txtApeMaterno").val(),
+                        pNombre: $("#txtNombre").val(),
+                        pNumeroDocumento: $("#txtNumeroDocumento").val(),
+                        pSexoM: $("#drpSexo").val(),
+                        pFechaNacimiento: $("#txtFechaNacimiento").val(),
+                        pTelefonoMovil: $("#txtTelefonoMovil").val(),
+                        pEmailPersonal: $("#txtEmailPersonal").val(),
+                        pNombreusuario: $("#txtNombreUsuario").val(),
+                        pClaveUsuario: $("#txtClaveUsuario").val(),
+                        pActivo: $("#chkActivo").prop('checked')
+                    },
+                    success: function (ret) {
+                        Vendix.Notificar("Modificar");
+                        $("#grdBuscar").trigger("reloadGrid");
+                        if ($.data(document.body, 'UsuarioId') == '0') {
+                            $.data(document.body, 'UsuarioId', ret);
+                            $("#divAd").show();
+                            $(".dualselect .right input.ignore").attr({ 'placeholder': '-- ASIGNADOS --', 'readOnly': 'readonly' });
+                            $(".dualselect .left input.ignore").attr({ 'placeholder': '-- NO ASIGNADOS --', 'readOnly': 'readonly' });
+                            $(".right .ignore").html('');
+                            $(".left .ignore").html('');
+
+                            $.ajax({
+                                url: "@Url.Action("ListarOficinas", "Usuario")",
+                                success: function(rpta) {
+                                     $.each(rpta, function(index, valor) {
+                                        $("#t1-c1 .left .ignore").append("<option value='" + valor.OficinaId + "'>" + valor.Denominacion + "</option>");
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            $el.find('form')[0].reset();
+                            $el.dialog('close');
+                        }
+                    }
+                });
+            }
+        }).end().find('button.cancel').click(function () {
+            var $el = $(this).parents('.ui-dialog-content');
+            $el.find('form')[0].reset();
+            $el.dialog('close');
+        });
+
+        jQuery("#grdBuscar").jqGrid({
+            url: "@Url.Action("ListarUsuario", "Usuario")",
+            datatype: "json",
+            postData: {
+                filters: function () {
+                    return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }]);
+                }
+            },
+            colNames: ['UsuarioId', 'Usuario', 'Nombre', 'Celular', 'Email', 'Estado', 'Estado'],
+            colModel:
+                [
+                    { name: 'UsuarioId', index: 'UsuarioId', hidden: true },
+                    { name: 'Usuario', index: 'Usuario' },
+                    { name: 'Nombre', index: 'Nombre', width: 260 },
+                    { name: 'Movil', index: 'Movil' },
+                    { name: 'Correo', index: 'Correo' },
+                    { name: 'Estado', index: 'Estado', hidden: true },
+                    { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
+                ],
+            caption: "Usuarios Registrados",
+            pager: jQuery('#grdpBuscar'),
+            rowNum: 15,
+            rowList: [15, 30, 45],
+            sortname: 'Personaid',
+            sortorder: "asc",
+            gridview: true,
+            viewrecords: true,
+            rownumbers: true,
+            autowidth: true,
+            paging: true,
+            width: 'auto',
+            height: '347px',
+            ondblClickRow: function () {
+                var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
+                if (id) {
+                    var ret = $("#grdBuscar").jqGrid('getRowData', id);
+                    $.ajax({
+                        url: "@Url.Action("ObtenerUsuarioPersona", "Usuario")",
+                        data: { pUsuarioId: ret.UsuarioId },
+                        success: function (rpta) {
+                            $("#txtApePaterno").val(rpta.Persona.ApePaterno);
+                            $("#txtApeMaterno").val(rpta.Persona.ApeMaterno);
+                            $("#txtNombre").val(rpta.Persona.Nombre);
+                            $("#txtNumeroDocumento").val(rpta.Persona.NumeroDocumento);
+                            $("#drpSexo").val(rpta.Persona.Sexo).trigger("liszt:updated");
+                            $("#txtFechaNacimiento").val(rpta.FNacimiento);
+                            $("#txtTelefonoMovil").val(rpta.Persona.TelefonoMovil);
+                            $("#txtEmailPersonal").val(rpta.Persona.EmailPersonal);
+
+                            $("#txtClaveUsuario").val(rpta.Usuario.ClaveUsuario);
+                            $("#txtNombreUsuario").val(rpta.Usuario.NombreUsuario);
+                            $("#chkActivo").prop("checked", rpta.Usuario.Estado ? true : false);
+
+                            $(".right .ignore").html('');
+                            $(".left .ignore").html('');
+                            $(".dualselect .right input.ignore").attr({ 'placeholder': '-- ASIGNADOS --', 'readOnly': 'readonly' });
+                            $(".dualselect .left input.ignore").attr({ 'placeholder': '-- NO ASIGNADOS --', 'readOnly': 'readonly' });
+
+                            $.each(rpta.Oficinas, function (index, valor) {
+                                if (valor.Asignado == 1)
+                                    $("#t1-c1 .right .ignore").append("<option value='" + valor.OficinaId + "'>" + valor.Denominacion + "</option>");
+                                else
+                                    $("#t1-c1 .left .ignore").append("<option value='" + valor.OficinaId + "'>" + valor.Denominacion + "</option>");
+                            });
+                            $("#cboOficina").val("").trigger("liszt:updated");
+                            $("#divAd").show();
+                            $.data(document.body, 'UsuarioId', rpta.Usuario.UsuarioId);
+                            $("#dlgNuevo").dialog("open");
+                        }
+                    });         
+                }
+            }
+        });
+
+        
+    });
+</script>
+
+

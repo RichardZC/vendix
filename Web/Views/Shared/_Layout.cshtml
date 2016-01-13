@@ -1,0 +1,688 @@
+﻿@using ITB.VENDIX.BE
+@using ITB.VENDIX.BL
+@using ITB.VENDIX.BL.Creditos
+
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="es"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="es"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="es"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="es">
+ <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <link rel="dns-prefetch" href="http://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="http://themes.googleusercontent.com" />
+
+    <link rel="dns-prefetch" href="http://ajax.googleapis.com" />
+    <link rel="dns-prefetch" href="http://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="http://agorbatchev.typepad.com" />
+
+    <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/b/378 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>SOPHIX COMERCIAL</title>
+    <meta name="description" content="Sistema Comercial de Ventas y Crédito." />
+    <meta name="author" content="Simon Stamm & Markus Siemens" />
+
+    <!-- Mobile viewport optimized: h5bp.com/viewport -->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+    <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+    <!-- The Styles -->
+    <!-- ---------- -->
+    <!-- Layout Styles -->
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/grid.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+
+    <!-- Icon Styles -->
+    <link rel="stylesheet" href="~/css/icons.css" />
+    <link rel="stylesheet" href="~/css/fonts/font-awesome.css" />
+    <!--[if IE 8]><link rel="stylesheet" href="~/css/fonts/font-awesome-ie7.css"><![endif]-->
+    <!-- External Styles -->
+    <link rel="stylesheet" href="~/css/external/jquery-ui-1.8.21.custom.css" />
+    @*<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />*@
+    <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/external/jquery.chosen.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.cleditor.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.colorpicker.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.elfinder.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.fancybox.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.jgrowl.css" />
+    <link rel="stylesheet" href="~/css/external/jquery.plupload.queue.css" />
+    <link rel="stylesheet" href="~/css/external/syntaxhighlighter/shCore.css" />
+    <link rel="stylesheet" href="~/css/external/syntaxhighlighter/shThemeDefault.css" />
+
+    <!-- Elements -->
+    <link rel="stylesheet" href="~/css/elements.css" />
+    <link rel="stylesheet" href="~/css/forms.css" />
+
+    <!-- OPTIONAL: Print Stylesheet for Invoice -->
+    <link rel="stylesheet" href="~/css/print-invoice.css" />
+
+    <!-- Typographics -->
+    <link rel="stylesheet" href="~/css/typographics.css" />
+
+    <!-- Responsive Design -->
+    <link rel="stylesheet" href="~/css/media-queries.css" />
+
+    <!-- Bad IE Styles -->
+    <link rel="stylesheet" href="~/css/ie-fixes.css" />
+
+
+    <!-- The Scripts -->
+    <!-- ----------- -->
+    <!-- JavaScript at the top (will be cached by browser) -->
+    <!-- Load Webfont loader -->
+    <script type="text/javascript">
+        window.WebFontConfig = {
+            google: { families: ['PT Sans:400,700'] },
+            active: function () { $(window).trigger('fontsloaded'); }
+        };
+    </script>
+
+    <!-- Essential polyfills -->
+    <script src="~/js/mylibs/polyfills/modernizr-2.6.1.min.js"></script>
+    <script src="~/js/mylibs/polyfills/respond.js"></script>
+    <script src="~/js/mylibs/polyfills/matchmedia.js"></script>
+    <!--[if lt IE 9]><script src="~/js/mylibs/polyfills/selectivizr-min.js"></script><![endif]-->
+    <!--[if lt IE 10]><script src="~/js/mylibs/charts/excanvas.js"></script><![endif]-->
+    <!--[if lt IE 10]><script src="~/js/mylibs/polyfills/classlist.js"></script><![endif]-->
+
+    <script src="~/js/libs/jquery-1.7.2.min.js"></script>
+    <script src="~/js/libs/jquery-ui-1.8.21.min.js"></script>
+    @* <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>*@
+    <script src="~/Scripts/i18n/grid.locale-es.js"></script>
+    <script src="~/Scripts/jquery.jqGrid.min.js"></script>
+    <script src="~/js/libs/jquery.json.min.js"></script>
+
+    <script src="~/js/libs/lodash.min.js"></script>
+
+    <!-- scripts concatenated and minified via build script -->
+    <!-- General Scripts -->
+    <script src="~/js/mylibs/jquery.hashchange.js"></script>
+    <script src="~/js/mylibs/jquery.idle-timer.js"></script>
+    <script src="~/js/mylibs/jquery.plusplus.js"></script>
+    <script src="~/js/mylibs/jquery.jgrowl.js"></script>
+    <script src="~/js/mylibs/jquery.scrollTo.js"></script>
+    <script src="~/js/mylibs/jquery.ui.touch-punch.js"></script>
+    <script src="~/js/mylibs/jquery.ui.multiaccordion.js"></script>
+    <script src="~/js/mylibs/number-functions.js"></script>
+
+    <!-- Forms -->
+    <script src="~/js/mylibs/forms/jquery.autosize.js"></script>
+    <script src="~/js/mylibs/forms/jquery.checkbox.js"></script>
+    <script src="~/js/mylibs/forms/jquery.chosen.js"></script>
+    <script src="~/js/mylibs/forms/jquery.cleditor.js"></script>
+    <script src="~/js/mylibs/forms/jquery.colorpicker.js"></script>
+    <script src="~/js/mylibs/forms/jquery.ellipsis.js"></script>
+    <script src="~/js/mylibs/forms/jquery.fileinput.js"></script>
+    <script src="~/js/mylibs/forms/jquery.fullcalendar.js"></script>
+    <script src="~/js/mylibs/forms/jquery.maskedinput.js"></script>
+    <script src="~/js/mylibs/forms/jquery.mousewheel.js"></script>
+    <script src="~/js/mylibs/forms/jquery.placeholder.js"></script>
+    <script src="~/js/mylibs/forms/jquery.pwdmeter.js"></script>
+    <script src="~/js/mylibs/forms/jquery.ui.datetimepicker.js"></script>
+    <script src="~/js/mylibs/forms/jquery.ui.spinner.js"></script>
+    <script src="~/js/mylibs/forms/jquery.validate.js"></script>
+    <script src="~/js/mylibs/forms/uploader/plupload.js"></script>
+    <script src="~/js/mylibs/forms/uploader/plupload.html5.js"></script>
+    <script src="~/js/mylibs/forms/uploader/plupload.html4.js"></script>
+    <script src="~/js/mylibs/forms/uploader/plupload.flash.js"></script>
+    <script src="~/js/mylibs/forms/uploader/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+    <!-- Charts -->
+    <script src="~/js/mylibs/charts/jquery.flot.js"></script>
+    <script src="~/js/mylibs/charts/jquery.flot.orderBars.js"></script>
+    <script src="~/js/mylibs/charts/jquery.flot.pie.js"></script>
+    <script src="~/js/mylibs/charts/jquery.flot.resize.js"></script>
+
+    <!-- Explorer -->
+    <script src="~/js/mylibs/explorer/jquery.elfinder.js"></script>
+
+    <!-- Fullstats -->
+    <script src="~/js/mylibs/fullstats/jquery.css-transform.js"></script>
+    <script src="~/js/mylibs/fullstats/jquery.animate-css-rotate-scale.js"></script>
+    <script src="~/js/mylibs/fullstats/jquery.sparkline.js"></script>
+
+    <!-- Syntax Highlighter -->
+    <script src="~/js/mylibs/syntaxhighlighter/shCore.js"></script>
+    <script src="~/js/mylibs/syntaxhighlighter/shAutoloader.js"></script>
+
+    <!-- Dynamic Tables -->
+    <script src="~/js/mylibs/dynamic-tables/jquery.dataTables.js"></script>
+    <script src="~/js/mylibs/dynamic-tables/jquery.dataTables.tableTools.zeroClipboard.js"></script>
+    <script src="~/js/mylibs/dynamic-tables/jquery.dataTables.tableTools.js"></script>
+
+
+    <!-- Gallery -->
+    <script src="~/js/mylibs/gallery/jquery.fancybox.js"></script>
+    <script src="~/js/jquery.form.js"></script>
+
+    <!-- Tooltips -->
+    <script src="~/js/mylibs/tooltips/jquery.tipsy.js"></script>
+    <script src="~/js/mylibs/jquery.numeric.js"></script>
+
+    <!-- Do not touch! -->
+    <script src="~/js/mango.js"></script>
+    <script src="~/js/plugins.js"></script>
+    <script src="~/js/script.js"></script>
+
+    <!-- Your custom JS goes here -->
+    <script src="~/js/app.js"></script>
+
+    <!-- end scripts -->
+    @*<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />*@
+
+</head>
+
+<body>
+
+    <!----------------------->
+    <!-- Some dialogs etc. -->
+    <!-- The loading box -->
+    <div id="loading-overlay"></div>
+    <div id="loading">
+        <span>Loading...</span>
+    </div>
+    <!-- End of loading box -->
+    <!-- The lock screen -->
+    <div id="lock-screen" title="Pantalla Bloqueada">
+
+        <a href="@Url.Action("LogOff", "Home", null, "http")" class="header right button grey flat">Cerrar Sesión</a>
+
+        <p>Due to the inactivity of this session, your account was temporarily locked.</p>
+        <p>To unlock your account, simply slide the button and enter your password.</p>
+
+        <div class="actions">
+            <div id="slide_to_unlock">
+                <img src="~/img/elements/slide-unlock/lock-slider.png" alt="slide me" />
+                <span>Deslice Desbloquear</span>
+            </div>
+            <form action="#" method="GET">
+                <input type="password" name="pwd" id="pwd" placeholder="Ingresa tu password aquí..." autocorrect="off" autocapitalize="off" /> <input type="submit" name="send" value="Desbloquear" disabled="" /> <input type="reset" value="X" />
+            </form>
+        </div><!-- End of .actions -->
+
+    </div><!-- End of lock screen -->
+    <!--------------------------------->
+    <!-- Now, the page itself begins -->
+    <!--------------------------------->
+    <!-- The toolbar at the top -->
+    <section id="toolbar">
+        <div class="container_12">
+
+            <!-- Left side -->
+            <div class="left">
+                <ul class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home", null, "http")">Sophix</a></li>
+                    <li><a href="javascript:void(0);">@(VendixGlobal<string>.Obtener("NombreOficina"))</a></li>
+                </ul>
+            </div>
+            <!-- End of .left -->
+            <!-- Right side -->
+            <div class="right">
+                <ul>
+
+                    <li><a href="pages_profile.html"><span class="icon i14_admin-user"></span>Ver Perfil</a></li>
+
+                    <li class="space"></li>
+
+
+                    @if (VendixGlobal<int>.Obtener("Usuarioid") == VendixGlobal<int>.Obtener("UsuarioidAsignadoOficina"))
+                    {
+                        <li id="partial_Transferencias">
+
+                            @{
+                                var listaTransferencias = BovedaMovBL.ListarTransferencias();
+                            }
+                            <a href="#"><span>@listaTransferencias.Count</span>Transferencias</a>
+
+                            <!-- Mail popup -->
+                            <div class="popup">
+                                <h3>Nuevas Transferencias</h3>
+
+                                <!-- The mail content -->
+                                <div class="content mail">
+                                    <ul>
+
+                                        @if (listaTransferencias == null)
+                                        {
+                                            <li></li>
+                                        }
+                                        @if (listaTransferencias != null)
+                                        {
+                                            foreach (var item in listaTransferencias)
+                                            {
+
+
+                                                <li>
+                                                    <div class="avatar">
+                                                        <img src="~/img/elements/mail/avatar.png" height="40" width="40" />
+                                                    </div>
+                                                    <div class="info">
+                                                        <strong>Monto : S/.  @item.Monto </strong>
+                                                        <span>De : @item.From</span>
+
+                                                    </div>
+
+                                                    <div class="text">
+                                                        <p>Descripcion :</p>
+                                                        <p>@item.Descripcion</p>
+                                                        <p>________________________________</p>
+                                                        <p>@item.UsuarioReg </p>
+                                                        <div class="actions">
+                                                            @*<a onclick="$(this).parent().parent().parent().slideToggle($$.config.fxSpeed)" class="red left" href="javascript:void(0);">Rechazar    </a>
+                                                                <a href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>*@
+                                                            <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '2'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" class="red left" href="javascript:void(0);">Rechazar    </a>
+                                                            <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '1'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>
+                                                        </div>
+                                                    </div>
+                                                    ----------------------------------------
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                                <!-- End of .contents -->
+
+                            </div>
+                            <!-- End of .popup -->
+
+
+                        </li>
+                        <!-- End of li -->
+
+
+                                }
+
+
+
+
+                    <li><a href="javascript:void(0);" id="btn-lock"><span>--:--</span>Bloquear Pantalla</a></li>
+
+                    <li class="red"><a href="@Url.Action("LogOff", "Home", null, "http")">Cerrar Sesión</a></li>
+
+                </ul>
+            </div><!-- End of .right -->
+        </div><!-- End of .container_12 -->
+    </section><!-- End of #toolbar -->
+    <!-- The header containing the logo -->
+    <header class="container_12">
+        <br />
+    </header><!-- End of header -->
+    <!-- The container of the sidebar and content box -->
+    <div role="main" id="main" class="container_12 clearfix">
+        <!-- The blue toolbar stripe -->
+        <section class="toolbar">
+            <div class="user">
+                <div class="avatar">
+                    <img src="~/img/layout/content/toolbar/user/avatar.png" />
+                    <span>3</span>
+                </div>
+                <span>@(VendixGlobal<string>.Obtener("NombreUsuario"))</span>
+                <ul>
+                    <li><a href="javascript:$$.settings();">Settings</a></li>
+                    <li><a href="pages_profile.html">Profile</a></li>
+                    <li class="line"></li>
+                    <li><a href="login.html">Logout</a></li>
+                </ul>
+            </div>
+            <ul class="shortcuts">
+                <li>
+                    <a href="javascript:void(0);"><span class="icon i24_inbox-document"></span></a>
+                    <!-- Possible sizes: small/medium/large -->
+                    <div class="small">
+                        <h3>Write a Message</h3>
+
+                        <!-- Button bar -->
+                        <button class="button flat left grey" onclick="$(this).parent().fadeToggle($$.config.fxSpeed).parent().removeClass('active')">Close</button>
+                        <button class="button flat right" onclick="$(this).parent().fadeToggle($$.config.fxSpeed).parent().removeClass('active')">Send</button>
+
+                        <div class="content">
+                            <form class="full grid">
+                                <div class="row no-bg">
+                                    <p class="_100 small">
+                                        <input type="text" name="p2_recipient" id="p2_recipient" placeholder="Recipient" />
+                                    </p>
+                                    <p class="_100 small">
+                                        <input type="text" name="p2_subject" id="p2_subject" placeholder="Subject" />
+                                    </p>
+                                    <p class="_100 small">
+                                        <textarea rows="5" cols="30" name="p2_message" id="p2_message" placeholder="Message"></textarea>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- End of popup -->
+                </li>
+                <li style="float:right;position: absolute;right: 10px;">
+                    <a href="javascript:history.go(1);"><span class="icon i24_arrow-curve"></span></a>
+                </li>
+                <li style="float:right;position: absolute;right: 50px;">
+                    <a href="javascript:history.back(1);"><span class="icon i24_arrow-curve-180"></span></a>
+                </li>
+            </ul><!-- End of .shortcuts -->
+        </section><!-- End of .toolbar-->
+        <!-- The sidebar -->
+        <aside>
+            <div class="top">
+
+                <!-- Navigation -->
+                <nav>
+                    <ul class="collapsible accordion">
+
+                        <li><a href="@Url.Action("Index", "Home")"><img src="~/img/icons/packs/fugue/16x16/dashboard.png" alt="" height="16" width="16" />Dashboard</a></li>
+                        @{
+                            var menuVendix = VendixGlobal<List<usp_MenuLst_Result>>.Obtener("Menu");
+                            if (menuVendix == null)
+                            {
+                                Response.Redirect(Url.Action("Login", "Home"));
+                                return;
+                            }
+
+                            var menuPadre = menuVendix != null ? menuVendix.Where(x => x.IndPadre.Value) : null;
+                            if (menuPadre != null)
+                            {
+                                foreach (var item in menuPadre)
+                                {
+                                    <li>
+                                        <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/ui-layered-pane.png" alt="" height="16" width="16" />@item.Denominacion<span class="badge">*</span></a>
+                                        <ul>
+                                            @{
+                                                var menuHijo = menuVendix.Where(x => x.Referencia == item.Orden).OrderBy(y => y.Orden);
+                                                foreach (var mnu in menuHijo)
+                                                {
+                                                    <li><a href="@Url.Action("Index", @mnu.Url)"><span class="icon @mnu.Icono"></span>@mnu.Denominacion</a></li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                                    }
+                                                }
+                        }
+
+
+
+                        @* <li>
+                                     <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/ui-layered-pane.png" alt="" height="16" width="16" />ALMACEN<span class="badge">4</span></a>
+                                     <ul>
+                                         <li><a href="@Url.Action("Index", "Entrada")"><span class="icon icon-list"></span>Entradas</a></li>
+                                         <li><a href="~/Entrada"><span class="icon icon-cog"></span>Salidas</a></li>
+                                         <li><a href="~/OrdenVenta"><span class="icon icon-picture"></span>Transferencias</a></li>
+                                         <li><a href="~/OrdenVenta/OrdenesVenta"><span class="icon icon-th"></span>Consulta por Serie</a></li>
+                                         <li><a href="@Url.Action("Index", "Kardex", null, "http")"><span class="icon icon-th"></span>Kardex</a></li>
+                                         <li><a href="@Url.Action("Index", "Inventario", null, "http")"><span class="icon icon-th"></span>Inventario</a></li>
+                                     </ul>
+                                 </li>
+
+                            <li>
+                                <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/application-form.png" alt="" height="16" width="16" />VENTAS</a>
+                                <ul>
+                                    <li><a href="@Url.Action("Index", "OrdenVenta", null, "http")"><span class="icon icon-magic"></span>Ventas</a></li>
+                                    <li><a href="@Url.Action("OrdenesVenta", "OrdenVenta", null, "http")"><span class="icon icon-list-alt"></span>Ordenes de Venta</a></li>
+                                    <li><a href="@Url.Action("Index", "ListaPrecio", null, "http")"><span class="icon icon-warning-sign"></span>Lista de Precio</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/chart.png" alt="" height="16" width="16" />REPORTES<span class="badge">2</span></a>
+                                <ul>
+                                    <li><a href="#" onclick="$('#content').load('@Url.Action("ListaPrecioGeneral", "Reporte")');" ><span class="icon icon-sitemap"></span>Lista de Precios General</a></li>
+                                    <li><a href="#" onclick="$('#content').load('@Url.Action("Stock", "Reporte")');" ><span class="icon icon-bar-chart"></span>Stock de Articulos</a></li>
+                                    <li><a href="charts.html"><span class="icon icon-bar-chart"></span>Kardex</a></li>
+
+
+
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);">
+                                    <img src="~/img/icons/packs/fugue/16x16/table.png" alt="" height="16" width="16" />MANTENIMIENTOS</a>
+                                <ul>
+                                    <li><a href="@Url.Action("Index", "Oficina", null, "http")"><span class="icon icon-check-empty"></span>Oficina</a></li>
+                                    <li><a href="@Url.Action("Index", "Almacen", null, "http")"><span class="icon icon-check-empty"></span>Almacen</a></li>
+                                    <li><a href="@Url.Action("Index", "Marca", null, "http")"><span class="icon icon-check-empty"></span>Marca</a></li>
+                                    <li><a href="@Url.Action("Index", "Modelo", null, "http")"><span class="icon icon-check-empty"></span>Modelo</a></li>
+                                    <li><a href="@Url.Action("Index", "Articulo", null, "http")"><span class="icon icon-fullscreen"></span>Articulo</a></li>
+                                    <li><a href="@Url.Action("Index", "TipoArticulo", null, "http")"><span class="icon icon-fullscreen"></span>TipoArticulo</a></li>
+                                    <li><a href="@Url.Action("Index", "Persona", null, "http")"><span class="icon icon-check-empty"></span>Persona</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/document-horizontal.png" alt="" height="16" width="16" />SEGURIDAD</a>
+                                <ul>
+                                    <li><a href="@Url.Action("Index", "Usuario", null, "http")"><span class="icon icon-check-empty"></span>Usuario</a></li>
+                                    <li><a href="@Url.Action("Index", "Rol")">Roles</a></li>
+                                </ul>
+                            </li>*@
+
+                    </ul>
+                </nav><!-- End of nav -->
+            </div><!-- End of .top -->
+
+            <div class="bottom sticky">
+                <div class="divider"></div>
+                @*<div class="progress">
+                        <div class="bar" data-title="Space" data-value="1285" data-max="5120" data-format="0,0 MB"></div>
+                        <div class="bar" data-title="Traffic" data-value="8.61" data-max="14" data-format="0.00 GB"></div>
+                        <div class="bar" data-title="Budget" data-value="20000" data-max="20000" data-format="$0,0"></div>
+                    </div>*@
+                <div class="divider"></div>
+                <div class="buttons">
+                    <a href="javascript:void(0);" class="button grey open-simulador">Simulador de Crédito</a>
+                    <a href="javascript:void(0);" class="button grey open-simulador">Agregar Nuevo Cliente</a>
+                </div>
+            </div><!-- End of .bottom -->
+
+        </aside><!-- End of sidebar -->
+
+        <div id="mnuDerecho"></div>
+
+        <!-- Here goes the content. -->
+        <section id="content" class="container_12 clearfix" data-sort="true">
+
+
+            @RenderBody()
+
+
+
+        </section><!-- End of #content -->
+
+
+    </div><!-- End of #main -->
+    <!-- The footer -->
+    <footer class="container_12">
+        <ul class="grid_6">
+            <li><a href="@Url.Action("Index", "Home", null, "http")">Acerca de</a></li>
+            <li><a href="#">www.itbsolution.com.pe</a></li>
+            <li><a href="#">soporte@itbsolution.com.pe</a></li>
+        </ul>
+
+        <span class="grid_6">
+            Copyright &copy; 2013 SOPHIX COMERCIAL
+        </span>
+    </footer><!-- End of footer -->
+    <!-- Simulador de credito -->
+    <div style="display: none;" id="dialog_simulador" title="Simulador de Creditos">
+        <form class="full validate">
+            <div class="row">
+                <label for="cboProductos">
+                    <strong>Producto</strong>
+                </label>
+                <div>
+                    <select style="padding-bottom: 10px" name="cboProductos" id="cboProductos" class="required" data-placeholder="Escoger Producto">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <label for="cboTipo">
+                    <strong>Tipo Crédito</strong>
+                </label>
+                <div>
+                    <select style="padding-bottom: 10px" name="cboTipo" id="cboTipo" class="required" data-placeholder="Escoger Tipo">
+                        <option value="V">Variable</option>
+                        <option value="F">Fijo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <label for="cboModalidad">
+                    <strong>Modalidad</strong>
+                </label>
+                <div>
+                    <select style="padding-bottom: 10px" name="cboModalidad" id="cboModalidad" class="required" data-placeholder="Escoger Modalidad">
+                        <option value="M">Mensual</option>
+                        <option value="Q">Quincenal</option>
+                        <option value="S">Semanal</option>
+                        <option value="D">Diario</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <label for="pMonto">
+                    <strong>Monto</strong>
+                </label>
+                <div>
+                    <input class="required" type="number" name="pMonto" id="pMonto" value="5000.00" />
+                </div>
+            </div>
+            <div class="row">
+                <label for="pCuotas">
+                    <strong>Numero Cuotas</strong>
+                </label>
+                <div>
+                    <input class="required" type="number" name="pCuotas" id="pCuotas" value="24"/>
+                </div>
+            </div>
+            
+            <div class="row">
+                <label for="pInteres">
+                    <strong>TEA %</strong>
+                </label>
+                <div>
+                    <input class="required" type="number" name="pInteres" id="pInteres" value="19.0" />
+                </div>
+            </div>
+            <div class="row">
+                <label for="pFecha">
+                    <strong>Primer Pago</strong>
+                </label>
+                <div>
+                    <input class="required" type="date" name="pFecha" id="pFecha" value="@DateTime.Now.ToShortDateString()" />
+                </div>
+            </div>
+           
+        </form>
+        <div class="actions">
+            <div class="left">
+                <button class="grey cancel">Cancelar</button>
+            </div>
+            <div class="right">
+                <button class="submit">Simular Crédito</button>
+            </div>
+        </div>
+    </div><!-- End if #dialog_add_client -->
+    <!-- Spawn $$.loaded -->
+    <script>
+        $$.ready(function () {
+            //Dialogo Simulador
+            $("#dialog_simulador").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 350,
+                open: function () { $(this).parent().css('overflow', 'visible'); $$.utils.forms.resize(); }
+            }).find('button.submit').click(function () {
+                var $el = $(this).parents('.ui-dialog-content');
+                if ($el.validate().form()) {
+                    window.location = '@Url.Action("Simulador", "Credito")' + "?pProductoid=" + $('#cboProductos').val() + "&pTipo=" + $('#cboTipo').val() + "&pMonto=" + $('#pMonto').val() + '&pCuotas=' + $('#pCuotas').val() + '&pInteres=' + $('#pInteres').val() + '&pFecha=' + $('#pFecha').val() + '&pModalidad=' + $('#cboModalidad').val();
+                    $el.find('form')[0].reset();
+                    $el.dialog('close');
+                }
+            }).end().find('button.cancel').click(function () {
+                $("#dialog_simulador").dialog('close');
+            });
+
+            //Dialogo Cliente
+            $("#dialogo_buscar_cliente").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 500,
+                open: function () { $(this).parent().css('overflow', 'visible'); $$.utils.forms.resize(); }
+            }).find('button.cancel').click(function () {
+                $("#dialogo_buscar_cliente").dialog('close');
+            });
+
+            $(".open-simulador").click(function () {
+                Vendix.CargarCombo("@Url.Action("ListarProductos", "Credito")", "cboProductos");
+                $("#cboModalidad").trigger("liszt:updated");
+                $("#dialog_simulador").dialog("open");
+                return false;
+            });
+        });
+
+        function ConfirmaTransFerencia(transferenciaId, flag) {
+            $.ajax({
+                url: "@Url.Action("ConfirmarTransferencia", "Boveda")",
+                type: 'POST',
+                data: {
+                    pBovedaMovTempId: transferenciaId,
+                    pFlag: flag
+                },
+                success: function (data) {
+                    if (data == true) {
+                        Vendix.Notificar("Grabar");
+                        $("#grdBovedaMov").trigger("reloadGrid");
+                        location.reload();
+                       } else {
+                        alert("Sucedio un Error al Realizar la Transaccion consulte Con Area de Sistemas");
+                    }
+                }
+            });
+
+        }
+        $$.loaded();
+    </script>
+
+
+
+    <!-- Buscador de clientes-->
+    <div style="display: none;" id="dialogo_buscar_cliente" title="Buscar Cliente">
+        <form action="" class="full">
+            <div class="row">
+                <label for="txtCliente">
+                    <strong>Cliente</strong>
+                </label>
+                <div>
+                    <input type="search" name="txtCliente" id="txtCliente" placeholder="Buscar por DNI, Apellidos o Nombres" />
+                </div>
+            </div>
+        </form>
+        <div class="actions">
+            <div class="right">
+                <button class="grey cancel">Cancelar</button>
+            </div>
+        </div>
+    </div><!-- End if #dialog_add_client -->
+    <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+    <!--[if lt IE 7 ]>
+    <script defer src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script defer>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+    <![endif]-->
+
+</body>
+</html>

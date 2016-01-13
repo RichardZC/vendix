@@ -1,0 +1,387 @@
+﻿
+<h1 class="grid_12">Mantenimiento de Cliente</h1>
+
+<div class="grid_12">
+    <div class="box">
+        <div class="header">
+            <h2>
+                <img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Lista de Clientes</h2>
+        </div>
+
+        <div class="searchbox">
+            <input id="txtBuscar" type="text" placeholder="APELLIDOS / DNI" />
+            <input id="btnBuscar" type="submit" value="Buscar" class="grey" />
+        </div>
+        <a id="btnNuevo" href="#" class="button">Nuevo Cliente</a>
+        <table id="grdBuscar"></table>
+        <div id="grdpBuscar"></div>
+    </div>
+</div>
+
+<div style="display: none;" id="dlgNuevo" title="Mantener Cliente">
+    <form class="full validate">
+        <div class="row">
+            <label>
+                <strong>Cliente:</strong>
+            </label>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" name="rbTipoPersona" id="rbN" value="N" checked="checked" /><label for="rbN"> NATURAL</label>&nbsp;&nbsp;
+                            <input type="radio" name="rbTipoPersona" id="rbJ" value="J" /><label for="rbJ"> JURIDICO</label>
+                        </td>
+                        <td style="width: 50px">
+                            <strong id="lblDocumento">DNI:</strong>
+                        </td>
+                        <td>
+                            <input class="required" style="width: 92%;text-align: center" type="text" id="txtDocumento" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="txtNombre">
+                <strong id="lblNombre">Nombre:</strong>
+            </label>
+            <div>
+                <input class="required" type="text" name="txtNombre" id="txtNombre" />
+            </div>
+        </div>
+
+        <div class="row natural">
+            <label for="txtApePaterno">
+                <strong>Paterno: </strong>
+            </label>
+            <div>
+                <input class="required" style="width: 41%" type="text" name="txtApePaterno" id="txtApePaterno" />
+                <strong>&nbsp;&nbsp;  Materno:</strong>
+                <input class="required" style="width: 41%;" type="text" name="txtApeMaterno" id="txtApeMaterno" />
+            </div>
+        </div>
+
+        <div class="row natural">
+            <label>
+                <strong>Sexo:</strong>
+            </label>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" name="rbSexo" id="rbSexoM" value="M" checked="checked" /><label for="rbSexoM">Masculino</label>&nbsp;&nbsp;
+                            <input type="radio" name="rbSexo" id="rbSexoF" value="F" /><label for="rbSexoF">Femenino</label>
+                        </td>
+                        <td><strong>Nacimiento:</strong></td>
+                        <td>
+                            <input type="date" class="maskDate" id="txtFechaNacimiento" placeholder="DD/MM/YYYY" />
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtDireccion">
+                <strong>Direccion:</strong>
+            </label>
+            <div>
+                <input type="text" name="txtDireccion" id="txtDireccion" />
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="txtcelular1">
+                <strong>Celular 1:</strong>
+            </label>
+            <div>
+                <input style="width: 38%" type="text" name="txtcelular1" id="txtcelular1" />
+                <strong>&nbsp;&nbsp; Celular 2:</strong>
+                <input style="width: 38%; float: right" type="text" name="txtcelular2" id="txtcelular2" />
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtEmailPersonal">
+                <strong>Email:</strong>
+            </label>
+            <div>
+                <input email="true" type="text"  id="txtEmailPersonal" />
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="cboOcupacion">
+                <strong>Ocupacion:</strong>
+            </label>
+            <div>
+                @Html.DropDownList("cboOcupacion", (IEnumerable<SelectListItem>)ViewBag.cboOcupacion, new { @class = "search" })
+            </div>
+        </div>
+        <div class="row">
+            <label for="txtFechaCaptacion">
+                <strong>Captación:</strong>
+            </label>
+            <div>
+                <table style="width: 100%;">
+                    <tr>
+                        <td>
+                            <input type="date" class="required maskDate" id="txtFechaCaptacion" placeholder="DD/MM/YYYY" /></td>
+                        <td>
+                            <strong>Calificación:</strong>
+                        </td>
+                        <td>
+                            <select id="drpTipoCalificacion">
+                                <option value="B">Bueno</option>
+                                <option value="R">Regular</option>
+                                <option value="N">Normal</option>
+                                <option value="M">Malo</option>
+                            </select></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="txtPagoInscripcion">
+                <strong>Inscripción:</strong>
+            </label>
+            <div>
+
+                <table style="width: 100%;">
+                    <tr>
+                        <td>
+                            <input data-type="spinner" class="required" min="1" max="100" value="0.00" id="txtPagoInscripcion" />
+                        </td>
+                        <td>
+                            <label for="chkActivo">
+                                <strong>Estado:</strong>
+                            </label>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="checkbox" id="chkActivo" />
+                                <label for="chkActivo">Activo</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </form>
+    <div class="actions">
+        <div class="left">
+            <button class="grey cancel">Salir</button>
+        </div>
+        <div class="right">
+            <input id="btnEnviar" type="button" value="GUARDAR CLIENTE" />
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $$.ready(function () {
+        $("#txtDocumento").mask("99999999").keypress(function() {
+            if (event.which == 13) {
+                event.preventDefault();
+                $(this).trigger('blur');
+            }
+        }).blur(function() {
+            if ($(this).val().length > 0) {
+                if ($.data(document.body, 'Documento') == $(this).val()) return;
+                $.ajax({
+                    url: "@Url.Action("ExistePersonaDocumento","Cliente")",
+                    data: { pDocumento: $(this).val() },
+                    success: function(existe) {
+                        if (existe) {
+                            Vendix.Mensaje("Ya Existe el Documento, Ingrese Otro.");
+                            $("#txtDocumento").val('').focus();
+                            return;
+                        }
+                        $("#txtNombre").focus();
+                    }
+                });
+            }
+        });
+        
+        $("#rbN,#rbJ").change(function () {
+            if ($("#rbN").prop('checked')) {
+                $("#lblDocumento").text("DNI:");
+                $("#lblNombre").text("Nombres:");
+                $(".natural").show();
+                $("#txtDocumento").mask("99999999");
+            } else {
+                $("#lblDocumento").text("RUC:");
+                $("#lblNombre").text("Rz Social:");
+                $(".natural").hide();
+                $("#txtDocumento").mask("99999999999");
+            }
+            $("#txtDocumento").focus();
+        });
+
+        $("#btnNuevo").click(function () {
+            var $el = $("#dlgNuevo");
+            $el.find('form')[0].reset();
+            
+            $.data(document.body, 'Clienteid', 0);
+            $.data(document.body, 'Documento', '');
+            
+            $("#txtDocumento,#txtPagoInscripcion").prop("disabled", false);
+            $("#cboOcupacion,#drpTipoCalificacion").val("").trigger("liszt:updated");
+            $("#txtPersona").val("").removeAttr('disabled');
+            $("#chkActivo").prop("checked", true);
+            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtDocumento,#txtEmailPersonal,#txtDireccion,#txtTelefonoFijo,#txtTelefonoMovil,#txtFechaNacimiento").val("");
+            $("#txtFechaCaptacion").val("@DateTime.Now.ToShortDateString()");
+            $("#txtPagoInscripcion").val("0.00");
+            $("#dlgNuevo").dialog('open');
+            return false;
+        });
+        
+        $("#txtBuscar").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#grdBuscar").jqGrid('setGridParam', { page: 1 }).trigger("reloadGrid");
+            }
+        });
+        $("#btnBuscar").click(function () { $("#grdBuscar").trigger("reloadGrid"); });
+
+
+        $("#dlgNuevo").dialog({
+            autoOpen: false,
+            modal: true,
+            width: 540,
+            open: function () { $(this).parent().css('overflow', 'visible'); $$.utils.forms.resize(); }
+        }).find('#btnEnviar').click(function () {
+            var $el = $(this).parents('.ui-dialog-content');
+            if ($el.validate().form()) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Action("GuardarCliente", "Cliente")",
+                    data: {
+                        pClienteId: $.data(document.body, 'Clienteid'),
+                        pTipoPersona: $("#rbN").prop('checked') ? 'N' : 'J',
+                        pNombre: $("#txtNombre").val(),
+                        pApePaterno: $("#txtApePaterno").val(),
+                        pApeMaterno: $("#txtApeMaterno").val(),
+                        pNumeroDocumento: $("#txtDocumento").val(),
+                        pSexoM: $("#rbSexoM").prop('checked'),
+                        pEmail: $("#txtEmailPersonal").val(),
+                        pCelular1: $("#txtcelular1").val(),
+                        pCelular2: $("#txtcelular2").val(),
+                        pFechaNacimiento: $.trim($("#txtFechaNacimiento").val()).length > 0 ? $("#txtFechaNacimiento").val() : null,
+                        pDireccion: $("#txtDireccion").val(),
+                        pFechaCaptacion: $("#txtFechaCaptacion").val(),
+                        pOcupacionId: $("#cboOcupacion").val(),
+                        pCalificacion: $("#drpTipoCalificacion").val(),
+                        pMontoInscripcion: $("#txtPagoInscripcion").val(),
+                        pActivo: $("#chkActivo").prop('checked')
+                    },
+                    success: function (data) {
+                        Vendix.Notificar("Modificar");
+                        $("#grdBuscar").trigger("reloadGrid");
+                        $el.find('form')[0].reset();
+                        $el.dialog('close');
+                    }
+                });
+            }
+        }).end().find('button.cancel').click(function () {
+            var $el = $(this).parents('.ui-dialog-content');
+            $el.find('form')[0].reset();
+            $el.dialog('close');
+        });
+
+        jQuery("#grdBuscar").jqGrid({
+            url: "@Url.Action("ListarCliente", "Cliente")",
+            datatype: "json",
+            postData: {
+                filters: function () {
+                    return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }]);
+                }
+            },
+            colNames: ['NRO', 'CLIENTE', 'DOCUMENTO', 'EMAIL', 'MOVIL', 'DIRECCION', 'ESTADO', 'ESTADO'],
+            colModel:
+                [
+                    { name: 'Clienteid', index: 'Clienteid', hidden: true },
+                    { name: 'Persona.NombreCompleto', index: 'Persona.NombreCompleto', width: 260 },
+                    { name: 'Persona.NumeroDocumento', index: 'Persona.NumeroDocumento', align: "center" },
+                    { name: 'EmailPersonal', index: 'EmailPersonal' },
+                    { name: 'Celular1', index: 'Celular1', align: "center" },
+                    { name: 'Direccion', index: 'Direccion', width: 300 },
+                    { name: 'Estado', index: 'Estado', hidden: true },
+                    { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
+                ],
+            caption: "Lista Clientes",
+            pager: jQuery('#grdpBuscar'),
+            rowNum: 15,
+            rowList: [15, 30, 45],
+            sortname: 'Persona.NombreCompleto',
+            sortorder: "asc",
+            gridview: true,
+            viewrecords: true,
+            rownumbers: true,
+            autowidth: true,
+            //paging: true,
+            width: 'auto',
+            height: '347px',
+            ondblClickRow: function () {
+                var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
+                if (id) {
+                    var ret = $("#grdBuscar").jqGrid('getRowData', id);
+                    BuscarCliente(ret.ClienteId);
+                    $("#dlgNuevo").dialog("open");
+                }
+            }
+        });//.navGrid('#grdBuscar', { edit: false, add: false, del: false });
+    });
+
+    function BuscarCliente(clienteId) {
+        $.ajax({
+            url: "@Url.Action("ObtenerClientePersona", "Cliente")",
+            data: { pClienteId: clienteId },
+            success: function (rpta) {
+                var $el = $("#dlgNuevo");
+                $el.find('form')[0].reset();
+                $("#txtDocumento").val(rpta.Persona.NumeroDocumento);
+                $("#txtNombre").val(rpta.Persona.Nombre);
+                $("#txtApePaterno").val(rpta.Persona.ApePaterno);
+                $("#txtApeMaterno").val(rpta.Persona.ApeMaterno);
+                $("#txtEmailPersonal").val(rpta.Persona.EmailPersonal);
+                $("#txtcelular1").val(rpta.Persona.Celular1);
+                $("#txtcelular2").val(rpta.Persona.Celular2);
+                $("#txtFechaNacimiento").val(rpta.FNacimiento);
+                $("#txtDireccion").val(rpta.Persona.Direccion);
+                $("#txtFechaCaptacion").val(rpta.FCaptacion),
+                $("#cboOcupacion").val(rpta.Cliente.ActividadEconId).trigger("liszt:updated");
+                $("#chkActivo").prop("checked", rpta.Cliente.Estado ? true : false);
+                $("#rbSexoM").prop("checked", rpta.Persona.Sexo == 'M' ? true : false);
+                $("#rbSexoF").prop("checked", rpta.Persona.Sexo == 'F' ? true : false);
+                $("#rbN").prop("checked", rpta.Persona.TipoPersona == 'N' ? true : false);
+                $("#rbJ").prop("checked", rpta.Persona.TipoPersona == 'J' ? true : false);
+                $("#drpTipoCalificacion").val(rpta.Cliente.Calificacion).trigger("liszt:updated");
+                $("#txtPagoInscripcion").val(parseFloat(rpta.Cliente.Inscripcion).toFixed(2));
+
+                if ($("#rbN").prop('checked')) {
+                    $("#lblDocumento").text("DNI:");
+                    $("#lblNombre").text("Nombres:");
+                    $(".natural").show();
+                    $("#txtDocumento").mask("99999999");
+                } else {
+                    $("#lblDocumento").text("RUC:");
+                    $("#lblNombre").text("Razón Social:");
+                    $(".natural").hide();
+                    $("#txtDocumento").mask("99999999999");
+                }
+
+                $("#txtPagoInscripcion").prop("disabled", true);
+                $.data(document.body, 'Clienteid', rpta.Cliente.ClienteId);
+                $.data(document.body, 'Documento', rpta.Persona.NumeroDocumento);
+
+            }
+        });
+    }
+
+</script>
