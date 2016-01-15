@@ -1,12 +1,10 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.IO;
-using System.Web.Script.Serialization;
 using ITB.VENDIX.BL;
 using ITB.VENDIX.BE;
 
-namespace VendixWeb.Controllers
+namespace Web.Controllers
 {
 
     public class ArticuloController : Controller

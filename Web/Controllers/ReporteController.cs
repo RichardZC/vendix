@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using ITB.VENDIX.BE;
 using ITB.VENDIX.BL;
 using VendixWeb.Models;
 using Microsoft.Reporting.WebForms;
 
 
-namespace VendixWeb.Controllers
+namespace Web.Controllers
 {
     public class ReporteController : Controller
     {

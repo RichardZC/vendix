@@ -5,7 +5,7 @@ using System.Web.Security;
 using ITB.VENDIX.BL;
 using ITB.VENDIX.BE;
 
-namespace VendixWeb.Controllers
+namespace Web.Controllers
 {
     public class HomeController : Controller
     {
