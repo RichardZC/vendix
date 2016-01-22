@@ -50,7 +50,7 @@ namespace VendixWeb.Controllers
         [HttpPost]
         public ActionResult GuardarUsuario(int pUsuarioId, string pApePaterno, string pApeMaterno, string pNombre,
                                            string pNumeroDocumento, string pSexoM, DateTime? pFechaNacimiento, string pTelefonoMovil,
-                                           string pEmailPersonal, string pNombreUsuario, string pClaveUsuario, bool pActivo)
+                                           string pEmailPersonal,string pDireccion, string pNombreUsuario, string pClaveUsuario, bool pActivo)
         {
             var perso = new Persona();
             var user = new Usuario();
@@ -73,6 +73,7 @@ namespace VendixWeb.Controllers
             perso.FechaNacimiento = pFechaNacimiento;
             perso.Celular1 = pTelefonoMovil;
             perso.EmailPersonal = pEmailPersonal;
+            perso.Direccion = pDireccion;
             perso.TipoDocumento = "DNI";
             perso.TipoPersona = "N";
             perso.Estado = pActivo;

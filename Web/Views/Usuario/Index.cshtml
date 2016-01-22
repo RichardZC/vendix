@@ -126,7 +126,7 @@
         $("#btnNuevo").click(function () {
             $.data(document.body, 'UsuarioId', 0);
             $("#dlgNuevo").find('form')[0].reset();
-            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtNumeroDocumento,#txtFechaNacimiento,#txtTelefonoMovil,#txtEmailPersonal,#txtNombreUsuario,#txtClaveUsuario").val("");
+            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtNumeroDocumento,#txtFechaNacimiento,#txtTelefonoMovil,#txtEmailPersonal,#txtDireccion,#txtNombreUsuario,#txtClaveUsuario").val("");
             $("#drpSexo").val("M").trigger("liszt:updated");
             $("#chkActivo").prop("checked", true);
             $("#cboOficina").val("").trigger("liszt:updated");
@@ -232,6 +232,7 @@
                         pFechaNacimiento: $("#txtFechaNacimiento").val(),
                         pTelefonoMovil: $("#txtTelefonoMovil").val(),
                         pEmailPersonal: $("#txtEmailPersonal").val(),
+                        pDireccion: $("#txtDireccion").val(),
                         pNombreusuario: $("#txtNombreUsuario").val(),
                         pClaveUsuario: $("#txtClaveUsuario").val(),
                         pActivo: $("#chkActivo").prop('checked')
@@ -315,9 +316,9 @@
                             $("#txtNumeroDocumento").val(rpta.Persona.NumeroDocumento);
                             $("#drpSexo").val(rpta.Persona.Sexo).trigger("liszt:updated");
                             $("#txtFechaNacimiento").val(rpta.FNacimiento);
-                            $("#txtTelefonoMovil").val(rpta.Persona.TelefonoMovil);
+                            $("#txtTelefonoMovil").val(rpta.Persona.Celular1);
                             $("#txtEmailPersonal").val(rpta.Persona.EmailPersonal);
-
+                            $("#txtDireccion").val(rpta.Persona.Direccion);
                             $("#txtClaveUsuario").val(rpta.Usuario.ClaveUsuario);
                             $("#txtNombreUsuario").val(rpta.Usuario.NombreUsuario);
                             $("#chkActivo").prop("checked", rpta.Usuario.Estado ? true : false);
