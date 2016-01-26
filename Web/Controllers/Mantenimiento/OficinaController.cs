@@ -15,6 +15,7 @@ namespace VendixWeb.Controllers
        
        public ActionResult Index()
         {
+            ViewBag.cboResponsable = new SelectList(UsuarioBL.Listar(x => x.Estado), "UsuarioId", "NombreUsuario");
             return View();
         }
         public ActionResult ListarOficina(GridDataRequest request)
@@ -36,6 +37,8 @@ namespace VendixWeb.Controllers
                                                     item.Denominacion,
                                                     item.Descripcion,
                                                     item.Telefono,
+                                                    item.UsuarioAsignadoId.ToString(),                                   
+                                                    item.IndPrincipal ? "SI":"NO",
                                                     item.Estado.ToString(),
                                                     item.OficinaId.ToString() + "," + (item.Estado ? "1":"0")
                                                 }
@@ -46,7 +49,7 @@ namespace VendixWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult GuardarOficina(int pOficinaId, string pDenominacion, string pDescripcion, string pTelefono, bool pActivo)
+        public ActionResult GuardarOficina(int pOficinaId, string pDenominacion, string pDescripcion, string pTelefono,int pUsuarioAsignadoId, bool pActivo, bool pPrincipal)
         {
             var item = new Oficina();
             item.OficinaId = pOficinaId;
@@ -54,6 +57,10 @@ namespace VendixWeb.Controllers
             item.Descripcion = pDescripcion;
             item.Telefono = pTelefono;
             item.Estado = pActivo;
+            item.IndPrincipal = pPrincipal;
+            item.UsuarioAsignadoId = pUsuarioAsignadoId;
+
+
 
             if (pOficinaId == 0)
                 OficinaBL.CrearOficina(item);

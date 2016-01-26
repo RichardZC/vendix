@@ -44,11 +44,28 @@
             </div>
         </div>
         <div class="row">
+            <label for="cboResponsable">
+                <strong>Responsable</strong>
+            </label>
+            <div style="margin-left: 130px;">
+                @Html.DropDownList("cboResponsable", (IEnumerable<SelectListItem>)ViewBag.cboResponsable, new { @class = "search" })
+                @*@Html.DropDownList("cboMarca","--SELECCIONE--")  *@
+            </div>
+        </div>
+        <div class="row">
             <label for="chkActivo">
                 <strong>Estado:</strong>
             </label>
             <div>
                 <div><input type="checkbox" id="chkActivo" /> <label for="chkActivo">Activo</label></div>
+            </div>
+        </div>
+        <div class="row">
+            <label for="chkPrincipal">
+                <strong>Principal:</strong>
+            </label>
+            <div>
+               <div><input type="checkbox" id="chkPrincipal" /> <label for="chkPrincipal">Principal</label></div>
             </div>
         </div>
     </form>
@@ -67,7 +84,8 @@
         $("#btnNuevo").click(function () {
             $.data(document.body, 'OficinaId', 0);
             $("#txtOficina").val("").removeAttr('disabled');
-            $("#chkActivo").prop("checked", true);
+            $("#cboResponsable").val("").trigger("liszt:updated");
+            $("#chkActivo,#chkPrincipal").prop("checked", true);
             $("#dlgNuevo").dialog("open");
             return false;
         });
@@ -94,8 +112,10 @@
                         pOficinaId: $.data(document.body, 'OficinaId'),
                         pDenominacion: $("#txtOficina").val(),
                         pDescripcion: $("#txtDescripcion").val(),
-                        pTelefono : $("#txtTelefono").val(),
-                        pActivo: $("#chkActivo").prop('checked')
+                        pTelefono: $("#txtTelefono").val(),
+                        pUsuarioAsignadoId: $("#cboResponsable").val(),
+                        pActivo: $("#chkActivo").prop('checked'),
+                        pPrincipal: $("#chkPrincipal").prop('checked')
                     },
                     success: function (data) {
                         Vendix.Notificar("Modificar");
@@ -119,15 +139,18 @@
                     return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }]);
                 }
             },
-            colNames: ['ID', 'DENOMINACION', 'DESCRIPCION', 'TELEFONO', 'ESTADO', 'ESTADO'],
+            colNames: ['ID', 'DENOMINACION', 'DESCRIPCION', 'TELEFONO','ID_RESPONSABLE',"OF. Principal", 'ESTADO', 'ESTADO'],
             colModel:
                 [
-                    { name: 'OficinaId', index: 'OficinaId', width: 75 },
+                    { name: 'OficinaId', index: 'OficinaId', hidden: true },
                     { name: 'Denominacion', index: 'Denominacion', width: 150, align: "left" },
                     { name: 'Descripcion', index: 'Descripcion', width: 150, align: "left" },
                     { name: 'Telefono', index: 'Telefono', width: 100, align: "center" },
+                    { name: 'UsuarioAsignadoId', index: 'UsuarioAsignadoId', hidden: true },
+                    { name: 'IndPrincipal', index: 'IndPrincipal', width: 80, align: "center" },
                     { name: 'Estado', index: 'Estado', hidden: true },
                     { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
+                   
                 ],
             caption: "Lista Oficina",
             pager: jQuery('#grdpBuscar'),
@@ -149,7 +172,9 @@
                     $("#txtOficina").val(ret.Denominacion);
                     $("#txtDescripcion").val(ret.Descripcion);
                     $("#txtTelefono").val(ret.Telefono);
+                    $("#cboResponsable").val(ret.UsuarioAsignadoId).trigger("liszt:updated");
                     $("#chkActivo").prop("checked", ret.Estado == "True" ? true : false);
+                    $("#chkPrincipal").prop("checked", ret.IndPrincipal == "SI" ? true : false);
                     $.data(document.body, 'OficinaId', ret.OficinaId);
                     $("#dlgNuevo").dialog("open");
                 }
