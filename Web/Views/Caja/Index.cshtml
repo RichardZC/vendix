@@ -128,12 +128,13 @@
                     return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }]);
                 }
             },
-            colNames: ['ID', 'CAJA', 'OFICINA', 'ESTADO', 'ESTADO'],
+            colNames: ['ID', 'CAJA', 'OFICINA', 'OFICINAID', 'ESTADO', 'ESTADO'],
             colModel:
                 [
                     { name: 'CajaId', index: 'CajaId', width: 75, hidden: true },
                     { name: 'Denominacion', index: 'Denominacion', width: 150 },
                     { name: 'Oficina', index: 'Oficina', width: 150 },
+                    { name: 'OficinaId', index: 'OficinaId', hidden: true },
                     { name: 'Estado', index: 'Estado', hidden: true },
                     { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
                 ],
@@ -155,6 +156,7 @@
                 if (id) {
                     var ret = $("#grdBuscar").jqGrid('getRowData', id);
                     $("#txtCaja").val(ret.Denominacion);
+                    
                     $("#cboOficina").val(ret.OficinaId).trigger("liszt:updated");
                     $("#chkActivo").prop("checked", ret.Estado == "True" ? true : false);
                     $.data(document.body, 'CajaId', ret.CajaId);

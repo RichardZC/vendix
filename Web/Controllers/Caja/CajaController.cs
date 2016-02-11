@@ -37,6 +37,7 @@ namespace VendixWeb.Controllers
                                                     item.CajaId.ToString(),
                                                     item.Denominacion,
                                                     item.Oficina.Denominacion,
+                                                    item.OficinaId.ToString(),
                                                     item.Estado.ToString(),
                                                     item.CajaId.ToString() + "," + (item.Estado ? "1":"0")
                                                 }

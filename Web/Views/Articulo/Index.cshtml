@@ -127,7 +127,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.data(document.body, 'Articuloid', 0);
+        $.data(document.body, 'ArticuloId', 0);
         $("#chkActivo").prop("checked", true);
         $("#divImagen").hide();
         $("#btnNuevo").click(function () { NuevoArticulo(); });
@@ -147,10 +147,10 @@
             url: "@Url.Action("EliminarImagen", "Articulo")",
             data: {
                 pImagen: pImagen,
-                pArticuloId: $.data(document.body, 'Articuloid'),
+                pArticuloId: $.data(document.body, 'ArticuloId'),
             },
             success: function (data) {
-                MostrarImagen($.data(document.body, 'Articuloid'));
+                MostrarImagen($.data(document.body, 'ArticuloId'));
                 Vendix.Notificar("Eliminar");
             },
         });
@@ -161,7 +161,7 @@
         $("#txtPrecio,#txtDescuento").val("0.00");
         $("#chkActivo").prop("checked", true);
         $("#chkIndPerecible,#chkIndImportado,#chkCanjeable").prop("checked", false);
-        $.data(document.body, 'Articuloid', 0);
+        $.data(document.body, 'ArticuloId', 0);
         $("#resultado").empty();
         $("#divImagen").hide();
     }
@@ -195,9 +195,9 @@
                             $("#txtPrecio,#txtDescuento").val("0.00");
 
 
-                        $.data(document.body, 'Articuloid', rpt.Articulo.ArticuloId);
+                        $.data(document.body, 'ArticuloId', rpt.Articulo.ArticuloId);
                         $("#divImagen").show();
-                        MostrarImagen($.data(document.body, 'Articuloid'));
+                        MostrarImagen($.data(document.body, 'ArticuloId'));
                     }
                 }
             });
@@ -233,7 +233,7 @@
     $('#file-uploader').ajaxForm({
         success: function (rpt) {
             if (rpt == true)
-                MostrarImagen($.data(document.body, 'Articuloid'));
+                MostrarImagen($.data(document.body, 'ArticuloId'));
         }
     });
 
@@ -245,7 +245,7 @@
                 cache: false,
                 url: "@Url.Action("GuardarArticulo", "Articulo")",
                 data: {
-                    'pArticuloId': $.data(document.body, 'Articuloid'),
+                    'pArticuloId': $.data(document.body, 'ArticuloId'),
                     'pModeloId': cboModelo.value,
                     'pTipoArticuloId': cboTipoArticulo.value,
                     'pCodArticulo': $("#txtCodArticulo").val(),
