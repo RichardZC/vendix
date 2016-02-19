@@ -86,7 +86,7 @@
                             <th style="width: 40px">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    @*<tbody>
                         @foreach (var item in Model.OrdenVentaDet)
                         {
                             <tr>
@@ -128,7 +128,7 @@
                             <td class='center' style='width: 80px; font-weight: bolder'>S/. @Model.TotalNeto</td>
                             <td class='center' style='width: 50px'></td>
                         </tr>
-                    </tbody>
+                    </tbody>*@
                 </table>
                 
                 
@@ -246,6 +246,7 @@
                     data: { pNumeroSerie: $.trim(this.value), pOrdenVentaId: $.data(document.body, 'OrdenVentaid') },
                     success: function (ret) {
                         $("#divAgregar").show('fast');
+                       
                         if (ret.length > 15) {
                             $("#mensaje").removeClass('success').addClass('error');
                             $("#lblmensaje").text(ret);
