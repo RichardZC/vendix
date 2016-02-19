@@ -169,21 +169,28 @@ namespace VendixWeb.Controllers
             var oPlanPago = CreditoBL.SimuladorCredito(pProductoId, pTipo,pMonto, pModalidad,  pCuotas, pInteres, DateTime.Parse(pFecha), pGastosAdm);
             var rd = new ReportDataSource("dsSimuladorPlanPago", oPlanPago);
 
+            var periodoAnio = 0.0;
+            
             switch (pModalidad)
             {
-                case "D": pModalidad = "DIARIO"; break;
-                case "S": pModalidad = "SEMANAL"; break;
-                case "Q": pModalidad = "QUINCENAL"; break;
-                case "M": pModalidad = "MENSUAL"; break;
+                case "D": pModalidad = "DIARIO"; periodoAnio = 360.0; break;
+                case "S": pModalidad = "SEMANAL"; periodoAnio = 52.0; break;
+                case "Q": pModalidad = "QUINCENAL"; periodoAnio = 24.0; break;
+                case "M": pModalidad = "MENSUAL"; periodoAnio = 12.0; break;
             }
+
+            var pTem = Math.Round(Math.Pow(double.Parse((1 + pInteres/100).ToString()), 1/periodoAnio) - 1, 6);
+            
             var parametros = new List<ReportParameter>
                                  {
-                                     new ReportParameter("Monto", pMonto.ToString()),
+                                     new ReportParameter("Monto", "S/. " + pMonto),
                                      new ReportParameter("Cuotas", pCuotas.ToString()),
                                      new ReportParameter("Producto", ProductoBL.Obtener(pProductoId).Denominacion),
                                      new ReportParameter("Fecha", pFecha),
                                      new ReportParameter("Modalidad", pModalidad),
-                                     new ReportParameter("Cliente", string.Empty)
+                                     new ReportParameter("Cliente", string.Empty),
+                                     new ReportParameter("TEA",pInteres + " %"),
+                                     new ReportParameter("TEM",pTem + " %")
                                  };
 
             return Reporte("PDF", "rptSimuladorPlanPago.rdlc", rd, "A4Vertical0.25", parametros);

@@ -1866,6 +1866,7 @@
     <Content Include="Scripts\i18n\grid.locale-en.js" />
     <Content Include="Scripts\i18n\grid.locale-es.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <None Include="Properties\PublishProfiles\cacmea.pubxml" />
     <None Include="Properties\PublishProfiles\vendix.pubxml" />
     <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
