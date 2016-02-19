@@ -190,8 +190,22 @@
                 $(this).trigger('blur');
             }
         }).blur(function() {
+
+            if (isNaN($(this).val())) return false;
+            
             if ($(this).val().length > 0) {
+
                 if ($.data(document.body, 'Documento') == $(this).val()) return;
+
+
+                function ValidarTextBox(Documento) {
+                    if ((document.getElementById("txtDocumento").value).length == 0) {
+                        document.getElementById("txtDocumento").focus();
+                       // alert("Caja de Texto Vacia Ingrese Algo");
+                    }
+                   
+                }
+                //ValidarTextBox(Documento);
                 $.ajax({
                     url: "@Url.Action("ExistePersonaDocumento","Cliente")",
                     data: { pDocumento: $(this).val() },
@@ -204,6 +218,7 @@
                         $("#txtNombre").focus();
                     }
                 });
+
             }
         });
         
@@ -226,7 +241,7 @@
             var $el = $("#dlgNuevo");
             $el.find('form')[0].reset();
             
-            $.data(document.body, 'Clienteid', 0);
+            $.data(document.body, 'ClienteId', 0);
             $.data(document.body, 'Documento', '');
             
             $("#txtDocumento,#txtPagoInscripcion").prop("disabled", false);
@@ -262,7 +277,7 @@
                     type: 'POST',
                     url: "@Url.Action("GuardarCliente", "Cliente")",
                     data: {
-                        pClienteId: $.data(document.body, 'Clienteid'),
+                        pClienteId: $.data(document.body, 'ClienteId'),
                         pTipoPersona: $("#rbN").prop('checked') ? 'N' : 'J',
                         pNombre: $("#txtNombre").val(),
                         pApePaterno: $("#txtApePaterno").val(),
@@ -305,7 +320,7 @@
             colNames: ['NRO', 'CLIENTE', 'DOCUMENTO', 'EMAIL', 'MOVIL', 'DIRECCION', 'ESTADO', 'ESTADO'],
             colModel:
                 [
-                    { name: 'Clienteid', index: 'Clienteid', hidden: true },
+                    { name: 'ClienteId', index: 'ClienteId', hidden: true },
                     { name: 'Persona.NombreCompleto', index: 'Persona.NombreCompleto', width: 260 },
                     { name: 'Persona.NumeroDocumento', index: 'Persona.NumeroDocumento', align: "center" },
                     { name: 'EmailPersonal', index: 'EmailPersonal' },
@@ -338,10 +353,10 @@
         });//.navGrid('#grdBuscar', { edit: false, add: false, del: false });
     });
 
-    function BuscarCliente(clienteId) {
+    function BuscarCliente(ClienteId) {
         $.ajax({
             url: "@Url.Action("ObtenerClientePersona", "Cliente")",
-            data: { pClienteId: clienteId },
+            data: { pClienteId: ClienteId },
             success: function (rpta) {
                 var $el = $("#dlgNuevo");
                 $el.find('form')[0].reset();
@@ -377,11 +392,12 @@
                 }
 
                 $("#txtPagoInscripcion").prop("disabled", true);
-                $.data(document.body, 'Clienteid', rpta.Cliente.ClienteId);
+                $.data(document.body, 'ClienteId', rpta.Cliente.ClienteId);
                 $.data(document.body, 'Documento', rpta.Persona.NumeroDocumento);
 
             }
         });
     }
+
 
 </script>

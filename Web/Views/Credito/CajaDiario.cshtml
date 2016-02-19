@@ -897,7 +897,8 @@
 			function ImprimirMovCaja(pMovimientoCajaId) {
 				var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + pMovimientoCajaId;
 				//window.open(ruta);
-				Vendix.Reporte(ruta);
+			    Vendix.Reporte(ruta);
+			    //alert(pMovimientoCajaId);
 			}
 
 			function AnularMovCaja(pMovimientoCajaId, ind) {

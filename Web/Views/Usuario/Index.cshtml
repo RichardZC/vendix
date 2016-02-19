@@ -18,77 +18,57 @@
 </div>
 
 <div style="display: none;" id="dlgNuevo" title="Mantener Lista de Usuario">
-    <form id="frm1" action="#" class="full validate">
+    <form id="frm1" method="post" action="#" class="full validate">
+        <p class="_50 small">
+            <label for="txtNumeroDocumento" class="inline">DNI:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtNumeroDocumento" />
+        </p>
+        <p class="_50 small">
+            <label for="txtNombre" class="inline">Nombres:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtNombre" />
+        </p>
+        <p class="_50 small">
+            <label for="txtApePaterno" class="inline">Ap.Paterno:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtApePaterno" />
+        </p>
+        <p class="_50 small">
+            <label for="txtApeMaterno" class="inline">Ap.Materno:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtApeMaterno" />
+        </p>
+        <p class="_50 small">
+            <label for="txtFechaNacimiento" class="inline">Fecha Nacimiento:</label>
+            <input data-error-type="inline" type="date" class="required maskDate" id="txtFechaNacimiento" placeholder="DD/MM/YYYY" />
+        </p>
+        <p class="_50 small">
+            <select id="drpSexo">
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+            </select>
+        </p>
 
-        <div class="row">
-            <label for="txtApePaterno">
-                <strong>Ap.Paterno: </strong>
-            </label>
-            <div>
-                <input class="required" style="width: 38%" type="text" name="txtApePaterno" id="txtApePaterno" />
-                <strong>Ap.Materno</strong>
-                <input class="required" style="width: 38%; float: right" type="text" name="txtApeMaterno" id="txtApeMaterno" />
-            </div>
-        </div>
-        <div class="row">
-            <label for="txtNombre">
-                <strong>Nombre:</strong>
-            </label>
-            <div>
-                <input class="required" style="width: 38%" type="text" name="txtNombre" id="txtNombre" />
-                <strong>DNI</strong>
-                <input class="required" style="width: 38%; float: right" type="text" name="txtNumeroDocumento" id="txtNumeroDocumento" />
-            </div>
-        </div>
-        <div class="row">
-            <label for="drpSexo">
-                <strong>Sexo:</strong>
-            </label>
-            <div>
-                <table style="width:100%;">
-                    <tr>
-                        <td style="width: 38%;">
-                            <select id ="drpSexo" >
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                            </select></td>
-                        <td><strong>&nbsp&nbsp F.Nacimiento:</strong></td>
-                        <td style="text-align:right">
-                            <input type="date" id="txtFechaNacimiento"  placeholder="DD/MM/YYYY" style="width:92%" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <label for="txtFechaNacimiento">
-                <strong>Movil:</strong>
-            </label>
-            <div>                
-                <input style="width: 38%" type="text" name="txtTelefonoMovil" id="txtTelefonoMovil" />
-                <strong>Email:</strong>
-                <input style="width: 38%; float: right" type="text" name="txtEmailPersonal" id="txtEmailPersonal" />
-            </div>
-        </div>
-        <div class="row">
-            <label for="txtNombreUsuario">
-                <strong>Usuario:</strong>
-            </label>
-            <div>
-                <input class="required" style="width: 38%" type="text" name="txtNombreUsuario" id="txtNombreUsuario" />
-                <strong>ClaveUsuario:</strong>
-                <input class="required" style="width: 38%; float: right" type="password" name="txtClaveUsuario" id="txtClaveUsuario" />
-            </div>
-        </div>
-        <div class="row">
-            <label for="chkActivo">
-                <strong>Estado:</strong>
-            </label>
-            <div>
-                <div><input type="checkbox" id="chkActivo" /> <label for="chkActivo">Activo</label></div>
-            </div>
-        </div>
-       
+        <p class="_50 small">
+            <label for="txtTelefonoMovil" class="inline">Celular:</label>
+            <input data-error-type="inline" type="text" id="txtTelefonoMovil" />
+        </p>
+        <p class="_50 small">
+            <label for="txtEmailPersonal" class="inline">Correo:</label>
+            <input data-error-type="inline" type="text" id="txtEmailPersonal" />
+        </p>
+        <p class="_100 small">
+            <label for="txtDireccion" class="inline">Dirección:</label>
+            <input data-error-type="inline" type="text" id="txtDireccion" />
+        </p>
+        <p class="_50 small">
+            <label for="txtNombreUsuario" class="inline">Usuario:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtNombreUsuario" />
+        </p>
+        <p class="_50 small">
+            <label for="txtClaveUsuario" class="inline">Clave:</label>
+            <input data-error-type="inline" type="text" class="required" id="txtClaveUsuario" />
+        </p>
+        <p class="_50 small ">
+            <input type="checkbox" id="chkActivo" /> <label for="chkActivo" style="display: inline">Activo</label>
+        </p>
     </form>
     <div class="actions">
         <div class="left">
@@ -141,15 +121,18 @@
 
 <script>
     $$.ready(function () {
+        $("#txtNumeroDocumento").mask("99999999");
+
         $("#btnNuevo").click(function () {
             $.data(document.body, 'UsuarioId', 0);
             $("#dlgNuevo").find('form')[0].reset();
-            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtNumeroDocumento,#txtFechaNacimiento,#txtTelefonoMovil,#txtEmailPersonal,#txtNombreUsuario,#txtClaveUsuario").val("");
+            $("#txtNombre,#txtApePaterno,#txtApeMaterno,#txtNumeroDocumento,#txtFechaNacimiento,#txtTelefonoMovil,#txtEmailPersonal,#txtDireccion,#txtNombreUsuario,#txtClaveUsuario").val("");
             $("#drpSexo").val("M").trigger("liszt:updated");
             $("#chkActivo").prop("checked", true);
             $("#cboOficina").val("").trigger("liszt:updated");
             $("#dlgNuevo").dialog("open");
             $("#divAd").hide();
+            Vendix.TextoInline();
             return false;
         });
         $("#txtBuscar").keypress(function (event) {
@@ -249,6 +232,7 @@
                         pFechaNacimiento: $("#txtFechaNacimiento").val(),
                         pTelefonoMovil: $("#txtTelefonoMovil").val(),
                         pEmailPersonal: $("#txtEmailPersonal").val(),
+                        pDireccion: $("#txtDireccion").val(),
                         pNombreusuario: $("#txtNombreUsuario").val(),
                         pClaveUsuario: $("#txtClaveUsuario").val(),
                         pActivo: $("#chkActivo").prop('checked')
@@ -332,9 +316,9 @@
                             $("#txtNumeroDocumento").val(rpta.Persona.NumeroDocumento);
                             $("#drpSexo").val(rpta.Persona.Sexo).trigger("liszt:updated");
                             $("#txtFechaNacimiento").val(rpta.FNacimiento);
-                            $("#txtTelefonoMovil").val(rpta.Persona.TelefonoMovil);
+                            $("#txtTelefonoMovil").val(rpta.Persona.Celular1);
                             $("#txtEmailPersonal").val(rpta.Persona.EmailPersonal);
-
+                            $("#txtDireccion").val(rpta.Persona.Direccion);
                             $("#txtClaveUsuario").val(rpta.Usuario.ClaveUsuario);
                             $("#txtNombreUsuario").val(rpta.Usuario.NombreUsuario);
                             $("#chkActivo").prop("checked", rpta.Usuario.Estado ? true : false);
@@ -354,6 +338,7 @@
                             $("#divAd").show();
                             $.data(document.body, 'UsuarioId', rpta.Usuario.UsuarioId);
                             $("#dlgNuevo").dialog("open");
+                            Vendix.TextoInline();
                         }
                     });         
                 }

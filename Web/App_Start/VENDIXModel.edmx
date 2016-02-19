@@ -586,6 +586,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__CajaDiari__CajaI__0EE3F362">
+          <End Role="Caja" Type="Self.Caja" Multiplicity="1" />
+          <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caja">
+              <PropertyRef Name="CajaId" />
+            </Principal>
+            <Dependent Role="CajaDiario">
+              <PropertyRef Name="CajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__CajaDiari__Usuar__0DEFCF29">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="*" />
@@ -607,6 +619,54 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="Cargo">
               <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Credito__OrdenVe__3E5DFC5A">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="0..1" />
+          <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="Credito">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuentasxC__Movim__3A58614C">
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="0..1" />
+          <End Role="CuentaxCobrar" Type="Self.CuentaxCobrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoCaja">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Principal>
+            <Dependent Role="CuentaxCobrar">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuentaxCo__Credi__3D69D821">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="0..1" />
+          <End Role="CuentaxCobrar" Type="Self.CuentaxCobrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="CuentaxCobrar">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Movimient__CajaD__149CCCB8">
+          <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CajaDiario">
+              <PropertyRef Name="CajaDiarioId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="CajaDiarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -655,6 +715,42 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="OrdenVentaDetSerie">
               <PropertyRef Name="SerieArticuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPago__Credit__75592B89">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="1" />
+          <End Role="PlanPago" Type="Self.PlanPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="PlanPago">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPagoL__Movim__75E33B6E">
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="0..1" />
+          <End Role="PlanPagoLibre" Type="Self.PlanPagoLibre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoCaja">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Principal>
+            <Dependent Role="PlanPagoLibre">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPagoL__PlanP__74EF1735">
+          <End Role="PlanPago" Type="Self.PlanPago" Multiplicity="0..1" />
+          <End Role="PlanPagoLibre" Type="Self.PlanPagoLibre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanPago">
+              <PropertyRef Name="PlanPagoId" />
+            </Principal>
+            <Dependent Role="PlanPagoLibre">
+              <PropertyRef Name="PlanPagoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -715,6 +811,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="TarjetaPuntoDet">
               <PropertyRef Name="TarjetaPuntoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__Persona__33C07256">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="PersonaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -874,6 +982,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cliente_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Credito_Oficina">
           <End Role="Oficina" Type="Self.Oficina" Multiplicity="1" />
           <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
@@ -883,6 +1003,30 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="Credito">
               <PropertyRef Name="OficinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credito_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Credito">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credito_Persona1">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+          <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Credito">
+              <PropertyRef Name="AnalistaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -934,6 +1078,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DETENTRADASALIDA_EntradaSalidaId">
+          <End Role="Movimiento" Type="Self.Movimiento" Multiplicity="1" />
+          <End Role="MovimientoDet" Type="Self.MovimientoDet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movimiento">
+              <PropertyRef Name="MovimientoId" />
+            </Principal>
+            <Dependent Role="MovimientoDet">
+              <PropertyRef Name="MovimientoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DETORDENVENTA_ArticuloId">
           <End Role="Articulo" Type="Self.Articulo" Multiplicity="1" />
           <End Role="OrdenVentaDet" Type="Self.OrdenVentaDet" Multiplicity="*" />
@@ -946,6 +1102,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DETORDENVENTA_OrdenVentaId">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="1" />
+          <End Role="OrdenVentaDet" Type="Self.OrdenVentaDet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="OrdenVentaDet">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DOCENTRADASALIDA_DestinatarioId">
           <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
           <End Role="MovimientoDoc" Type="Self.MovimientoDoc" Multiplicity="*" />
@@ -955,6 +1123,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="MovimientoDoc">
               <PropertyRef Name="DestinatarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCENTRADASALIDA_MovimientoId">
+          <End Role="Movimiento" Type="Self.Movimiento" Multiplicity="0..1" />
+          <End Role="MovimientoDoc" Type="Self.MovimientoDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movimiento">
+              <PropertyRef Name="MovimientoId" />
+            </Principal>
+            <Dependent Role="MovimientoDoc">
+              <PropertyRef Name="MovimientoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1030,6 +1210,54 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MovimientoBoveda_Boveda">
+          <End Role="Boveda" Type="Self.Boveda" Multiplicity="1" />
+          <End Role="BovedaMov" Type="Self.BovedaMov" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boveda">
+              <PropertyRef Name="BovedaId" />
+            </Principal>
+            <Dependent Role="BovedaMov">
+              <PropertyRef Name="BovedaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_Credito">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_OrdenVenta">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Oficina_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Oficina" Type="Self.Oficina" Multiplicity="*" />
@@ -1051,6 +1279,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="OrdenVenta">
               <PropertyRef Name="OficinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenVenta_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="OrdenVenta">
+              <PropertyRef Name="PersonaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1392,6 +1632,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Oficina" EntitySet="Oficina" />
             <End Role="Caja" EntitySet="Caja" />
           </AssociationSet>
+          <AssociationSet Name="FK__CajaDiari__CajaI__0EE3F362" Association="Self.FK__CajaDiari__CajaI__0EE3F362">
+            <End Role="Caja" EntitySet="Caja" />
+            <End Role="CajaDiario" EntitySet="CajaDiario" />
+          </AssociationSet>
           <AssociationSet Name="FK__CajaDiari__Usuar__0DEFCF29" Association="Self.FK__CajaDiari__Usuar__0DEFCF29">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="CajaDiario" EntitySet="CajaDiario" />
@@ -1399,6 +1643,22 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__Cargo__CreditoId__109731AA" Association="Self.FK__Cargo__CreditoId__109731AA">
             <End Role="Credito" EntitySet="Credito" />
             <End Role="Cargo" EntitySet="Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Credito__OrdenVe__3E5DFC5A" Association="Self.FK__Credito__OrdenVe__3E5DFC5A">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuentasxC__Movim__3A58614C" Association="Self.FK__CuentasxC__Movim__3A58614C">
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+            <End Role="CuentaxCobrar" EntitySet="CuentaxCobrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuentaxCo__Credi__3D69D821" Association="Self.FK__CuentaxCo__Credi__3D69D821">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="CuentaxCobrar" EntitySet="CuentaxCobrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Movimient__CajaD__149CCCB8" Association="Self.FK__Movimient__CajaD__149CCCB8">
+            <End Role="CajaDiario" EntitySet="CajaDiario" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
           </AssociationSet>
           <AssociationSet Name="FK__Movimient__Movim__51A5DAF8" Association="Self.FK__Movimient__Movim__51A5DAF8">
             <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
@@ -1415,6 +1675,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__OrdenVent__Serie__09952E60" Association="Self.FK__OrdenVent__Serie__09952E60">
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
             <End Role="OrdenVentaDetSerie" EntitySet="OrdenVentaDetSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPago__Credit__75592B89" Association="Self.FK__PlanPago__Credit__75592B89">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="PlanPago" EntitySet="PlanPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPagoL__Movim__75E33B6E" Association="Self.FK__PlanPagoL__Movim__75E33B6E">
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+            <End Role="PlanPagoLibre" EntitySet="PlanPagoLibre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPagoL__PlanP__74EF1735" Association="Self.FK__PlanPagoL__PlanP__74EF1735">
+            <End Role="PlanPago" EntitySet="PlanPago" />
+            <End Role="PlanPagoLibre" EntitySet="PlanPagoLibre" />
           </AssociationSet>
           <AssociationSet Name="FK__RolMenu__MenuId__6BCFC14F" Association="Self.FK__RolMenu__MenuId__6BCFC14F">
             <End Role="Menu" EntitySet="Menu" />
@@ -1435,6 +1707,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__TarjetaPu__Tarje__16500B00" Association="Self.FK__TarjetaPu__Tarje__16500B00">
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__Persona__33C07256" Association="Self.FK__Usuario__Persona__33C07256">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
           <AssociationSet Name="FK__UsuarioOf__Ofici__768259EC" Association="Self.FK__UsuarioOf__Ofici__768259EC">
             <End Role="Oficina" EntitySet="Oficina" />
@@ -1488,8 +1764,20 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Cargo" EntitySet="Cargo" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cliente_Persona" Association="Self.FK_Cliente_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
           <AssociationSet Name="FK_Credito_Oficina" Association="Self.FK_Credito_Oficina">
             <End Role="Oficina" EntitySet="Oficina" />
+            <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Credito_Persona" Association="Self.FK_Credito_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Credito_Persona1" Association="Self.FK_Credito_Persona1">
+            <End Role="Persona" EntitySet="Persona" />
             <End Role="Credito" EntitySet="Credito" />
           </AssociationSet>
           <AssociationSet Name="FK_Credito_Producto" Association="Self.FK_Credito_Producto">
@@ -1508,12 +1796,24 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Articulo" EntitySet="Articulo" />
             <End Role="MovimientoDet" EntitySet="MovimientoDet" />
           </AssociationSet>
+          <AssociationSet Name="FK_DETENTRADASALIDA_EntradaSalidaId" Association="Self.FK_DETENTRADASALIDA_EntradaSalidaId">
+            <End Role="Movimiento" EntitySet="Movimiento" />
+            <End Role="MovimientoDet" EntitySet="MovimientoDet" />
+          </AssociationSet>
           <AssociationSet Name="FK_DETORDENVENTA_ArticuloId" Association="Self.FK_DETORDENVENTA_ArticuloId">
             <End Role="Articulo" EntitySet="Articulo" />
             <End Role="OrdenVentaDet" EntitySet="OrdenVentaDet" />
           </AssociationSet>
+          <AssociationSet Name="FK_DETORDENVENTA_OrdenVentaId" Association="Self.FK_DETORDENVENTA_OrdenVentaId">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="OrdenVentaDet" EntitySet="OrdenVentaDet" />
+          </AssociationSet>
           <AssociationSet Name="FK_DOCENTRADASALIDA_DestinatarioId" Association="Self.FK_DOCENTRADASALIDA_DestinatarioId">
             <End Role="Persona" EntitySet="Persona" />
+            <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCENTRADASALIDA_MovimientoId" Association="Self.FK_DOCENTRADASALIDA_MovimientoId">
+            <End Role="Movimiento" EntitySet="Movimiento" />
             <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
           </AssociationSet>
           <AssociationSet Name="FK_DOCENTRADASALIDA_RemitenteId" Association="Self.FK_DOCENTRADASALIDA_RemitenteId">
@@ -1540,12 +1840,32 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Marca" EntitySet="Marca" />
             <End Role="Modelo" EntitySet="Modelo" />
           </AssociationSet>
+          <AssociationSet Name="FK_MovimientoBoveda_Boveda" Association="Self.FK_MovimientoBoveda_Boveda">
+            <End Role="Boveda" EntitySet="Boveda" />
+            <End Role="BovedaMov" EntitySet="BovedaMov" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_Credito" Association="Self.FK_MovimientoCaja_Credito">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_OrdenVenta" Association="Self.FK_MovimientoCaja_OrdenVenta">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_Persona" Association="Self.FK_MovimientoCaja_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
           <AssociationSet Name="FK_Oficina_Usuario" Association="Self.FK_Oficina_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Oficina" EntitySet="Oficina" />
           </AssociationSet>
           <AssociationSet Name="FK_ORDENVENTA_OficinaId" Association="Self.FK_ORDENVENTA_OficinaId">
             <End Role="Oficina" EntitySet="Oficina" />
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenVenta_Persona" Association="Self.FK_OrdenVenta_Persona">
+            <End Role="Persona" EntitySet="Persona" />
             <End Role="OrdenVenta" EntitySet="OrdenVenta" />
           </AssociationSet>
           <AssociationSet Name="FK_OrdenVenta_Usuario" Association="Self.FK_OrdenVenta_Usuario">
@@ -1726,6 +2046,9 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
             <Parameter Name="FechaCalculo" Mode="In" Type="DateTime" />
             <Parameter Name="IndCancelacion" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
+          <Parameter Name="CreditoId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_PagarCuentaxCobrar" ReturnType="Collection(Int32)">
             <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
@@ -2081,9 +2404,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
           </AssociationSet>
-          <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
-          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="usp_MenuLst_Result">
           <Property Type="Int32" Name="MenuId" Nullable="false" />
@@ -2223,6 +2543,24 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="Cargo" Nullable="false" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="PagoLibre" Nullable="false" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="21" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_EstadoPlanPago_Result">
+          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
+          <Property Type="Int32" Name="Numero" Nullable="false" />
+          <Property Type="Decimal" Name="Capital" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
+          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cuota" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
+          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cargo" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="PagoLibre" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="FechaPagoCuota" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="16" Scale="2" />
         </ComplexType>
         <ComplexType Name="usp_SimuladorCredito_Result">
           <Property Type="Int32" Name="Numero" Nullable="true" />
@@ -3740,25 +4078,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_EstadoPlanPago_Result">
-          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
-          <Property Type="Int32" Name="Numero" Nullable="false" />
-          <Property Type="Decimal" Name="Capital" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
-          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cuota" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
-          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cargo" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="PagoLibre" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="DateTime" Name="FechaPagoCuota" Nullable="true" Precision="23" />
-          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Int32" Name="MovimientoCajaId" Nullable="true" />
-        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3962,6 +4281,28 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
                 <ScalarProperty Name="Cargo" ColumnName="Cargo" />
                 <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
+                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
+                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Capital" ColumnName="Capital" />
+                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
+                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
+                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
+                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
+                <ScalarProperty Name="FechaPagoCuota" ColumnName="FechaPagoCuota" />
                 <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
               </ComplexTypeMapping>
             </ResultMapping>
@@ -4579,29 +4920,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
-                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Capital" ColumnName="Capital" />
-                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
-                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
-                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
-                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
-                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
-                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
-                <ScalarProperty Name="FechaPagoCuota" ColumnName="FechaPagoCuota" />
-                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
-                <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

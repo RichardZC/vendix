@@ -29,5 +29,6 @@ namespace ITB.VENDIX.BE
         public Nullable<decimal> PagoLibre { get; set; }
         public Nullable<System.DateTime> FechaPagoCuota { get; set; }
         public Nullable<decimal> PagoCuota { get; set; }
+        public Nullable<int> MovimientoCajaId { get; set; }
     }
 }

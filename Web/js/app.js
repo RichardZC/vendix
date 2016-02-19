@@ -1,6 +1,6 @@
 // ! Your application
 
-(function($, window, document, undefined){
+(function ($, window, document, undefined) {
     document.onselectstart = new Function("return false");
     //document.ondragstart = new Function("return false");
 
@@ -25,7 +25,7 @@
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
 
-   
+
 })(jQuery, this, document);
 
 $(function () {
@@ -39,8 +39,8 @@ var Vendix = {
         return window.location.pathname + '/' + strMethod;
         //return 'http://localhost/CACMEA/' + strMethod;
     },
-    
-    Notificar: function(pOpcion) {
+
+    Notificar: function (pOpcion) {
         if (pOpcion == 'Modificar') {
             $.jGrowl('SE MODIFICO CORRECTAMENTE!', { header: 'SOPHIX Comercial', life: 2000 });
         } else if (pOpcion == 'Eliminar') {
@@ -53,7 +53,7 @@ var Vendix = {
             $.jGrowl('Se grabaron los datos correctamente!', { header: 'SOPHIX Comercial', life: 2000 });
         }
     },
-    Mensaje: function(pMensaje) {
+    Mensaje: function (pMensaje) {
         $.jGrowl(pMensaje, { header: 'SOPHIX Comercial' });
     },
     Dialogo: function (pMensaje, pOpcion, callbackOk) {
@@ -74,21 +74,21 @@ var Vendix = {
         }
         else if (pOpcion == 'SiNo') {
             dlg.dialog("option", "buttons", {
-                "Si": function() {if (typeof callbackOk == 'function') {callbackOk.call(this);$(this).dialog("close");}return true;},
-                "No": function() {$(this).dialog("close");return false;}
+                "Si": function () { if (typeof callbackOk == 'function') { callbackOk.call(this); $(this).dialog("close"); } return true; },
+                "No": function () { $(this).dialog("close"); return false; }
             });
         }
-       else if (pOpcion == 'AceptarCancelar') {
+        else if (pOpcion == 'AceptarCancelar') {
             dlg.dialog("option", "buttons", {
                 "Aceptar": function () { if (typeof callbackOk == 'function') { callbackOk.call(this); $(this).dialog("close"); } return true; },
                 "Cancelar": function () { $(this).dialog("close"); return false; }
             });
         }
-       else {
-            dlg.dialog("option", "buttons", {"Aceptar": function() {$(this).dialog("close");return true;}});
+        else {
+            dlg.dialog("option", "buttons", { "Aceptar": function () { $(this).dialog("close"); return true; } });
         }
-        
-        
+
+
         $('.ui-dialog-buttonpane button:eq(0)').focus();
     },
     DialogoObs: function (pMensaje, callbackOk) {
@@ -111,7 +111,7 @@ var Vendix = {
                 }
                 return true;
             },
-            "Cancelar": function() {$(this).dialog("close");return false;}
+            "Cancelar": function () { $(this).dialog("close"); return false; }
         });
         //$('.ui-dialog-buttonpane button:eq(0)').focus();
     },
@@ -148,12 +148,22 @@ var Vendix = {
             }
         });
     },
+    TextoInline: function () {
+        $('form').each(function () {
+            $(this).find('label.inline').each(function () {
+                var $label = $(this),
+					$input = $('#' + $label.attr('for'));
+
+                $input.css('padding-left', $label.outerWidth(true));
+            });
+        });
+    }
 };
 function ocultarLoading() {
     $("#loading,#loading-overlay").hide();
 }
 function IniListaPrecio() {
-    
+
     $("#btnNuevo").click(function () {
         $("#txtArticulo").val("").removeAttr('disabled');
         $("#txtListaPrecio,#txtDescuento").val("0.00");
@@ -227,7 +237,7 @@ function IniListaPrecio() {
     $("#txtArticulo").autocomplete({
         source: Vendix.Url('BuscarArticulo'),
         minLength: 2,
-        select: function(event, ui) {
+        select: function (event, ui) {
             $.ajax({
                 async: false,
                 url: Vendix.Url('BuscarListaPrecio'),
@@ -250,7 +260,7 @@ function IniListaPrecio() {
             });
         }
     });
-    
+
     //$("#txtArticulo").autocomplete({
     //    source: function (request, response) {
     //        $.ajax({
@@ -294,60 +304,60 @@ function IniListaPrecio() {
 
     //    }
     //});
-        
+
     $('#grdBuscar').jqGrid({
         url: Vendix.Url("Listar"),
         datatype: 'json',
-    postData: {
-        filters: function () {
-            return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }, { Key: "TipoArticuloId", Value: $("#cboTipoArticulo").val() }, { Key: "Asignado", Value: $("#rbAsignado").prop('checked') }]);
+        postData: {
+            filters: function () {
+                return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }, { Key: "TipoArticuloId", Value: $("#cboTipoArticulo").val() }, { Key: "Asignado", Value: $("#rbAsignado").prop('checked') }]);
+            }
+        },
+        colNames: ['ArticuloId', 'ListaPrecioId', 'Tipo Articulo', 'Articulo', 'Precio Venta', 'Descuento Max', 'Puntos Canje.', 'Puntos Asign.', 'Estado', 'Estado'],
+        colModel: [
+            { name: 'ArticuloId', index: 'ArticuloId', hidden: true },
+            { name: 'ListaPrecioId', index: 'ListaPrecioId', hidden: true },
+            { name: 'TipoArticulo', index: 'TipoArticulo', align: 'left', width: 100 },
+            { name: 'Articulo', index: 'Denominacion', align: 'left', width: 250 },
+            { name: 'Monto', index: 'Monto', align: 'right', width: 80, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "S/. " } },
+            { name: 'Descuento', index: 'Descuento', align: 'right', width: 80, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "S/. " } },
+            { name: 'PuntosCanje', index: 'PuntosCanje', align: 'right', width: 80 },
+            { name: 'Puntos', index: 'Puntos', align: 'right', width: 80 },
+            { name: 'Estado', index: 'Estado', hidden: true },
+            { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
+        ],
+        caption: "Lista de Precios",
+        pager: $('#grdpBuscar'),
+        rowNum: 15,
+        rowList: [15, 30, 45],
+        sortname: 'TipoArticulo',
+        sortorder: 'asc',
+        gridview: true,
+        viewrecords: true,
+        rownumbers: true,
+        autowidth: true,
+        //shrinkToFit: false,
+        width: 'auto',
+        height: '347px',
+        ondblClickRow: function () {
+            var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
+            if (id) {
+                var ret = $("#grdBuscar").jqGrid('getRowData', id);
+                $("#txtArticulo").val(ret.Articulo).attr('disabled', 'disabled');
+                $("#chkActivo").prop("checked", ret.Estado == "True" ? true : false);
+                $("#txtListaPrecio").val(ret.Monto);
+                $("#txtPuntosCanje").val(ret.PuntosCanje);
+                $("#txtPuntos").val(ret.Puntos);
+                $("#txtDescuento").val(ret.Descuento);
+                $.data(document.body, 'ListaPrecioId', ret.ListaPrecioId);
+                $.data(document.body, 'ArticuloId', ret.ArticuloId);
+
+                $("#dlgNuevo").dialog("open");
+                $("#txtListaPrecio").focus().select();
+            }
         }
-    },
-    colNames: ['ArticuloId', 'ListaPrecioId', 'Tipo Articulo', 'Articulo', 'Precio Venta', 'Descuento Max', 'Puntos Canje.', 'Puntos Asign.', 'Estado', 'Estado'],
-    colModel: [
-        { name: 'ArticuloId', index: 'ArticuloId', hidden: true },
-        { name: 'ListaPrecioId', index: 'ListaPrecioId', hidden: true },
-        { name: 'TipoArticulo', index: 'TipoArticulo', align: 'left', width: 100 },
-        { name: 'Articulo', index: 'Denominacion', align: 'left', width: 250 },
-        { name: 'Monto', index: 'Monto', align: 'right', width: 80, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "S/. " } },
-        { name: 'Descuento', index: 'Descuento', align: 'right', width: 80, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "S/. " } },
-        { name: 'PuntosCanje', index: 'PuntosCanje', align: 'right', width: 80 },
-        { name: 'Puntos', index: 'Puntos', align: 'right', width: 80 },
-        { name: 'Estado', index: 'Estado', hidden: true },
-        { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
-    ],
-    caption: "Lista de Precios",
-    pager: $('#grdpBuscar'),
-    rowNum: 15,
-    rowList: [15, 30, 45],
-    sortname: 'TipoArticulo',
-    sortorder: 'asc',
-    gridview: true,
-    viewrecords: true,
-    rownumbers: true,
-    autowidth: true,
-    //shrinkToFit: false,
-    width: 'auto',
-    height: '347px',
-    ondblClickRow: function () {
-        var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
-        if (id) {
-            var ret = $("#grdBuscar").jqGrid('getRowData', id);
-            $("#txtArticulo").val(ret.Articulo).attr('disabled', 'disabled');
-            $("#chkActivo").prop("checked", ret.Estado == "True" ? true : false);
-            $("#txtListaPrecio").val(ret.Monto);
-            $("#txtPuntosCanje").val(ret.PuntosCanje);
-            $("#txtPuntos").val(ret.Puntos);
-            $("#txtDescuento").val(ret.Descuento);
-            $.data(document.body, 'ListaPrecioId', ret.ListaPrecioId);
-            $.data(document.body, 'ArticuloId', ret.ArticuloId);
-           
-            $("#dlgNuevo").dialog("open");
-            $("#txtListaPrecio").focus().select();
-        }
-    }
-});
-    
+    });
+
 }
 
 function GuardarDialogoListaPrecio() {
@@ -379,38 +389,38 @@ function GuardarDialogoListaPrecio() {
 }
 
 function ActivoFormatter(cellvalue, options, rowObject) {
-        var arr = cellvalue.split(',');
-        if (arr[0] == '0') return "";
-        if (arr[1] == '1')
-            return "<a href='' onclick='Activar(" + arr[0] + ");return false;'><img src='img/icons/packs/fugue/16x16/tick_in.png' title='Activo' /></a>";
-        else
-            return "<a href='' onclick='Activar(" + arr[0] + ");return false;'><img src='img/icons/packs/iconsweets2/16x16/download.png' title='Anulado' /></a>";
-    };
-    
-    function DeleteFormatter(cellvalue, options, rowObject) {
-        return "<a href='#' onclick='Delete(" + cellvalue + ");return false;' class='button small grey tooltip' data-gravity='s' title='Eliminar'><i class='icon-remove'></i></a>";
-    }
-    function Delete(id) {
-        $.ajax({
-            url: Vendix.Url("Delete"),
-            type: 'POST',
-            data: { pid: id },
-            success: function (rpt) {
-                Vendix.Notificar('Eliminar');
-                $(".grdDelete").trigger("reloadGrid");
-            }
-        });
-    }
-    function Activar(id) {
-        $.ajax({
-            url: Vendix.Url("Activar"),
-            type: 'POST',
-            data: { pid: id },
-            success: function(rpt) {
-                Vendix.Notificar();
-                $("#grdBuscar").trigger("reloadGrid");
-            }
-        });
-    }
+    var arr = cellvalue.split(',');
+    if (arr[0] == '0') return "";
+    if (arr[1] == '1')
+        return "<a href='' onclick='Activar(" + arr[0] + ");return false;'><img src='img/icons/packs/fugue/16x16/tick_in.png' title='Activo' /></a>";
+    else
+        return "<a href='' onclick='Activar(" + arr[0] + ");return false;'><img src='img/icons/packs/iconsweets2/16x16/download.png' title='Anulado' /></a>";
+};
 
-    
+function DeleteFormatter(cellvalue, options, rowObject) {
+    return "<a href='#' onclick='Delete(" + cellvalue + ");return false;' class='button small grey tooltip' data-gravity='s' title='Eliminar'><i class='icon-remove'></i></a>";
+}
+function Delete(id) {
+    $.ajax({
+        url: Vendix.Url("Delete"),
+        type: 'POST',
+        data: { pid: id },
+        success: function (rpt) {
+            Vendix.Notificar('Eliminar');
+            $(".grdDelete").trigger("reloadGrid");
+        }
+    });
+}
+function Activar(id) {
+    $.ajax({
+        url: Vendix.Url("Activar"),
+        type: 'POST',
+        data: { pid: id },
+        success: function (rpt) {
+            Vendix.Notificar();
+            $("#grdBuscar").trigger("reloadGrid");
+        }
+    });
+}
+
+

@@ -535,7 +535,7 @@
                             { name: "Cargo", index: "Cargo", width: 50, align: "right", sortable: false },
                             { name: "PagoLibre", index: "PagoLibre", width: 70, align: "right", sortable: false },
                             { name: "PagoCuota", index: "PagoCuota", width: 80, align: "right", sortable: false },
-                            { name: "Estado", index: "Estado", width: 50, align: "center", sortable: false },
+                            { name: "Estado", index: "Estado", width: 50, align: "center", sortable: false, formatter: LinkReimpresion },
                             { name: "FechaPago", index: "FechaPago", width: 80, align: "center", sortable: false }
                         ],
                         caption: "CUOTAS PENDIENTES",
@@ -847,5 +847,30 @@
         });
     }
 
+    function LinkReimpresion(cellvalue, options, rowObject) {
+        var arr = cellvalue.split(',');
+        if (arr[0] != 'PAG') return arr[0];
 
+        return "<a href='' onclick='MostrarReimpresion(" + arr[1] + ");return false;'> " + arr[0] + " </a>";
+
+    };
+
+    function MostrarReimpresion(MovimientoCajaId) {
+        //alert(MovimientoCajaId);
+        var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + MovimientoCajaId;
+        Vendix.Reporte(ruta);
+    }
+
+    @*function ImprimirMovCaja(pMovimientoCajaId) {
+        var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + pMovimientoCajaId;
+        //window.open(ruta);
+        Vendix.Reporte(ruta);
+    }*@
+
+    @*function editLink(cellValue, options, rowdata, action) {
+        //ver como abrir la reinpresion
+        var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + pMovimientoCajaId;
+        //window.open(ruta);
+
+    }*@
 </script>
