@@ -565,15 +565,6 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CuotasPendientes_Result>("usp_CuotasPendientes", creditoIdParameter, fechaCalculoParameter, indCancelacionParameter);
         }
     
-        public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
-        {
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_EstadoPlanPago_Result>("usp_EstadoPlanPago", creditoIdParameter);
-        }
-    
         public virtual ObjectResult<Nullable<int>> usp_PagarCuentaxCobrar(Nullable<int> ordenVentaId, Nullable<int> cuentaxCobrarId, Nullable<int> cajaDiarioId, Nullable<int> usuarioId)
         {
             var ordenVentaIdParameter = ordenVentaId.HasValue ?
@@ -716,6 +707,15 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("UsuarioId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_Credito_Ins", solicitudCreditoIdParameter, productoIdParameter, tipoCuotaParameter, analistaIdParameter, montoInicialParameter, montoCreditoParameter, montoGastosAdmParameter, indGastoAdmParameter, formaPagoParameter, nroCuotasParameter, interesParameter, fechaPrimerPagoParameter, observacionParameter, usuarioIdParameter);
+        }
+    
+        public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
+        {
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_EstadoPlanPago_Result>("usp_EstadoPlanPago", creditoIdParameter);
         }
     }
 }

@@ -347,7 +347,7 @@ namespace VendixWeb.Controllers
                                                     item.Cargo.ToString(),
                                                     item.PagoLibre.ToString(),
                                                     item.PagoCuota.ToString(),
-                                                    item.Estado + "," + item.PlanPagoId.ToString(),
+                                                    item.Estado + "," + item.MovimientoCajaId.ToString(),
                                                     item.FechaPagoCuota.HasValue?item.FechaPagoCuota.Value.ToShortDateString():string.Empty
                                                 }
                         }

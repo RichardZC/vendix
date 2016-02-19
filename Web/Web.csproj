@@ -106,6 +106,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Start\VENDIXModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>VENDIXModel.edmx</DependentUpon>
+      <LastGenOutput>VENDIXModel.Context.cs</LastGenOutput>
+      <CustomToolNamespace>ITB.VENDIX.BE</CustomToolNamespace>
+    </Content>
     <Content Include="Content\jquery.jqGrid\ellipsis-xbl.xml" />
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
@@ -1866,6 +1872,13 @@
     <Content Include="Scripts\i18n\grid.locale-en.js" />
     <Content Include="Scripts\i18n\grid.locale-es.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <EntityDeploy Include="App_Start\VENDIXModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>VENDIXModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="App_Start\VENDIXModel.edmx.diagram">
+      <DependentUpon>VENDIXModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\vendix.pubxml" />
     <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -1875,6 +1888,16 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\VENDIXModel.Context.cs">
+      <DependentUpon>VENDIXModel.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_Start\VENDIXModel.Designer.cs">
+      <DependentUpon>VENDIXModel.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Controllers\Almacen\EntradaController.cs" />
     <Compile Include="Controllers\Almacen\KardexController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />

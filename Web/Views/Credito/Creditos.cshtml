@@ -855,8 +855,9 @@
 
     };
 
-    function MostrarReimpresion(PlanPagoId) {
-        var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + pMovimientoCajaId;
+    function MostrarReimpresion(MovimientoCajaId) {
+        //alert(MovimientoCajaId);
+        var ruta = '@Url.Action("ReporteMovimientoCaja", "Reporte")' + '?pMovimientoCajaId=' + MovimientoCajaId;
         Vendix.Reporte(ruta);
     }
 
