@@ -179,6 +179,9 @@
     <Compile Include="usp_CuotasPendientes_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="usp_EstadoPlanPago_Result.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_GenerarKardex_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>

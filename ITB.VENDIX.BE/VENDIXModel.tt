@@ -4,8 +4,7 @@
       	 
 		 
 		 
-
-
+		 
 		 
 const string inputFile = @"..\ITB.VENDIX.DA\VENDIXModel.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
