@@ -9,6 +9,25 @@ namespace ITB.VENDIX.BL
 {
     public class CajaBL : Repositorio<Caja>
     {
+
+        public static List<Caja> LstCajaJGrid(GridDataRequest request, ref int pTotalItems)
+        {
+            string filterExpression = string.Empty;
+
+            if (request.DataFilters()["Buscar"] != string.Empty)
+                filterExpression = "Denominacion.Contains( \"" + request.DataFilters()["Buscar"] + "\")";
+
+            using (var db = new VENDIXEntities())
+            {
+                IQueryable<Caja> query = db.Caja.Include("Oficina");
+                if (!String.IsNullOrEmpty(filterExpression))
+                    query = query.Where(filterExpression);
+
+                pTotalItems = query.Count();
+                return query.OrderBy(request.sidx + " " + request.sord)
+                    .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
+            }
+        }
         public static List<CajaDiarioOficina> LstCajaDiarioOficina()
         {
             var oficina = VendixGlobal.GetOficinaId();
@@ -17,22 +36,22 @@ namespace ITB.VENDIX.BL
                 var query = from c in db.CajaDiario
                             where c.Caja.OficinaId == oficina && c.TransBoveda == false
                             select new CajaDiarioOficina
-                                       {
-                                           CajaDiarioId = c.CajaId,
-                                           NombreCaja = c.Caja.Denominacion,
-                                           IndCierre = c.IndCierre,
-                                           Cajero = c.Usuario.Persona.NombreCompleto,
-                                           FechaIniOperacion = c.FechaIniOperacion,
-                                           FechaFinOperacion = c.FechaFinOperacion,
-                                           SaldoInicial = c.SaldoInicial,
-                                           Entradas = c.Entradas,
-                                           Salidas = c.Salidas,
-                                           SaldoFinal = c.SaldoFinal
-                                       };
+                            {
+                                CajaDiarioId = c.CajaId,
+                                NombreCaja = c.Caja.Denominacion,
+                                IndCierre = c.IndCierre,
+                                Cajero = c.Usuario.Persona.NombreCompleto,
+                                FechaIniOperacion = c.FechaIniOperacion,
+                                FechaFinOperacion = c.FechaFinOperacion,
+                                SaldoInicial = c.SaldoInicial,
+                                Entradas = c.Entradas,
+                                Salidas = c.Salidas,
+                                SaldoFinal = c.SaldoFinal
+                            };
                 return query.ToList();
             }
         }
-        
+
         public static List<usp_UsuariosNoAsignadosCaja_Result> ListaUsuariosNoAsignado()
         {
             using (var db = new VENDIXEntities())

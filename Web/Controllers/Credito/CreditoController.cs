@@ -82,13 +82,18 @@ namespace VendixWeb.Controllers
             ViewBag.pFecha = pFecha;
             ViewBag.pModalidadVal = pModalidad;
 
+            var periodoAnio = 0.0;
             switch (pModalidad)
             {
-                case "D": ViewBag.pModalidad = "DIARIO"; break;
-                case "S": ViewBag.pModalidad = "SEMANAL"; break;
-                case "Q": ViewBag.pModalidad = "QUINCENAL"; break;
-                case "M": ViewBag.pModalidad = "MENSUAL"; break;
+                case "D": ViewBag.pModalidad = "DIARIO";periodoAnio = 360.0; break;
+                case "S": ViewBag.pModalidad = "SEMANAL"; periodoAnio = 52.0; break;
+                case "Q": ViewBag.pModalidad = "QUINCENAL"; periodoAnio = 24.0; break;
+                case "M": ViewBag.pModalidad = "MENSUAL"; periodoAnio = 12.0; break;
             }
+
+
+            var pTem = pMonto > 0 ? Math.Pow(double.Parse((1 + pInteres / 100).ToString())  , 1/periodoAnio) - 1 : 0;
+            ViewBag.TEM = Math.Round(pTem,6) ;
 
             List<usp_SimuladorCredito_Result> oPlanPago = pMonto > 0
                     ? CreditoBL.SimuladorCredito(pProductoId,pTipo, pMonto, pModalidad, pCuotas, pInteres, DateTime.Parse(pFecha), pGastosAdm)
@@ -347,7 +352,7 @@ namespace VendixWeb.Controllers
                                                     item.Cargo.ToString(),
                                                     item.PagoLibre.ToString(),
                                                     item.PagoCuota.ToString(),
-                                                    item.Estado,
+                                                    item.Estado + "," + item.MovimientoCajaId.ToString(),
                                                     item.FechaPagoCuota.HasValue?item.FechaPagoCuota.Value.ToShortDateString():string.Empty
                                                 }
                         }
