@@ -21,13 +21,13 @@
         <EntityTypeShape EntityType="VENDIXModel.Caja" Width="1.5" PointX="7.5" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.CajaDiario" Width="1.5" PointX="9.75" PointY="7.5" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.Cargo" Width="1.5" PointX="12.75" PointY="6.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="7" PointY="10.125" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.CuentaxCobrar" Width="1.5" PointX="12.75" PointY="8.25" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.GastosAdm" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.MovimientoCaja" Width="1.5" PointX="15" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.MovimientoCajaAnu" Width="1.5" PointX="17.25" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.PlanPago" Width="1.5" PointX="12.75" PointY="10.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Producto" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="VENDIXModel.Producto" Width="1.5" PointX="7" PointY="9.25" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.Cliente" Width="1.5" PointX="3" PointY="12.5" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.Menu" Width="1.5" PointX="8.25" PointY="18.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.Ocupacion" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />

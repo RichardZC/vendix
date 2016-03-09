@@ -17,6 +17,7 @@ namespace VendixWeb.Controllers
         {
             if (pPersonaId > 0)
             {
+                
                 var datos = new DatosCredito
                 {
                     Persona = PersonaBL.Obtener(pPersonaId),
