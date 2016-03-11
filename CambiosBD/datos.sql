@@ -5,7 +5,6 @@ VALUES  ( 3 , 1 , '--SIMULADOR CREDITO--' , 'V' , '5'  )
 INSERT INTO MAESTRO.ValorTabla ( TablaId ,ItemId ,Denominacion , DesCorta , Valor)
 VALUES  ( 3 , 2 , '--SIMULADOR CREDITO--' , 'F' , '1.09'  )
 
-
 /*menu*/
 INSERT INTO MAESTRO.Menu
         ( Denominacion ,Modulo ,Url ,Icono ,IndPadre ,Orden ,Referencia)
