@@ -77,6 +77,7 @@
         $("#btnNuevo").click(function () {
             $.data(document.body, 'CajaId', 0);
             $("#txtCaja").val("").removeAttr('disabled');
+            $("#cboOficina").val("").trigger("liszt:updated");
             $("#chkActivo").prop("checked", true);
             $("#dlgNuevo").dialog("open");
             return false;
