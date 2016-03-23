@@ -23,16 +23,23 @@ namespace VendixWeb.Controllers.CajaDiario
 
         public ActionResult TransferirBoveda(decimal pMonto, string pDescripcion)
         {
-            var oficinaId = VendixGlobal.GetOficinaId();
-            var pUsuarRegId = VendixGlobal.GetUsuarioId();
-            var pCajaDiarioId = VendixGlobal.GetCajaDiarioId();
-            var pBovedaId = BovedaBL.Listar(x => x.OficinaId == oficinaId).FirstOrDefault().BovedaId;
+            var boveda = BovedaBL.Obtener(VendixGlobal.GetBovedaId());
 
-            var rspta = CajaDiarioBL.TransferirSaldosBoveda(pMonto, pDescripcion, pCajaDiarioId, pBovedaId, oficinaId, pUsuarRegId);
+            if (boveda.IndCierre == false)
+            {
+                var oficinaId = VendixGlobal.GetOficinaId();
+                var pUsuarRegId = VendixGlobal.GetUsuarioId();
+                var pCajaDiarioId = VendixGlobal.GetCajaDiarioId();               
 
-            return Json(rspta, JsonRequestBehavior.AllowGet);
+                var rspta = CajaDiarioBL.TransferirSaldosBoveda(pMonto, pDescripcion, pCajaDiarioId, boveda.BovedaId, oficinaId, pUsuarRegId);
+
+                return Json(rspta, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
     }
+
 }
 

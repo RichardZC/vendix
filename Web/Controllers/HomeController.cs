@@ -38,10 +38,9 @@ namespace VendixWeb.Controllers
 
                 VendixGlobal<int>.Crear("UsuarioOficinaId", usuarioOficina.UsuarioOficinaId);
 
-                VendixGlobal<int>.Crear("BovedaId", BovedaBL.Obtener(x => x.OficinaId == oficinaId).BovedaId);
+                VendixGlobal<int>.Crear("BovedaId", BovedaBL.Listar(x => x.OficinaId == oficinaId, y=>y.OrderByDescending(z=>z.FechaIniOperacion)).First().BovedaId);
                 //usuario asginado a oficina
-                var usuarioAsignadoId =
-                    OficinaBL.Obtener(x => x.OficinaId == usuarioOficina.OficinaId && x.Estado).UsuarioAsignadoId;
+                var usuarioAsignadoId = OficinaBL.Obtener(x => x.OficinaId == usuarioOficina.OficinaId && x.Estado).UsuarioAsignadoId;
 
                 VendixGlobal<int>.Crear("UsuarioIdAsignadoOficina", usuarioAsignadoId);
                 //
