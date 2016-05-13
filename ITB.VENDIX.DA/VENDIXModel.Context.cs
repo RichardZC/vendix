@@ -72,6 +72,51 @@ namespace ITB.VENDIX.BE
         public DbSet<TarjetaPuntoDet> TarjetaPuntoDet { get; set; }
         public DbSet<PlanPagoLibre> PlanPagoLibre { get; set; }
     
+        public virtual int usp_CrearMovimientoDet(Nullable<int> movimientoId, Nullable<int> movimientoDetId, Nullable<int> articuloId, Nullable<bool> indAutogenerar, string listaSerie, Nullable<int> cantidad, Nullable<bool> indCorrelativo, Nullable<decimal> precioUnitario, Nullable<decimal> descuento, Nullable<int> medida)
+        {
+            var movimientoIdParameter = movimientoId.HasValue ?
+                new ObjectParameter("MovimientoId", movimientoId) :
+                new ObjectParameter("MovimientoId", typeof(int));
+    
+            var movimientoDetIdParameter = movimientoDetId.HasValue ?
+                new ObjectParameter("MovimientoDetId", movimientoDetId) :
+                new ObjectParameter("MovimientoDetId", typeof(int));
+    
+            var articuloIdParameter = articuloId.HasValue ?
+                new ObjectParameter("ArticuloId", articuloId) :
+                new ObjectParameter("ArticuloId", typeof(int));
+    
+            var indAutogenerarParameter = indAutogenerar.HasValue ?
+                new ObjectParameter("IndAutogenerar", indAutogenerar) :
+                new ObjectParameter("IndAutogenerar", typeof(bool));
+    
+            var listaSerieParameter = listaSerie != null ?
+                new ObjectParameter("ListaSerie", listaSerie) :
+                new ObjectParameter("ListaSerie", typeof(string));
+    
+            var cantidadParameter = cantidad.HasValue ?
+                new ObjectParameter("Cantidad", cantidad) :
+                new ObjectParameter("Cantidad", typeof(int));
+    
+            var indCorrelativoParameter = indCorrelativo.HasValue ?
+                new ObjectParameter("IndCorrelativo", indCorrelativo) :
+                new ObjectParameter("IndCorrelativo", typeof(bool));
+    
+            var precioUnitarioParameter = precioUnitario.HasValue ?
+                new ObjectParameter("PrecioUnitario", precioUnitario) :
+                new ObjectParameter("PrecioUnitario", typeof(decimal));
+    
+            var descuentoParameter = descuento.HasValue ?
+                new ObjectParameter("Descuento", descuento) :
+                new ObjectParameter("Descuento", typeof(decimal));
+    
+            var medidaParameter = medida.HasValue ?
+                new ObjectParameter("Medida", medida) :
+                new ObjectParameter("Medida", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_CrearMovimientoDet", movimientoIdParameter, movimientoDetIdParameter, articuloIdParameter, indAutogenerarParameter, listaSerieParameter, cantidadParameter, indCorrelativoParameter, precioUnitarioParameter, descuentoParameter, medidaParameter);
+        }
+    
         public virtual int usp_EliminarMovimientoDet(Nullable<int> movimientoDetId)
         {
             var movimientoDetIdParameter = movimientoDetId.HasValue ?
@@ -98,6 +143,75 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_ExisteSerieArticulo", listaSerieParameter, cantidadParameter, indCorrelativoParameter);
         }
     
+        public virtual ObjectResult<usp_GenerarKardex_Result> usp_GenerarKardex(Nullable<int> articuloId, Nullable<int> almacenId)
+        {
+            var articuloIdParameter = articuloId.HasValue ?
+                new ObjectParameter("ArticuloId", articuloId) :
+                new ObjectParameter("ArticuloId", typeof(int));
+    
+            var almacenIdParameter = almacenId.HasValue ?
+                new ObjectParameter("AlmacenId", almacenId) :
+                new ObjectParameter("AlmacenId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GenerarKardex_Result>("usp_GenerarKardex", articuloIdParameter, almacenIdParameter);
+        }
+    
+        public virtual ObjectResult<string> usp_ListarSerieKardex(Nullable<int> movimientoDetalleId, Nullable<bool> indStock)
+        {
+            var movimientoDetalleIdParameter = movimientoDetalleId.HasValue ?
+                new ObjectParameter("MovimientoDetalleId", movimientoDetalleId) :
+                new ObjectParameter("MovimientoDetalleId", typeof(int));
+    
+            var indStockParameter = indStock.HasValue ?
+                new ObjectParameter("IndStock", indStock) :
+                new ObjectParameter("IndStock", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_ListarSerieKardex", movimientoDetalleIdParameter, indStockParameter);
+        }
+    
+        public virtual ObjectResult<string> usp_Movimiento_Upd(Nullable<int> flag, Nullable<int> movimientoId, Nullable<int> tipoMovimientoId, Nullable<System.DateTime> fechaMov, string observacion)
+        {
+            var flagParameter = flag.HasValue ?
+                new ObjectParameter("Flag", flag) :
+                new ObjectParameter("Flag", typeof(int));
+    
+            var movimientoIdParameter = movimientoId.HasValue ?
+                new ObjectParameter("MovimientoId", movimientoId) :
+                new ObjectParameter("MovimientoId", typeof(int));
+    
+            var tipoMovimientoIdParameter = tipoMovimientoId.HasValue ?
+                new ObjectParameter("TipoMovimientoId", tipoMovimientoId) :
+                new ObjectParameter("TipoMovimientoId", typeof(int));
+    
+            var fechaMovParameter = fechaMov.HasValue ?
+                new ObjectParameter("FechaMov", fechaMov) :
+                new ObjectParameter("FechaMov", typeof(System.DateTime));
+    
+            var observacionParameter = observacion != null ?
+                new ObjectParameter("Observacion", observacion) :
+                new ObjectParameter("Observacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_Movimiento_Upd", flagParameter, movimientoIdParameter, tipoMovimientoIdParameter, fechaMovParameter, observacionParameter);
+        }
+    
+        public virtual ObjectResult<usp_ReporteStock_Result> usp_ReporteStock(Nullable<int> oficinaId)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_ReporteStock_Result>("usp_ReporteStock", oficinaIdParameter);
+        }
+    
+        public virtual int usp_ActualizarSaldosBoveda(Nullable<int> bovedaId)
+        {
+            var bovedaIdParameter = bovedaId.HasValue ?
+                new ObjectParameter("BovedaId", bovedaId) :
+                new ObjectParameter("BovedaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_ActualizarSaldosBoveda", bovedaIdParameter);
+        }
+    
         public virtual int usp_Credito_Del(Nullable<int> creditoId, string observacion, Nullable<int> usuarioId)
         {
             var creditoIdParameter = creditoId.HasValue ?
@@ -113,6 +227,63 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("UsuarioId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_Credito_Del", creditoIdParameter, observacionParameter, usuarioIdParameter);
+        }
+    
+        public virtual ObjectResult<string> usp_Credito_Ins(Nullable<int> solicitudCreditoId, Nullable<int> productoId, string tipoCuota, Nullable<decimal> montoInicial, Nullable<decimal> montoCredito, Nullable<decimal> montoGastosAdm, string indGastoAdm, string formaPago, Nullable<int> nroCuotas, Nullable<decimal> interes, Nullable<System.DateTime> fechaPrimerPago, string observacion, Nullable<int> usuarioId)
+        {
+            var solicitudCreditoIdParameter = solicitudCreditoId.HasValue ?
+                new ObjectParameter("SolicitudCreditoId", solicitudCreditoId) :
+                new ObjectParameter("SolicitudCreditoId", typeof(int));
+    
+            var productoIdParameter = productoId.HasValue ?
+                new ObjectParameter("ProductoId", productoId) :
+                new ObjectParameter("ProductoId", typeof(int));
+    
+            var tipoCuotaParameter = tipoCuota != null ?
+                new ObjectParameter("TipoCuota", tipoCuota) :
+                new ObjectParameter("TipoCuota", typeof(string));
+    
+            var montoInicialParameter = montoInicial.HasValue ?
+                new ObjectParameter("MontoInicial", montoInicial) :
+                new ObjectParameter("MontoInicial", typeof(decimal));
+    
+            var montoCreditoParameter = montoCredito.HasValue ?
+                new ObjectParameter("MontoCredito", montoCredito) :
+                new ObjectParameter("MontoCredito", typeof(decimal));
+    
+            var montoGastosAdmParameter = montoGastosAdm.HasValue ?
+                new ObjectParameter("MontoGastosAdm", montoGastosAdm) :
+                new ObjectParameter("MontoGastosAdm", typeof(decimal));
+    
+            var indGastoAdmParameter = indGastoAdm != null ?
+                new ObjectParameter("IndGastoAdm", indGastoAdm) :
+                new ObjectParameter("IndGastoAdm", typeof(string));
+    
+            var formaPagoParameter = formaPago != null ?
+                new ObjectParameter("FormaPago", formaPago) :
+                new ObjectParameter("FormaPago", typeof(string));
+    
+            var nroCuotasParameter = nroCuotas.HasValue ?
+                new ObjectParameter("NroCuotas", nroCuotas) :
+                new ObjectParameter("NroCuotas", typeof(int));
+    
+            var interesParameter = interes.HasValue ?
+                new ObjectParameter("Interes", interes) :
+                new ObjectParameter("Interes", typeof(decimal));
+    
+            var fechaPrimerPagoParameter = fechaPrimerPago.HasValue ?
+                new ObjectParameter("FechaPrimerPago", fechaPrimerPago) :
+                new ObjectParameter("FechaPrimerPago", typeof(System.DateTime));
+    
+            var observacionParameter = observacion != null ?
+                new ObjectParameter("Observacion", observacion) :
+                new ObjectParameter("Observacion", typeof(string));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_Credito_Ins", solicitudCreditoIdParameter, productoIdParameter, tipoCuotaParameter, montoInicialParameter, montoCreditoParameter, montoGastosAdmParameter, indGastoAdmParameter, formaPagoParameter, nroCuotasParameter, interesParameter, fechaPrimerPagoParameter, observacionParameter, usuarioIdParameter);
         }
     
         public virtual int usp_Credito_Upd(Nullable<int> opcion, Nullable<int> creditoId, Nullable<int> usuarioId)
@@ -132,6 +303,61 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_Credito_Upd", opcionParameter, creditoIdParameter, usuarioIdParameter);
         }
     
+        public virtual ObjectResult<usp_CuotasPendientes_Result> usp_CuotasPendientes(Nullable<int> creditoId, Nullable<System.DateTime> fechaCalculo, Nullable<bool> indCancelacion)
+        {
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
+    
+            var fechaCalculoParameter = fechaCalculo.HasValue ?
+                new ObjectParameter("FechaCalculo", fechaCalculo) :
+                new ObjectParameter("FechaCalculo", typeof(System.DateTime));
+    
+            var indCancelacionParameter = indCancelacion.HasValue ?
+                new ObjectParameter("IndCancelacion", indCancelacion) :
+                new ObjectParameter("IndCancelacion", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CuotasPendientes_Result>("usp_CuotasPendientes", creditoIdParameter, fechaCalculoParameter, indCancelacionParameter);
+        }
+    
+        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
+        {
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            var personaIdParameter = personaId.HasValue ?
+                new ObjectParameter("PersonaId", personaId) :
+                new ObjectParameter("PersonaId", typeof(int));
+    
+            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
+                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
+                new ObjectParameter("TipoOperacionId", typeof(int));
+    
+            var importeParameter = importe.HasValue ?
+                new ObjectParameter("Importe", importe) :
+                new ObjectParameter("Importe", typeof(decimal));
+    
+            var decripcionParameter = decripcion != null ?
+                new ObjectParameter("Decripcion", decripcion) :
+                new ObjectParameter("Decripcion", typeof(string));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
+        }
+    
+        public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
+        {
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_EstadoPlanPago_Result>("usp_EstadoPlanPago", creditoIdParameter);
+        }
+    
         public virtual int usp_MovimientoCaja_Del(Nullable<int> movimientoCajaId, string observacion, Nullable<int> usuarioId)
         {
             var movimientoCajaIdParameter = movimientoCajaId.HasValue ?
@@ -149,30 +375,193 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_MovimientoCaja_Del", movimientoCajaIdParameter, observacionParameter, usuarioIdParameter);
         }
     
-        public virtual int usp_AgregarPuntos(Nullable<decimal> codCliente, Nullable<int> ordenVentaId)
+        public virtual ObjectResult<Nullable<int>> usp_PagarCuentaxCobrar(Nullable<int> ordenVentaId, Nullable<int> cuentaxCobrarId, Nullable<int> cajaDiarioId, Nullable<int> usuarioId)
         {
-            var codClienteParameter = codCliente.HasValue ?
-                new ObjectParameter("CodCliente", codCliente) :
-                new ObjectParameter("CodCliente", typeof(decimal));
-    
             var ordenVentaIdParameter = ordenVentaId.HasValue ?
                 new ObjectParameter("OrdenVentaId", ordenVentaId) :
                 new ObjectParameter("OrdenVentaId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_AgregarPuntos", codClienteParameter, ordenVentaIdParameter);
+            var cuentaxCobrarIdParameter = cuentaxCobrarId.HasValue ?
+                new ObjectParameter("CuentaxCobrarId", cuentaxCobrarId) :
+                new ObjectParameter("CuentaxCobrarId", typeof(int));
+    
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuentaxCobrar", ordenVentaIdParameter, cuentaxCobrarIdParameter, cajaDiarioIdParameter, usuarioIdParameter);
         }
     
-        public virtual ObjectResult<string> usp_CanjearPuntos(Nullable<decimal> codCliente, string numeroSerie)
+        public virtual ObjectResult<Nullable<int>> usp_PagarCuotas(Nullable<int> cajaDiarioId, Nullable<int> creditoId, string listaPlanPagoId, Nullable<decimal> importeRecibido, Nullable<int> usuarioId, Nullable<System.DateTime> fechaPago)
         {
-            var codClienteParameter = codCliente.HasValue ?
-                new ObjectParameter("CodCliente", codCliente) :
-                new ObjectParameter("CodCliente", typeof(decimal));
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
     
-            var numeroSerieParameter = numeroSerie != null ?
-                new ObjectParameter("NumeroSerie", numeroSerie) :
-                new ObjectParameter("NumeroSerie", typeof(string));
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_CanjearPuntos", codClienteParameter, numeroSerieParameter);
+            var listaPlanPagoIdParameter = listaPlanPagoId != null ?
+                new ObjectParameter("ListaPlanPagoId", listaPlanPagoId) :
+                new ObjectParameter("ListaPlanPagoId", typeof(string));
+    
+            var importeRecibidoParameter = importeRecibido.HasValue ?
+                new ObjectParameter("ImporteRecibido", importeRecibido) :
+                new ObjectParameter("ImporteRecibido", typeof(decimal));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            var fechaPagoParameter = fechaPago.HasValue ?
+                new ObjectParameter("FechaPago", fechaPago) :
+                new ObjectParameter("FechaPago", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuotas", cajaDiarioIdParameter, creditoIdParameter, listaPlanPagoIdParameter, importeRecibidoParameter, usuarioIdParameter, fechaPagoParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> usp_PagarCuotasCancelacion(Nullable<int> cajaDiarioId, Nullable<int> creditoId, Nullable<int> usuarioId, Nullable<System.DateTime> fechaPago)
+        {
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            var fechaPagoParameter = fechaPago.HasValue ?
+                new ObjectParameter("FechaPago", fechaPago) :
+                new ObjectParameter("FechaPago", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuotasCancelacion", cajaDiarioIdParameter, creditoIdParameter, usuarioIdParameter, fechaPagoParameter);
+        }
+    
+        public virtual int usp_ReprogramarCredito(Nullable<int> creditoId, Nullable<int> usuarioId)
+        {
+            var creditoIdParameter = creditoId.HasValue ?
+                new ObjectParameter("CreditoId", creditoId) :
+                new ObjectParameter("CreditoId", typeof(int));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_ReprogramarCredito", creditoIdParameter, usuarioIdParameter);
+        }
+    
+        public virtual ObjectResult<usp_RptCreditoMorosidad_Result> usp_RptCreditoMorosidad(Nullable<int> oficinaId, Nullable<System.DateTime> hastaFecha, Nullable<int> diasAtrazoIni, Nullable<int> diasAtrazoFin)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            var hastaFechaParameter = hastaFecha.HasValue ?
+                new ObjectParameter("HastaFecha", hastaFecha) :
+                new ObjectParameter("HastaFecha", typeof(System.DateTime));
+    
+            var diasAtrazoIniParameter = diasAtrazoIni.HasValue ?
+                new ObjectParameter("DiasAtrazoIni", diasAtrazoIni) :
+                new ObjectParameter("DiasAtrazoIni", typeof(int));
+    
+            var diasAtrazoFinParameter = diasAtrazoFin.HasValue ?
+                new ObjectParameter("DiasAtrazoFin", diasAtrazoFin) :
+                new ObjectParameter("DiasAtrazoFin", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCreditoMorosidad_Result>("usp_RptCreditoMorosidad", oficinaIdParameter, hastaFechaParameter, diasAtrazoIniParameter, diasAtrazoFinParameter);
+        }
+    
+        public virtual ObjectResult<usp_RptSaldosCaja_Result> usp_RptSaldosCaja(Nullable<int> cajaDiarioId)
+        {
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptSaldosCaja_Result>("usp_RptSaldosCaja", cajaDiarioIdParameter);
+        }
+    
+        public virtual ObjectResult<usp_SimuladorCredito_Result> usp_SimuladorCredito(string tipo, string formaPago, Nullable<decimal> monto, Nullable<int> nroCuotas, Nullable<decimal> tEA, Nullable<System.DateTime> fechaPrimerPago, Nullable<decimal> gastosAdm)
+        {
+            var tipoParameter = tipo != null ?
+                new ObjectParameter("Tipo", tipo) :
+                new ObjectParameter("Tipo", typeof(string));
+    
+            var formaPagoParameter = formaPago != null ?
+                new ObjectParameter("FormaPago", formaPago) :
+                new ObjectParameter("FormaPago", typeof(string));
+    
+            var montoParameter = monto.HasValue ?
+                new ObjectParameter("Monto", monto) :
+                new ObjectParameter("Monto", typeof(decimal));
+    
+            var nroCuotasParameter = nroCuotas.HasValue ?
+                new ObjectParameter("NroCuotas", nroCuotas) :
+                new ObjectParameter("NroCuotas", typeof(int));
+    
+            var tEAParameter = tEA.HasValue ?
+                new ObjectParameter("TEA", tEA) :
+                new ObjectParameter("TEA", typeof(decimal));
+    
+            var fechaPrimerPagoParameter = fechaPrimerPago.HasValue ?
+                new ObjectParameter("FechaPrimerPago", fechaPrimerPago) :
+                new ObjectParameter("FechaPrimerPago", typeof(System.DateTime));
+    
+            var gastosAdmParameter = gastosAdm.HasValue ?
+                new ObjectParameter("GastosAdm", gastosAdm) :
+                new ObjectParameter("GastosAdm", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_SimuladorCredito_Result>("usp_SimuladorCredito", tipoParameter, formaPagoParameter, montoParameter, nroCuotasParameter, tEAParameter, fechaPrimerPagoParameter, gastosAdmParameter);
+        }
+    
+        public virtual int usp_TransferirBoveda(Nullable<int> bovedaInicioId, Nullable<int> bovedaDestinoId, string glosa, Nullable<decimal> monto, Nullable<int> usuarioRegId, Nullable<int> flagAceptar, Nullable<int> bovedaMovTempId)
+        {
+            var bovedaInicioIdParameter = bovedaInicioId.HasValue ?
+                new ObjectParameter("BovedaInicioId", bovedaInicioId) :
+                new ObjectParameter("BovedaInicioId", typeof(int));
+    
+            var bovedaDestinoIdParameter = bovedaDestinoId.HasValue ?
+                new ObjectParameter("BovedaDestinoId", bovedaDestinoId) :
+                new ObjectParameter("BovedaDestinoId", typeof(int));
+    
+            var glosaParameter = glosa != null ?
+                new ObjectParameter("Glosa", glosa) :
+                new ObjectParameter("Glosa", typeof(string));
+    
+            var montoParameter = monto.HasValue ?
+                new ObjectParameter("Monto", monto) :
+                new ObjectParameter("Monto", typeof(decimal));
+    
+            var usuarioRegIdParameter = usuarioRegId.HasValue ?
+                new ObjectParameter("UsuarioRegId", usuarioRegId) :
+                new ObjectParameter("UsuarioRegId", typeof(int));
+    
+            var flagAceptarParameter = flagAceptar.HasValue ?
+                new ObjectParameter("flagAceptar", flagAceptar) :
+                new ObjectParameter("flagAceptar", typeof(int));
+    
+            var bovedaMovTempIdParameter = bovedaMovTempId.HasValue ?
+                new ObjectParameter("BovedaMovTempId", bovedaMovTempId) :
+                new ObjectParameter("BovedaMovTempId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_TransferirBoveda", bovedaInicioIdParameter, bovedaDestinoIdParameter, glosaParameter, montoParameter, usuarioRegIdParameter, flagAceptarParameter, bovedaMovTempIdParameter);
+        }
+    
+        public virtual ObjectResult<usp_UsuariosNoAsignadosCaja_Result> usp_UsuariosNoAsignadosCaja(Nullable<int> oficinaId)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_UsuariosNoAsignadosCaja_Result>("usp_UsuariosNoAsignadosCaja", oficinaIdParameter);
         }
     
         public virtual ObjectResult<usp_MenuLst_Result> usp_MenuLst(Nullable<int> oficinaId, Nullable<int> usuarioId)
@@ -240,131 +629,6 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_OrdenVentaDet_update", ordenVentaDetIdParameter, descuentoParameter);
         }
     
-        public virtual ObjectResult<usp_GenerarKardex_Result> usp_GenerarKardex(Nullable<int> articuloId, Nullable<int> almacenId)
-        {
-            var articuloIdParameter = articuloId.HasValue ?
-                new ObjectParameter("ArticuloId", articuloId) :
-                new ObjectParameter("ArticuloId", typeof(int));
-    
-            var almacenIdParameter = almacenId.HasValue ?
-                new ObjectParameter("AlmacenId", almacenId) :
-                new ObjectParameter("AlmacenId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GenerarKardex_Result>("usp_GenerarKardex", articuloIdParameter, almacenIdParameter);
-        }
-    
-        public virtual ObjectResult<string> usp_ListarSerieKardex(Nullable<int> movimientoDetalleId, Nullable<bool> indStock)
-        {
-            var movimientoDetalleIdParameter = movimientoDetalleId.HasValue ?
-                new ObjectParameter("MovimientoDetalleId", movimientoDetalleId) :
-                new ObjectParameter("MovimientoDetalleId", typeof(int));
-    
-            var indStockParameter = indStock.HasValue ?
-                new ObjectParameter("IndStock", indStock) :
-                new ObjectParameter("IndStock", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_ListarSerieKardex", movimientoDetalleIdParameter, indStockParameter);
-        }
-    
-        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
-        {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            var personaIdParameter = personaId.HasValue ?
-                new ObjectParameter("PersonaId", personaId) :
-                new ObjectParameter("PersonaId", typeof(int));
-    
-            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
-                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
-                new ObjectParameter("TipoOperacionId", typeof(int));
-    
-            var importeParameter = importe.HasValue ?
-                new ObjectParameter("Importe", importe) :
-                new ObjectParameter("Importe", typeof(decimal));
-    
-            var decripcionParameter = decripcion != null ?
-                new ObjectParameter("Decripcion", decripcion) :
-                new ObjectParameter("Decripcion", typeof(string));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
-        }
-    
-        public virtual ObjectResult<string> usp_Movimiento_Upd(Nullable<int> flag, Nullable<int> movimientoId, Nullable<int> tipoMovimientoId, Nullable<System.DateTime> fechaMov, string observacion)
-        {
-            var flagParameter = flag.HasValue ?
-                new ObjectParameter("Flag", flag) :
-                new ObjectParameter("Flag", typeof(int));
-    
-            var movimientoIdParameter = movimientoId.HasValue ?
-                new ObjectParameter("MovimientoId", movimientoId) :
-                new ObjectParameter("MovimientoId", typeof(int));
-    
-            var tipoMovimientoIdParameter = tipoMovimientoId.HasValue ?
-                new ObjectParameter("TipoMovimientoId", tipoMovimientoId) :
-                new ObjectParameter("TipoMovimientoId", typeof(int));
-    
-            var fechaMovParameter = fechaMov.HasValue ?
-                new ObjectParameter("FechaMov", fechaMov) :
-                new ObjectParameter("FechaMov", typeof(System.DateTime));
-    
-            var observacionParameter = observacion != null ?
-                new ObjectParameter("Observacion", observacion) :
-                new ObjectParameter("Observacion", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_Movimiento_Upd", flagParameter, movimientoIdParameter, tipoMovimientoIdParameter, fechaMovParameter, observacionParameter);
-        }
-    
-        public virtual int usp_CrearMovimientoDet(Nullable<int> movimientoId, Nullable<int> movimientoDetId, Nullable<int> articuloId, Nullable<bool> indAutogenerar, string listaSerie, Nullable<int> cantidad, Nullable<bool> indCorrelativo, Nullable<decimal> precioUnitario, Nullable<decimal> descuento, Nullable<int> medida)
-        {
-            var movimientoIdParameter = movimientoId.HasValue ?
-                new ObjectParameter("MovimientoId", movimientoId) :
-                new ObjectParameter("MovimientoId", typeof(int));
-    
-            var movimientoDetIdParameter = movimientoDetId.HasValue ?
-                new ObjectParameter("MovimientoDetId", movimientoDetId) :
-                new ObjectParameter("MovimientoDetId", typeof(int));
-    
-            var articuloIdParameter = articuloId.HasValue ?
-                new ObjectParameter("ArticuloId", articuloId) :
-                new ObjectParameter("ArticuloId", typeof(int));
-    
-            var indAutogenerarParameter = indAutogenerar.HasValue ?
-                new ObjectParameter("IndAutogenerar", indAutogenerar) :
-                new ObjectParameter("IndAutogenerar", typeof(bool));
-    
-            var listaSerieParameter = listaSerie != null ?
-                new ObjectParameter("ListaSerie", listaSerie) :
-                new ObjectParameter("ListaSerie", typeof(string));
-    
-            var cantidadParameter = cantidad.HasValue ?
-                new ObjectParameter("Cantidad", cantidad) :
-                new ObjectParameter("Cantidad", typeof(int));
-    
-            var indCorrelativoParameter = indCorrelativo.HasValue ?
-                new ObjectParameter("IndCorrelativo", indCorrelativo) :
-                new ObjectParameter("IndCorrelativo", typeof(bool));
-    
-            var precioUnitarioParameter = precioUnitario.HasValue ?
-                new ObjectParameter("PrecioUnitario", precioUnitario) :
-                new ObjectParameter("PrecioUnitario", typeof(decimal));
-    
-            var descuentoParameter = descuento.HasValue ?
-                new ObjectParameter("Descuento", descuento) :
-                new ObjectParameter("Descuento", typeof(decimal));
-    
-            var medidaParameter = medida.HasValue ?
-                new ObjectParameter("Medida", medida) :
-                new ObjectParameter("Medida", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_CrearMovimientoDet", movimientoIdParameter, movimientoDetIdParameter, articuloIdParameter, indAutogenerarParameter, listaSerieParameter, cantidadParameter, indCorrelativoParameter, precioUnitarioParameter, descuentoParameter, medidaParameter);
-        }
-    
         public virtual ObjectResult<usp_RptRentabilidadVenta_Result> usp_RptRentabilidadVenta(Nullable<System.DateTime> fechaIni, Nullable<System.DateTime> fechaFin, Nullable<bool> indContado, Nullable<bool> indCredito, Nullable<int> oficinaId)
         {
             var fechaIniParameter = fechaIni.HasValue ?
@@ -390,55 +654,30 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptRentabilidadVenta_Result>("usp_RptRentabilidadVenta", fechaIniParameter, fechaFinParameter, indContadoParameter, indCreditoParameter, oficinaIdParameter);
         }
     
-        public virtual int usp_ReprogramarCredito(Nullable<int> creditoId, Nullable<int> usuarioId)
+        public virtual int usp_AgregarPuntos(Nullable<decimal> codCliente, Nullable<int> ordenVentaId)
         {
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
+            var codClienteParameter = codCliente.HasValue ?
+                new ObjectParameter("CodCliente", codCliente) :
+                new ObjectParameter("CodCliente", typeof(decimal));
     
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
+            var ordenVentaIdParameter = ordenVentaId.HasValue ?
+                new ObjectParameter("OrdenVentaId", ordenVentaId) :
+                new ObjectParameter("OrdenVentaId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_ReprogramarCredito", creditoIdParameter, usuarioIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_AgregarPuntos", codClienteParameter, ordenVentaIdParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> usp_PagarCuotasCancelacion(Nullable<int> cajaDiarioId, Nullable<int> creditoId, Nullable<int> usuarioId, Nullable<System.DateTime> fechaPago)
+        public virtual ObjectResult<string> usp_CanjearPuntos(Nullable<decimal> codCliente, string numeroSerie)
         {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
+            var codClienteParameter = codCliente.HasValue ?
+                new ObjectParameter("CodCliente", codCliente) :
+                new ObjectParameter("CodCliente", typeof(decimal));
     
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
+            var numeroSerieParameter = numeroSerie != null ?
+                new ObjectParameter("NumeroSerie", numeroSerie) :
+                new ObjectParameter("NumeroSerie", typeof(string));
     
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            var fechaPagoParameter = fechaPago.HasValue ?
-                new ObjectParameter("FechaPago", fechaPago) :
-                new ObjectParameter("FechaPago", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuotasCancelacion", cajaDiarioIdParameter, creditoIdParameter, usuarioIdParameter, fechaPagoParameter);
-        }
-    
-        public virtual ObjectResult<usp_RptCreditoRentabilidad_Result> usp_RptCreditoRentabilidad(Nullable<int> oficnaId, Nullable<System.DateTime> fechaIni, Nullable<System.DateTime> fechaFin)
-        {
-            var oficnaIdParameter = oficnaId.HasValue ?
-                new ObjectParameter("OficnaId", oficnaId) :
-                new ObjectParameter("OficnaId", typeof(int));
-    
-            var fechaIniParameter = fechaIni.HasValue ?
-                new ObjectParameter("FechaIni", fechaIni) :
-                new ObjectParameter("FechaIni", typeof(System.DateTime));
-    
-            var fechaFinParameter = fechaFin.HasValue ?
-                new ObjectParameter("FechaFin", fechaFin) :
-                new ObjectParameter("FechaFin", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCreditoRentabilidad_Result>("usp_RptCreditoRentabilidad", oficnaIdParameter, fechaIniParameter, fechaFinParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_CanjearPuntos", codClienteParameter, numeroSerieParameter);
         }
     
         public virtual ObjectResult<usp_RptCredito_Result> usp_RptCredito(Nullable<int> oficinaId, Nullable<System.DateTime> fechaDesIni, Nullable<System.DateTime> fechaDesFin)
@@ -458,264 +697,34 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCredito_Result>("usp_RptCredito", oficinaIdParameter, fechaDesIniParameter, fechaDesFinParameter);
         }
     
-        public virtual ObjectResult<usp_RptCreditoMorosidad_Result> usp_RptCreditoMorosidad(Nullable<int> oficinaId, Nullable<System.DateTime> hastaFecha, Nullable<int> diasAtrazoIni, Nullable<int> diasAtrazoFin)
+        public virtual ObjectResult<usp_RptCreditoRentabilidad_Result> usp_RptCreditoRentabilidad(Nullable<int> oficnaId, Nullable<System.DateTime> fechaIni, Nullable<System.DateTime> fechaFin)
         {
-            var oficinaIdParameter = oficinaId.HasValue ?
-                new ObjectParameter("OficinaId", oficinaId) :
-                new ObjectParameter("OficinaId", typeof(int));
+            var oficnaIdParameter = oficnaId.HasValue ?
+                new ObjectParameter("OficnaId", oficnaId) :
+                new ObjectParameter("OficnaId", typeof(int));
     
-            var hastaFechaParameter = hastaFecha.HasValue ?
-                new ObjectParameter("HastaFecha", hastaFecha) :
-                new ObjectParameter("HastaFecha", typeof(System.DateTime));
+            var fechaIniParameter = fechaIni.HasValue ?
+                new ObjectParameter("FechaIni", fechaIni) :
+                new ObjectParameter("FechaIni", typeof(System.DateTime));
     
-            var diasAtrazoIniParameter = diasAtrazoIni.HasValue ?
-                new ObjectParameter("DiasAtrazoIni", diasAtrazoIni) :
-                new ObjectParameter("DiasAtrazoIni", typeof(int));
+            var fechaFinParameter = fechaFin.HasValue ?
+                new ObjectParameter("FechaFin", fechaFin) :
+                new ObjectParameter("FechaFin", typeof(System.DateTime));
     
-            var diasAtrazoFinParameter = diasAtrazoFin.HasValue ?
-                new ObjectParameter("DiasAtrazoFin", diasAtrazoFin) :
-                new ObjectParameter("DiasAtrazoFin", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCreditoMorosidad_Result>("usp_RptCreditoMorosidad", oficinaIdParameter, hastaFechaParameter, diasAtrazoIniParameter, diasAtrazoFinParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCreditoRentabilidad_Result>("usp_RptCreditoRentabilidad", oficnaIdParameter, fechaIniParameter, fechaFinParameter);
         }
     
-        public virtual ObjectResult<usp_ReporteStock_Result> usp_ReporteStock(Nullable<int> oficinaId)
+        public virtual ObjectResult<Nullable<decimal>> usp_CalcularTEM(Nullable<decimal> tEA, string formaPago)
         {
-            var oficinaIdParameter = oficinaId.HasValue ?
-                new ObjectParameter("OficinaId", oficinaId) :
-                new ObjectParameter("OficinaId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_ReporteStock_Result>("usp_ReporteStock", oficinaIdParameter);
-        }
-    
-        public virtual ObjectResult<usp_UsuariosNoAsignadosCaja_Result> usp_UsuariosNoAsignadosCaja(Nullable<int> oficinaId)
-        {
-            var oficinaIdParameter = oficinaId.HasValue ?
-                new ObjectParameter("OficinaId", oficinaId) :
-                new ObjectParameter("OficinaId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_UsuariosNoAsignadosCaja_Result>("usp_UsuariosNoAsignadosCaja", oficinaIdParameter);
-        }
-    
-        public virtual ObjectResult<usp_RptSaldosCaja_Result> usp_RptSaldosCaja(Nullable<int> cajaDiarioId)
-        {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptSaldosCaja_Result>("usp_RptSaldosCaja", cajaDiarioIdParameter);
-        }
-    
-        public virtual int usp_ActualizarSaldosBoveda(Nullable<int> bovedaId)
-        {
-            var bovedaIdParameter = bovedaId.HasValue ?
-                new ObjectParameter("BovedaId", bovedaId) :
-                new ObjectParameter("BovedaId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_ActualizarSaldosBoveda", bovedaIdParameter);
-        }
-    
-        public virtual int usp_TransferirBoveda(Nullable<int> bovedaInicioId, Nullable<int> bovedaDestinoId, string glosa, Nullable<decimal> monto, Nullable<int> usuarioRegId, Nullable<int> flagAceptar, Nullable<int> bovedaMovTempId)
-        {
-            var bovedaInicioIdParameter = bovedaInicioId.HasValue ?
-                new ObjectParameter("BovedaInicioId", bovedaInicioId) :
-                new ObjectParameter("BovedaInicioId", typeof(int));
-    
-            var bovedaDestinoIdParameter = bovedaDestinoId.HasValue ?
-                new ObjectParameter("BovedaDestinoId", bovedaDestinoId) :
-                new ObjectParameter("BovedaDestinoId", typeof(int));
-    
-            var glosaParameter = glosa != null ?
-                new ObjectParameter("Glosa", glosa) :
-                new ObjectParameter("Glosa", typeof(string));
-    
-            var montoParameter = monto.HasValue ?
-                new ObjectParameter("Monto", monto) :
-                new ObjectParameter("Monto", typeof(decimal));
-    
-            var usuarioRegIdParameter = usuarioRegId.HasValue ?
-                new ObjectParameter("UsuarioRegId", usuarioRegId) :
-                new ObjectParameter("UsuarioRegId", typeof(int));
-    
-            var flagAceptarParameter = flagAceptar.HasValue ?
-                new ObjectParameter("flagAceptar", flagAceptar) :
-                new ObjectParameter("flagAceptar", typeof(int));
-    
-            var bovedaMovTempIdParameter = bovedaMovTempId.HasValue ?
-                new ObjectParameter("BovedaMovTempId", bovedaMovTempId) :
-                new ObjectParameter("BovedaMovTempId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_TransferirBoveda", bovedaInicioIdParameter, bovedaDestinoIdParameter, glosaParameter, montoParameter, usuarioRegIdParameter, flagAceptarParameter, bovedaMovTempIdParameter);
-        }
-    
-        public virtual ObjectResult<usp_CuotasPendientes_Result> usp_CuotasPendientes(Nullable<int> creditoId, Nullable<System.DateTime> fechaCalculo, Nullable<bool> indCancelacion)
-        {
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
-    
-            var fechaCalculoParameter = fechaCalculo.HasValue ?
-                new ObjectParameter("FechaCalculo", fechaCalculo) :
-                new ObjectParameter("FechaCalculo", typeof(System.DateTime));
-    
-            var indCancelacionParameter = indCancelacion.HasValue ?
-                new ObjectParameter("IndCancelacion", indCancelacion) :
-                new ObjectParameter("IndCancelacion", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CuotasPendientes_Result>("usp_CuotasPendientes", creditoIdParameter, fechaCalculoParameter, indCancelacionParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> usp_PagarCuentaxCobrar(Nullable<int> ordenVentaId, Nullable<int> cuentaxCobrarId, Nullable<int> cajaDiarioId, Nullable<int> usuarioId)
-        {
-            var ordenVentaIdParameter = ordenVentaId.HasValue ?
-                new ObjectParameter("OrdenVentaId", ordenVentaId) :
-                new ObjectParameter("OrdenVentaId", typeof(int));
-    
-            var cuentaxCobrarIdParameter = cuentaxCobrarId.HasValue ?
-                new ObjectParameter("CuentaxCobrarId", cuentaxCobrarId) :
-                new ObjectParameter("CuentaxCobrarId", typeof(int));
-    
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuentaxCobrar", ordenVentaIdParameter, cuentaxCobrarIdParameter, cajaDiarioIdParameter, usuarioIdParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> usp_PagarCuotas(Nullable<int> cajaDiarioId, Nullable<int> creditoId, string listaPlanPagoId, Nullable<decimal> importeRecibido, Nullable<int> usuarioId, Nullable<System.DateTime> fechaPago)
-        {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
-    
-            var listaPlanPagoIdParameter = listaPlanPagoId != null ?
-                new ObjectParameter("ListaPlanPagoId", listaPlanPagoId) :
-                new ObjectParameter("ListaPlanPagoId", typeof(string));
-    
-            var importeRecibidoParameter = importeRecibido.HasValue ?
-                new ObjectParameter("ImporteRecibido", importeRecibido) :
-                new ObjectParameter("ImporteRecibido", typeof(decimal));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            var fechaPagoParameter = fechaPago.HasValue ?
-                new ObjectParameter("FechaPago", fechaPago) :
-                new ObjectParameter("FechaPago", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("usp_PagarCuotas", cajaDiarioIdParameter, creditoIdParameter, listaPlanPagoIdParameter, importeRecibidoParameter, usuarioIdParameter, fechaPagoParameter);
-        }
-    
-        public virtual ObjectResult<usp_SimuladorCredito_Result> usp_SimuladorCredito(string tipo, string formaPago, Nullable<decimal> monto, Nullable<int> nroCuotas, Nullable<decimal> tEA, Nullable<System.DateTime> fechaPrimerPago, Nullable<decimal> gastosAdm)
-        {
-            var tipoParameter = tipo != null ?
-                new ObjectParameter("Tipo", tipo) :
-                new ObjectParameter("Tipo", typeof(string));
-    
-            var formaPagoParameter = formaPago != null ?
-                new ObjectParameter("FormaPago", formaPago) :
-                new ObjectParameter("FormaPago", typeof(string));
-    
-            var montoParameter = monto.HasValue ?
-                new ObjectParameter("Monto", monto) :
-                new ObjectParameter("Monto", typeof(decimal));
-    
-            var nroCuotasParameter = nroCuotas.HasValue ?
-                new ObjectParameter("NroCuotas", nroCuotas) :
-                new ObjectParameter("NroCuotas", typeof(int));
-    
             var tEAParameter = tEA.HasValue ?
                 new ObjectParameter("TEA", tEA) :
                 new ObjectParameter("TEA", typeof(decimal));
     
-            var fechaPrimerPagoParameter = fechaPrimerPago.HasValue ?
-                new ObjectParameter("FechaPrimerPago", fechaPrimerPago) :
-                new ObjectParameter("FechaPrimerPago", typeof(System.DateTime));
-    
-            var gastosAdmParameter = gastosAdm.HasValue ?
-                new ObjectParameter("GastosAdm", gastosAdm) :
-                new ObjectParameter("GastosAdm", typeof(decimal));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_SimuladorCredito_Result>("usp_SimuladorCredito", tipoParameter, formaPagoParameter, montoParameter, nroCuotasParameter, tEAParameter, fechaPrimerPagoParameter, gastosAdmParameter);
-        }
-    
-        public virtual ObjectResult<string> usp_Credito_Ins(Nullable<int> solicitudCreditoId, Nullable<int> productoId, string tipoCuota, Nullable<int> analistaId, Nullable<decimal> montoInicial, Nullable<decimal> montoCredito, Nullable<decimal> montoGastosAdm, string indGastoAdm, string formaPago, Nullable<int> nroCuotas, Nullable<decimal> interes, Nullable<System.DateTime> fechaPrimerPago, string observacion, Nullable<int> usuarioId)
-        {
-            var solicitudCreditoIdParameter = solicitudCreditoId.HasValue ?
-                new ObjectParameter("SolicitudCreditoId", solicitudCreditoId) :
-                new ObjectParameter("SolicitudCreditoId", typeof(int));
-    
-            var productoIdParameter = productoId.HasValue ?
-                new ObjectParameter("ProductoId", productoId) :
-                new ObjectParameter("ProductoId", typeof(int));
-    
-            var tipoCuotaParameter = tipoCuota != null ?
-                new ObjectParameter("TipoCuota", tipoCuota) :
-                new ObjectParameter("TipoCuota", typeof(string));
-    
-            var analistaIdParameter = analistaId.HasValue ?
-                new ObjectParameter("AnalistaId", analistaId) :
-                new ObjectParameter("AnalistaId", typeof(int));
-    
-            var montoInicialParameter = montoInicial.HasValue ?
-                new ObjectParameter("MontoInicial", montoInicial) :
-                new ObjectParameter("MontoInicial", typeof(decimal));
-    
-            var montoCreditoParameter = montoCredito.HasValue ?
-                new ObjectParameter("MontoCredito", montoCredito) :
-                new ObjectParameter("MontoCredito", typeof(decimal));
-    
-            var montoGastosAdmParameter = montoGastosAdm.HasValue ?
-                new ObjectParameter("MontoGastosAdm", montoGastosAdm) :
-                new ObjectParameter("MontoGastosAdm", typeof(decimal));
-    
-            var indGastoAdmParameter = indGastoAdm != null ?
-                new ObjectParameter("IndGastoAdm", indGastoAdm) :
-                new ObjectParameter("IndGastoAdm", typeof(string));
-    
             var formaPagoParameter = formaPago != null ?
                 new ObjectParameter("FormaPago", formaPago) :
                 new ObjectParameter("FormaPago", typeof(string));
     
-            var nroCuotasParameter = nroCuotas.HasValue ?
-                new ObjectParameter("NroCuotas", nroCuotas) :
-                new ObjectParameter("NroCuotas", typeof(int));
-    
-            var interesParameter = interes.HasValue ?
-                new ObjectParameter("Interes", interes) :
-                new ObjectParameter("Interes", typeof(decimal));
-    
-            var fechaPrimerPagoParameter = fechaPrimerPago.HasValue ?
-                new ObjectParameter("FechaPrimerPago", fechaPrimerPago) :
-                new ObjectParameter("FechaPrimerPago", typeof(System.DateTime));
-    
-            var observacionParameter = observacion != null ?
-                new ObjectParameter("Observacion", observacion) :
-                new ObjectParameter("Observacion", typeof(string));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_Credito_Ins", solicitudCreditoIdParameter, productoIdParameter, tipoCuotaParameter, analistaIdParameter, montoInicialParameter, montoCreditoParameter, montoGastosAdmParameter, indGastoAdmParameter, formaPagoParameter, nroCuotasParameter, interesParameter, fechaPrimerPagoParameter, observacionParameter, usuarioIdParameter);
-        }
-    
-        public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
-        {
-            var creditoIdParameter = creditoId.HasValue ?
-                new ObjectParameter("CreditoId", creditoId) :
-                new ObjectParameter("CreditoId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_EstadoPlanPago_Result>("usp_EstadoPlanPago", creditoIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("usp_CalcularTEM", tEAParameter, formaPagoParameter);
         }
     }
 }

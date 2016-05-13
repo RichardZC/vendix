@@ -159,6 +159,39 @@ var Vendix = {
         });
     }
 };
+
+var Constante = {
+    FORMAPAGO: function (p) {
+        switch (p) {
+            case 'M': return 'Mensual';
+            case 'Q': return 'Quincenal';
+            case 'S': return 'Semanal';
+            case 'D': return 'Diario';
+            default: return ''
+        }
+    },
+    CREDITO: function (p) {
+        switch (p) {
+            case 'PAG': return 'PAGADO';
+            case 'PEN': return 'PENDIENTE';
+            case 'AP1': return 'PRE APROBADO';
+            case 'APR': return 'APROBADO';
+            case 'DES': return 'DESEMBOLSADO';
+            case 'REP': return 'REPROGRAMADO';
+            case 'ANU': return 'ANULADO';
+            case 'CRE': return 'CREADO';
+            default: return ''
+        }
+    },
+    TIPOGA: function (p) {
+        switch (p) {
+            case 'CAP': return 'GASTO ADM. DESCUENTO EN CAPITAL';
+            case 'CUO': return 'GASTO ADM. EN CUOTAS';
+            case 'ADE': return 'GASTO ADM. PAGO ADELANTADO';
+            default: return ''
+        }
+    },
+};
 function ocultarLoading() {
     $("#loading,#loading-overlay").hide();
 }

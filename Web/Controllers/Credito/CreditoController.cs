@@ -17,15 +17,16 @@ namespace VendixWeb.Controllers
         {
             if (pPersonaId > 0)
             {
-                
+                var usuarioId = VendixGlobal<int>.Obtener("UsuarioId");
+                var oficinaId = VendixGlobal<int>.Obtener("OficinaId");
                 var datos = new DatosCredito
                 {
                     Persona = PersonaBL.Obtener(pPersonaId),
                     Cliente = ClienteBL.Obtener(x => x.PersonaId == pPersonaId),
                     SolicitudCredito = CreditoBL.Listar(x => x.Estado == "CRE" && x.PersonaId == pPersonaId,
-                                        y => y.OrderByDescending(z => z.FechaReg),"Producto").FirstOrDefault(),
+                                        y => y.OrderByDescending(z => z.FechaReg), "Producto").FirstOrDefault(),
                     Producto = ProductoBL.Listar(x => x.Estado).FirstOrDefault(),
-                    Creditos = CreditoBL.Listar(x => (x.Estado == "PEN" || x.Estado == "APR" || x.Estado == "DES") && x.PersonaId == pPersonaId, includeProperties: "PlanPago,Producto,Persona1").ToList()
+                    Creditos = CreditoBL.Listar(x => (x.Estado == "PEN" || x.Estado == "AP1" || x.Estado == "APR" || x.Estado == "DES") && x.PersonaId == pPersonaId, includeProperties: "PlanPago,Producto").ToList()
 
                 };
                 datos.EstadoCliente = datos.Cliente.Estado ? "ACTIVO" : "INACTIVO";
@@ -40,8 +41,14 @@ namespace VendixWeb.Controllers
                 }
 
                 ViewBag.PersonaId = pPersonaId;
-                ViewBag.cboAnalista = new SelectList(PersonaBL.ListarAnalista(), "PersonaId", "NombreCompleto");
+                ViewBag.Cliente = datos.Persona.NombreCompleto;
                 ViewBag.cboProducto = new SelectList(ProductoBL.Listar(x => x.Estado), "ProductoId", "Denominacion");
+                ViewBag.Aprobador1 = UsuarioRolBL.Contar(x => x.UsuarioId == usuarioId
+                                                            && x.OficinaId == oficinaId
+                                                            && x.Rol.Denominacion == "APROBADOR 1", includeProperties: "Rol");
+                ViewBag.Aprobador2 = UsuarioRolBL.Contar(x => x.UsuarioId == usuarioId
+                                                            && x.OficinaId == oficinaId
+                                                            && x.Rol.Denominacion == "APROBADOR 2", includeProperties: "Rol");
 
                 if (datos.SolicitudCredito != null)
                     VendixGlobal<int>.Crear("SolicitudCreditoId", datos.SolicitudCredito.CreditoId);
@@ -69,11 +76,12 @@ namespace VendixWeb.Controllers
             var ffijo = ValorTablaBL.Obtener(x => x.TablaId == 3 && x.ItemId == 2);
             ffijo.Valor = pFactorFijo;
             ValorTablaBL.Actualizar(ffijo);
-            
+
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Simulador(int pProductoId = 1, string pTipo="V", decimal pMonto = 0, int pCuotas = 0, decimal pInteres = 0, string pFecha = "", string pModalidad = "", decimal? pGastosAdm = null)
+        public ActionResult Simulador(int pProductoId = 1, string pTipo = "V", decimal pMonto = 0, int pCuotas = 0, decimal pInteres = 0,
+            string pFecha = "", string pModalidad = "", decimal? pGastosAdm = null, string pGA = "CAP")
         {
             ViewBag.pMonto = pMonto;
             ViewBag.pCuotas = pCuotas;
@@ -86,18 +94,18 @@ namespace VendixWeb.Controllers
             var periodoAnio = 0.0;
             switch (pModalidad)
             {
-                case "D": ViewBag.pModalidad = "DIARIO";periodoAnio = 360.0; break;
+                case "D": ViewBag.pModalidad = "DIARIO"; periodoAnio = 360.0; break;
                 case "S": ViewBag.pModalidad = "SEMANAL"; periodoAnio = 52.0; break;
                 case "Q": ViewBag.pModalidad = "QUINCENAL"; periodoAnio = 24.0; break;
                 case "M": ViewBag.pModalidad = "MENSUAL"; periodoAnio = 12.0; break;
             }
 
 
-            var pTem = pMonto > 0 ? Math.Pow(double.Parse((1 + pInteres / 100).ToString())  , 1/periodoAnio) - 1 : 0;
-            ViewBag.TEM = Math.Round(pTem,6) ;
+            var pTem = pMonto > 0 ? Math.Pow(double.Parse((1 + pInteres / 100).ToString()), 1 / periodoAnio) - 1 : 0;
+            ViewBag.TEM = Math.Round(pTem, 6);
 
             List<usp_SimuladorCredito_Result> oPlanPago = pMonto > 0
-                    ? CreditoBL.SimuladorCredito(pProductoId,pTipo, pMonto, pModalidad, pCuotas, pInteres, DateTime.Parse(pFecha), pGastosAdm)
+                    ? CreditoBL.SimuladorCredito(pProductoId, pTipo, pMonto, pModalidad, pCuotas, pInteres, DateTime.Parse(pFecha), pGA == "CUO" ? pGastosAdm : 0)
                     : new List<usp_SimuladorCredito_Result>();
 
             return View(oPlanPago);
@@ -108,17 +116,21 @@ namespace VendixWeb.Controllers
             return Json(CreditoBL.CrearSolicitudCredito(pPersonaId), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GenerarCredito(int pProductoId,string pTipoCuota, int pAnalistaId, decimal pMontoInicial, decimal pMontoGastosAdm, string pIndGastosAdm, 
+        public ActionResult GenerarCredito(int pProductoId, string pTipoCuota, decimal pMontoInicial, decimal pMontoGastosAdm, string pIndGastosAdm,
                             decimal pMontoCredito, string pModalidad, int pNumerocuotas, decimal pInteresMensual, string pFecha, string pObservacion)
         {
-            var rpta = CreditoBL.CrearCredito(VendixGlobal<int>.Obtener("SolicitudCreditoId"), pProductoId, pTipoCuota, pAnalistaId, pMontoInicial, pMontoGastosAdm, pIndGastosAdm, 
-                pMontoCredito,pModalidad, pNumerocuotas, pInteresMensual, DateTime.Parse(pFecha), pObservacion);
+            var rpta = CreditoBL.CrearCredito(VendixGlobal<int>.Obtener("SolicitudCreditoId"), pProductoId, pTipoCuota, pMontoInicial, pMontoGastosAdm, pIndGastosAdm,
+                pMontoCredito, pModalidad, pNumerocuotas, pInteresMensual, DateTime.Parse(pFecha), pObservacion);
             return Json(rpta, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult AprobarCredito1ra(int pCreditoId)
+        {
+            var rpta = CreditoBL.AprobarCredito(pCreditoId, 0);
+            return Json(rpta, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult AprobarCredito(int pCreditoId)
         {
-            var rpta = CreditoBL.AprobarCredito(pCreditoId);
+            var rpta = CreditoBL.AprobarCredito(pCreditoId, 1);
             return Json(rpta, JsonRequestBehavior.AllowGet);
         }
         public ActionResult RechazarCredito(int pCreditoId)
@@ -129,7 +141,7 @@ namespace VendixWeb.Controllers
         {
             return Json(CreditoBL.ReprogramarCredito(pCreditoId), JsonRequestBehavior.AllowGet);
         }
-        public ActionResult GuardarCargo(int pCreditoId, int pTipoCargoId, decimal pMonto, string pDescripcion,bool pFinal)
+        public ActionResult GuardarCargo(int pCreditoId, int pTipoCargoId, decimal pMonto, string pDescripcion, bool pFinal)
         {
             var rpta = CargoBL.CrearCargo(pCreditoId, pTipoCargoId, pMonto, pDescripcion, pFinal);
             return Json(rpta, JsonRequestBehavior.AllowGet);
@@ -140,11 +152,11 @@ namespace VendixWeb.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
 
             var cant = CuentaxCobrarBL.Contar(x => x.CreditoId == pCreditoId);
-            var cant1 = CuentaxCobrarBL.Contar(x => x.CreditoId == pCreditoId && (x.Estado=="ANU" || x.Estado=="PEN"));
+            var cant1 = CuentaxCobrarBL.Contar(x => x.CreditoId == pCreditoId && (x.Estado == "ANU" || x.Estado == "PEN"));
 
             if (cant == cant1)
                 return Json(true, JsonRequestBehavior.AllowGet);
-            
+
             return Json(false, JsonRequestBehavior.AllowGet);
         }
         public ActionResult AnularCredito(int pCreditoId, string pObservacion)
@@ -185,7 +197,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.CargoId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.CargoId.ToString(),
                                                     item.UsuarioCargo,
                                                     item.TipoCargo,
@@ -231,7 +243,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.CreditoId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.CreditoId.ToString(),
                                                     item.MontoProducto.ToString(),
                                                     item.MontoInicial.ToString(),
@@ -268,7 +280,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.PlanPagoId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                    item.PlanPagoId==0?String.Empty:item.Numero.ToString(),
                                                     item.PlanPagoId==0?String.Empty:item.Capital.ToString(),
                                                     item.PlanPagoId==0?"TOTAL:":item.FechaVencimiento.ToShortDateString(),
@@ -339,7 +351,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.PlanPagoId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                    item.PlanPagoId<=0?String.Empty:item.Numero.ToString(),
                                                     item.PlanPagoId<=0?String.Empty:item.Capital.ToString(),
                                                     item.PlanPagoId>0?item.FechaVencimiento.ToShortDateString():(item.PlanPagoId==0?"TOTAL":(item.PlanPagoId==-1?"PAGADO":"PENDIENTE")),
@@ -363,13 +375,13 @@ namespace VendixWeb.Controllers
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
 
-      
+
         #region Cajadiario
         public ActionResult CajaDiario()
         {
             var oficinaId = VendixGlobal.GetOficinaId();
 
-           // ViewBag.cboBovedas = new SelectList(BovedaBL.ListaBovedasXOficina(oficinaId), "BovedaId", "Denominacion");
+            // ViewBag.cboBovedas = new SelectList(BovedaBL.ListaBovedasXOficina(oficinaId), "BovedaId", "Denominacion");
 
             var usuarioId = VendixGlobal.GetUsuarioId();
             var cajadiario = CajaDiarioBL.Obtener(x => x.UsuarioAsignadoId == usuarioId && x.IndCierre == false, includeProperties: "Caja");
@@ -388,7 +400,7 @@ namespace VendixWeb.Controllers
 
         public ActionResult ExisteCxCPendientes(int pPersonaId)
         {
-            var nro = CuentaxCobrarBL.Contar(x => x.Credito.PersonaId == pPersonaId && x.Estado == "PEN") + OrdenVentaBL.Contar(x => x.PersonaId == pPersonaId && x.TipoVenta=="CON" && x.Estado == "ENV");
+            var nro = CuentaxCobrarBL.Contar(x => x.Credito.PersonaId == pPersonaId && x.Estado == "PEN") + OrdenVentaBL.Contar(x => x.PersonaId == pPersonaId && x.TipoVenta == "CON" && x.Estado == "ENV");
             return Json(nro, JsonRequestBehavior.AllowGet);
         }
 
@@ -406,7 +418,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.Id,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.OrdenVentaId.ToString(),
                                                     item.CuentaxCobrarId.ToString(),
                                                     item.Oficina,
@@ -421,7 +433,32 @@ namespace VendixWeb.Controllers
             };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ListarDesembolsoJGrid(GridDataRequest request)
+        {
+            int totalRecords = 0;
+            var lstItem = CajaDiarioBL.LstDesembolsoJGrid(request, ref totalRecords);
 
+            var data = new
+            {
+                total = (int)Math.Ceiling((float)totalRecords / (float)request.rows),
+                page = request.page,
+                records = totalRecords,
+                rows = (from item in lstItem
+                        select new
+                        {
+                            id = item.CreditoId,
+                            cell = new string[] {
+                                                    item.CreditoId.ToString(),
+                                                    item.MontoCredito.ToString(),
+                                                    item.MontoGastosAdm.ToString(),
+                                                    item.MontoDesembolso.ToString(),
+                                                    item.Estado
+                                                }
+                        }
+                       ).ToArray()
+            };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
         private String ObtenerOp(string pOp)
         {
             switch (pOp)
@@ -446,7 +483,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.PlanPagoId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.PlanPagoId.ToString(),
                                                     item.Glosa,
                                                     item.FechaVencimiento.ToShortDateString(),
@@ -469,7 +506,7 @@ namespace VendixWeb.Controllers
         {
             return Json(VendixGlobal<string>.Obtener("TotalesCuotasPendientes"), JsonRequestBehavior.AllowGet);
         }
-       
+
         public ActionResult PagarCuotas(int pCreditoId, string pPlanPago, decimal pImporteRecibido)
         {
             return Json(CajaDiarioBL.PagarCuotas(VendixGlobal.GetCajaDiarioId(), pCreditoId, pPlanPago, pImporteRecibido),
@@ -478,7 +515,7 @@ namespace VendixWeb.Controllers
 
         public ActionResult TieneCxcPendiente(int pCreditoId)
         {
-            var nro = CuentaxCobrarBL.Contar(x => x.CreditoId == pCreditoId && x.Estado=="PEN");
+            var nro = CuentaxCobrarBL.Contar(x => x.CreditoId == pCreditoId && x.Estado == "PEN");
             return Json(nro > 0, JsonRequestBehavior.AllowGet);
         }
         public ActionResult PagarCuotasImporteLibre(int pCreditoId, decimal pImporteLibre)
@@ -503,7 +540,7 @@ namespace VendixWeb.Controllers
         }
         public ActionResult RealizarPagarCuentaxCobrar(int pOrdenVentaId, int pCuentaxCobrarId)
         {
-            return Json(CajaDiarioBL.RealizarPagarCuentaxCobrar(pOrdenVentaId,pCuentaxCobrarId), JsonRequestBehavior.AllowGet);
+            return Json(CajaDiarioBL.RealizarPagarCuentaxCobrar(pOrdenVentaId, pCuentaxCobrarId), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CerrarCajaDiario()
@@ -515,7 +552,7 @@ namespace VendixWeb.Controllers
         {
             var olstCredito = CreditoBL
                 .Listar(x => x.Estado == "DES" && x.PersonaId == pPersonaId)
-                .Select(x => new { Id = x.CreditoId, Valor = "Credito " + x.CreditoId.ToString() + " - " + x.Descripcion.Replace("\"","") });
+                .Select(x => new { Id = x.CreditoId, Valor = "Credito " + x.CreditoId.ToString() + " - " + x.Descripcion.Replace("\"", "") });
 
             return Json(olstCredito, JsonRequestBehavior.AllowGet);
         }
@@ -533,7 +570,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.MovimientoCajaId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.MovimientoCajaId.ToString(),
                                                     item.Estado?item.MovimientoCajaId.ToString():"",
                                                     item.CajaDiarioId.ToString(),
@@ -544,7 +581,7 @@ namespace VendixWeb.Controllers
                                                     item.Descripcion,
                                                     item.ImportePago.ToString(),
                                                     item.Estado?"ACTIVO":"ANULADO",
-                                                    item.Estado?item.MovimientoCajaId.ToString():"" 
+                                                    item.Estado?item.MovimientoCajaId.ToString():""
                                                 }
                         }
                        ).ToArray()
@@ -584,7 +621,7 @@ namespace VendixWeb.Controllers
         public List<Credito> Creditos { get; set; }
     }
 
-    
+
 
 
 }

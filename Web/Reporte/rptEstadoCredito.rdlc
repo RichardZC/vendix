@@ -42,7 +42,7 @@
               <Width>1.8cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.8cm</Width>
+              <Width>2.05903cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2054,7 +2054,7 @@
         </TablixRowHierarchy>
         <DataSetName>dsEstadoCredito</DataSetName>
         <Height>1.8cm</Height>
-        <Width>19.68292cm</Width>
+        <Width>19.94195cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2065,10 +2065,10 @@
     <Height>0.70866in</Height>
     <Style />
   </Body>
-  <Width>7.74918in</Width>
+  <Width>8.91425in</Width>
   <Page>
     <PageHeader>
-      <Height>3.33375cm</Height>
+      <Height>3.7242cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -2094,7 +2094,7 @@
           <rd:DefaultName>Textbox28</rd:DefaultName>
           <Top>0.02328cm</Top>
           <Height>0.6cm</Height>
-          <Width>19.68292cm</Width>
+          <Width>19.94195cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -2122,10 +2122,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Producto</rd:DefaultName>
-          <Top>1.32884cm</Top>
-          <Left>2.28292cm</Left>
-          <Height>0.6cm</Height>
-          <Width>17.4cm</Width>
+          <Top>1.29709cm</Top>
+          <Left>1.58089cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>8.67978cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -2154,9 +2154,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox31</rd:DefaultName>
-          <Top>1.32884cm</Top>
-          <Height>0.6cm</Height>
-          <Width>2.28292cm</Width>
+          <Top>1.29709cm</Top>
+          <Left>0.02117cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>1.49975cm</Width>
           <ZIndex>2</ZIndex>
           <Style>
             <Border>
@@ -2175,103 +2176,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>Monto Producto: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!MontoProducto.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>   Inicial: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!MontoInicial.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value xml:space="preserve">   </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>Monto Crédito: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!MontoCredito.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value xml:space="preserve">   </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                    <Format>#,0.00;(#,0.00)</Format>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>Cuotas: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!Cuotas.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>   Interes: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!Interes.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value> %   Modalidad: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!Modalidad.Value</Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>   Estado Crédito: </Value>
-                  <Style>
-                    <FontSize>9pt</FontSize>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>=Parameters!Estado.Value</Value>
+                  <Value>Estado:</Value>
                   <Style>
                     <FontSize>9pt</FontSize>
                   </Style>
@@ -2283,9 +2188,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>MontoProducto</rd:DefaultName>
-          <Top>1.96412cm</Top>
-          <Height>0.6cm</Height>
-          <Width>19.68292cm</Width>
+          <Top>2.50414cm</Top>
+          <Left>10.38767cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.31317cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -2315,9 +2221,9 @@
           </Paragraphs>
           <rd:DefaultName>Cliente</rd:DefaultName>
           <Top>0.69384cm</Top>
-          <Left>2.28292cm</Left>
-          <Height>0.6cm</Height>
-          <Width>12.4cm</Width>
+          <Left>1.58089cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>8.67978cm</Width>
           <ZIndex>4</ZIndex>
           <Style>
             <Border>
@@ -2347,8 +2253,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox31</rd:DefaultName>
           <Top>0.69384cm</Top>
-          <Height>0.6cm</Height>
-          <Width>2.28292cm</Width>
+          <Left>0.03175cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>1.49975cm</Width>
           <ZIndex>5</ZIndex>
           <Style>
             <Border>
@@ -2377,9 +2284,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox31</rd:DefaultName>
-          <Top>2.59939cm</Top>
-          <Height>0.6cm</Height>
-          <Width>2.28292cm</Width>
+          <Top>1.89681cm</Top>
+          <Left>0.02117cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>1.49975cm</Width>
           <ZIndex>6</ZIndex>
           <Style>
             <Border>
@@ -2408,10 +2316,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Cliente</rd:DefaultName>
-          <Top>2.59939cm</Top>
-          <Left>2.28292cm</Left>
-          <Height>0.6cm</Height>
-          <Width>17.4cm</Width>
+          <Top>1.89681cm</Top>
+          <Left>1.58089cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>8.67978cm</Width>
           <ZIndex>7</ZIndex>
           <Style>
             <Border>
@@ -2423,16 +2331,49 @@
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
-        <Textbox Name="Textbox34">
+        <Textbox Name="Textbox35">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
           <Paragraphs>
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>=Now()</Value>
+                  <Value>Monto Producto:</Value>
                   <Style>
-                    <FontSize>8pt</FontSize>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>0.69384cm</Top>
+          <Left>15.38428cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.47042cm</Width>
+          <ZIndex>8</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="MontoProducto">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!MontoProducto.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>#,0.00;(#,0.00)</Format>
                   </Style>
                 </TextRun>
               </TextRuns>
@@ -2441,12 +2382,512 @@
               </Style>
             </Paragraph>
           </Paragraphs>
+          <rd:DefaultName>MontoProducto</rd:DefaultName>
+          <Top>0.69384cm</Top>
+          <Left>17.89703cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.0555cm</Width>
+          <ZIndex>9</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox36">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Monto Inicial:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>1.29356cm</Top>
+          <Left>15.38428cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.47042cm</Width>
+          <ZIndex>10</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="MontoInicial">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!MontoInicial.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>#,0.00;(#,0.00)</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>MontoInicial</rd:DefaultName>
+          <Top>1.29356cm</Top>
+          <Left>17.89703cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.0555cm</Width>
+          <ZIndex>11</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox37">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Monto Credito:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>1.89681cm</Top>
+          <Left>15.38428cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.47042cm</Width>
+          <ZIndex>12</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox38">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Gastos Adm:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>2.49653cm</Top>
+          <Left>15.38428cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.47042cm</Width>
+          <ZIndex>13</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="MontoCredito">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!MontoCredito.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>#,0.00;(#,0.00)</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>MontoCredito</rd:DefaultName>
+          <Top>1.89681cm</Top>
+          <Left>17.89703cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.0555cm</Width>
+          <ZIndex>14</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox39">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Cuotas:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
           <rd:DefaultName>Textbox31</rd:DefaultName>
           <Top>0.69384cm</Top>
-          <Left>14.68292cm</Left>
-          <Height>0.6cm</Height>
-          <Width>5cm</Width>
-          <ZIndex>8</ZIndex>
+          <Left>10.38767cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.31317cm</Width>
+          <ZIndex>15</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox40">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>TEA:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>1.29709cm</Top>
+          <Left>10.38767cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.31317cm</Width>
+          <ZIndex>16</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Cuotas">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Cuotas.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Cuotas</rd:DefaultName>
+          <Top>0.69384cm</Top>
+          <Left>12.8102cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.5cm</Width>
+          <ZIndex>17</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Interes1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Interes.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>0.00;(0.00)</Format>
+                  </Style>
+                </TextRun>
+                <TextRun>
+                  <Value> %</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>0.00;(0.00)</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Interes1</rd:DefaultName>
+          <Top>1.29709cm</Top>
+          <Left>12.8102cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.5cm</Width>
+          <ZIndex>18</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Modalidad">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Modalidad.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Modalidad</rd:DefaultName>
+          <Top>1.89681cm</Top>
+          <Left>12.8102cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.5cm</Width>
+          <ZIndex>19</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox41">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Modalidad:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>1.89681cm</Top>
+          <Left>10.38767cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.31317cm</Width>
+          <ZIndex>20</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Estado1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Estado.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Estado1</rd:DefaultName>
+          <Top>2.50414cm</Top>
+          <Left>12.8102cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.5cm</Width>
+          <ZIndex>21</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox42">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Desembolso:</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Top>3.10386cm</Top>
+          <Left>15.38428cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.47042cm</Width>
+          <ZIndex>22</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="GastoAdm">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!GastoAdm.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>#,0.00;(#,0.00)</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>GastoAdm</rd:DefaultName>
+          <Top>2.49653cm</Top>
+          <Left>17.89703cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.0555cm</Width>
+          <ZIndex>23</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Desembolso">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Desembolso.Value</Value>
+                  <Style>
+                    <FontSize>9pt</FontSize>
+                    <Format>#,0.00;(#,0.00)</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Desembolso</rd:DefaultName>
+          <Top>3.10386cm</Top>
+          <Left>17.89703cm</Left>
+          <Height>0.52917cm</Height>
+          <Width>2.0555cm</Width>
+          <ZIndex>24</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -2497,6 +2938,38 @@
           <Left>14.68292cm</Left>
           <Height>0.6cm</Height>
           <Width>5cm</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox34">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Now()</Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox31</rd:DefaultName>
+          <Height>0.6cm</Height>
+          <Width>5cm</Width>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -2610,6 +3083,7 @@
   <ReportParameters>
     <ReportParameter Name="Producto">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="MontoProducto">
@@ -2626,6 +3100,7 @@
     </ReportParameter>
     <ReportParameter Name="Modalidad">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="Cuotas">
@@ -2638,14 +3113,25 @@
     </ReportParameter>
     <ReportParameter Name="Estado">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="Cliente">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="Analista">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="GastoAdm">
+      <DataType>Float</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Desembolso">
+      <DataType>Float</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
   </ReportParameters>

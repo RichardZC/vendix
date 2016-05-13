@@ -22,10 +22,11 @@ namespace ITB.VENDIX.BL
                 MontoCredito = 0,
                 ProductoId = 1,
                 MontoGastosAdm = 0,
+                TipoGastoAdm = "CAP",
                 Estado = "CRE",
                 FormaPago = "M",
                 NumeroCuotas = 12,
-                InteresMensual = 19,
+                Interes = 19,
                 FechaPrimerPago = DateTime.Now,
                 FechaVencimiento = DateTime.Now,
                 FechaReg = DateTime.Now,
@@ -37,28 +38,31 @@ namespace ITB.VENDIX.BL
 
         public static DatoCredito ObtenerDatoCredito(int pCreditoId)
         {
+            
             using (var db = new VENDIXEntities())
             {
                 var qry = from c in db.Credito
                           where c.CreditoId == pCreditoId
                           select new DatoCredito()
-                                     {
-                                         CreditoId = c.CreditoId,
-                                         Descripcion = c.Descripcion,
-                                         MontoProducto = c.MontoProducto,
-                                         MontoInicial = c.MontoInicial,
-                                         MontoCredito = c.MontoCredito,
-                                         MontoGastosAdm = c.MontoGastosAdm,
-                                         FormaPago = c.FormaPago,
-                                         NumeroCuotas = c.NumeroCuotas,
-                                         InteresMensual = c.InteresMensual,
-                                         Estado = c.Estado,
-                                         FechaDesembolso = c.FechaDesembolso,
-                                         FechaAprobacion = c.FechaAprobacion,
-                                         FechaVencimiento = c.FechaVencimiento,
-                                         Analista = c.Persona1.NombreCompleto,
-                                         ProductoCre = c.Producto.Denominacion
-                                     };
+                          {
+                              CreditoId = c.CreditoId,
+                              Descripcion = c.Descripcion,
+                              MontoProducto = c.MontoProducto,
+                              MontoInicial = c.MontoInicial,
+                              MontoCredito = c.MontoCredito,
+                              MontoGastosAdm = c.MontoGastosAdm,
+                              MontoDesembolso = c.MontoDesembolso,
+                              TipoGastoAdm = c.TipoGastoAdm,
+                              FormaPago = c.FormaPago,
+                              NumeroCuotas = c.NumeroCuotas,
+                              Interes = c.Interes,
+                              Estado = c.Estado,
+                              FechaDesembolso = c.FechaDesembolso,
+                              FechaAprobacion = c.FechaAprobacion,
+                              FechaVencimiento = c.FechaVencimiento,
+                              Analista = c.Usuario.Persona.NombreCompleto,
+                              ProductoCre = c.Producto.Denominacion
+                          };
                 var data = qry.First();
                 data.Desembolso = data.FechaDesembolso.HasValue ? data.FechaDesembolso.Value.ToShortDateString() : string.Empty;
                 data.Aprobacion = data.FechaAprobacion.HasValue ? data.FechaAprobacion.Value.ToShortDateString() : string.Empty;
@@ -70,13 +74,13 @@ namespace ITB.VENDIX.BL
         }
 
         public static List<usp_SimuladorCredito_Result> SimuladorCredito
-            (int pProductoId,string pTipo, decimal pMonto, string pFormaPago, int pNumerocuotas, decimal pInteresMensual, DateTime pFechaPrimerPago,
+            (int pProductoId, string pTipo, decimal pMonto, string pFormaPago, int pNumerocuotas, decimal pInteres, DateTime pFechaPrimerPago,
              Decimal? pGastosAdm)
         {
 
             using (var db = new VENDIXEntities())
             {
-                return db.usp_SimuladorCredito(pTipo, pFormaPago, pMonto,  pNumerocuotas, pInteresMensual,
+                return db.usp_SimuladorCredito(pTipo, pFormaPago, pMonto, pNumerocuotas, pInteres,
                         pFechaPrimerPago, pGastosAdm).ToList();
             }
 
@@ -88,21 +92,21 @@ namespace ITB.VENDIX.BL
             {
                 return db.PlanPago.Where(x => x.CreditoId == pCreditoId)
                 .Select(x => new RptPlanPago
-                                 {
-                                     Numero = x.Numero,
-                                     Capital = x.Capital,
-                                     FechaPago = x.FechaVencimiento,
-                                     Amortizacion = x.Amortizacion,
-                                     Interes = x.Interes,
-                                     GastosAdm = x.GastosAdm,
-                                     Cuota = x.Cuota
-                                 }).ToList();
+                {
+                    Numero = x.Numero,
+                    Capital = x.Capital,
+                    FechaPago = x.FechaVencimiento,
+                    Amortizacion = x.Amortizacion,
+                    Interes = x.Interes,
+                    GastosAdm = x.GastosAdm,
+                    Cuota = x.Cuota
+                }).ToList();
             }
         }
 
-        public static string CrearCredito(int pSolicitudCreditoId, int pProductoId, string pTipoCuota, int pAnalistaId,
+        public static string CrearCredito(int pSolicitudCreditoId, int pProductoId, string pTipoCuota,
                                           decimal pMontoInicial, decimal pMontoGastosAdm, string pIndGastosAdm, decimal pMontoCredito,
-                                          string pModalidad,int pNumerocuotas, decimal pInteresMensual, DateTime pFechaPrimerPago,string pObservacion)
+                                          string pModalidad, int pNumerocuotas, decimal pInteresMensual, DateTime pFechaPrimerPago, string pObservacion)
         {
 
             string retorno;
@@ -113,9 +117,9 @@ namespace ITB.VENDIX.BL
                     using (var db = new VENDIXEntities())
                     {
                         retorno =
-                            db.usp_Credito_Ins(pSolicitudCreditoId, pProductoId, pTipoCuota, pAnalistaId, pMontoInicial,pMontoCredito,
-                                               pMontoGastosAdm, pIndGastosAdm, pModalidad, pNumerocuotas, pInteresMensual, 
-                                               pFechaPrimerPago,pObservacion,VendixGlobal.GetUsuarioId()).ToList()[0];
+                            db.usp_Credito_Ins(pSolicitudCreditoId, pProductoId, pTipoCuota, pMontoInicial, pMontoCredito,
+                                               pMontoGastosAdm, pIndGastosAdm, pModalidad, pNumerocuotas, pInteresMensual,
+                                               pFechaPrimerPago, pObservacion, VendixGlobal.GetUsuarioId()).ToList()[0];
                     }
                     scope.Complete();
                 }
@@ -127,7 +131,7 @@ namespace ITB.VENDIX.BL
             }
             return retorno;
         }
-        public static bool AprobarCredito(int pCreditoId)
+        public static bool AprobarCredito(int pCreditoId, int pOpcion)
         {
             var usuario = VendixGlobal<int>.Obtener("UsuarioId");
             using (var scope = new TransactionScope())
@@ -136,7 +140,7 @@ namespace ITB.VENDIX.BL
                 {
                     using (var db = new VENDIXEntities())
                     {
-                        db.usp_Credito_Upd(1, pCreditoId, usuario);
+                        db.usp_Credito_Upd(pOpcion, pCreditoId, usuario);
                     }
                     scope.Complete();
                     return true;
@@ -264,13 +268,13 @@ namespace ITB.VENDIX.BL
                           where mc.CreditoId == pCreditoId && mc.Estado
                           orderby mc.FechaReg
                           select new RptCreditoMov
-                                     {
-                                         MovimientoCajaId = mc.MovimientoCajaId,
-                                         Operacion = mc.Operacion,
-                                         Fecha = mc.FechaReg,
-                                         Glosa = mc.Descripcion,
-                                         ImportePago = mc.ImportePago
-                                     };
+                          {
+                              MovimientoCajaId = mc.MovimientoCajaId,
+                              Operacion = mc.Operacion,
+                              Fecha = mc.FechaReg,
+                              Glosa = mc.Descripcion,
+                              ImportePago = mc.ImportePago
+                          };
                 return qry.ToList();
             }
         }
@@ -282,6 +286,17 @@ namespace ITB.VENDIX.BL
                 return (decimal)cancel;
             }
         }
+        public static decimal ObtenerTEM(decimal pTEA,string pFormaPago)
+        {
+            
+            using (var db = new VENDIXEntities())
+            {
+                decimal tem = db.usp_CalcularTEM(pTEA, pFormaPago).First().Value;
+                return tem;
+            }
+        }
+
+
     }
 
     public class DatoCredito : Credito
@@ -294,7 +309,7 @@ namespace ITB.VENDIX.BL
         public decimal SaldoCancelacion { get; set; }
     }
 
-    
+
     public class RptPlanPago
     {
         public int Numero { get; set; }

@@ -27,5 +27,14 @@ namespace ITB.VENDIX.BL
                     .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
             }
         }
+
+        public static string ObtenerNombre(int pUsuarioId)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                var query = db.Usuario.Where(x => x.UsuarioId == pUsuarioId).Select(x => new { nombre = x.Persona.NombreCompleto }).First();
+                return query.nombre;
+            }
+        }
     }
 }

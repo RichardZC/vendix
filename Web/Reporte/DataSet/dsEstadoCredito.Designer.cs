@@ -279,7 +279,7 @@ namespace Web.Reporte.DataSet {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class dsEstadoCreditoDataTable : global::System.Data.TypedTableBase<dsEstadoCreditoRow> {
             
-            private global::System.Data.DataColumn columnPlanPagoid;
+            private global::System.Data.DataColumn columnPlanPagoId;
             
             private global::System.Data.DataColumn columnNumero;
             
@@ -342,9 +342,9 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn PlanPagoidColumn {
+            public global::System.Data.DataColumn PlanPagoIdColumn {
                 get {
-                    return this.columnPlanPagoid;
+                    return this.columnPlanPagoId;
                 }
             }
             
@@ -489,10 +489,10 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dsEstadoCreditoRow AdddsEstadoCreditoRow(int PlanPagoid, short Numero, decimal Capital, System.DateTime FechaVencimiento, decimal Amortizacion, decimal Interes, decimal GastosAdm, decimal Cuota, string Estado, short DiasAtrazo, decimal ImporteMora, decimal InteresMora, System.DateTime FechaPagoCuota, decimal PagoCuota) {
+            public dsEstadoCreditoRow AdddsEstadoCreditoRow(int PlanPagoId, short Numero, decimal Capital, System.DateTime FechaVencimiento, decimal Amortizacion, decimal Interes, decimal GastosAdm, decimal Cuota, string Estado, short DiasAtrazo, decimal ImporteMora, decimal InteresMora, System.DateTime FechaPagoCuota, decimal PagoCuota) {
                 dsEstadoCreditoRow rowdsEstadoCreditoRow = ((dsEstadoCreditoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        PlanPagoid,
+                        PlanPagoId,
                         Numero,
                         Capital,
                         FechaVencimiento,
@@ -528,7 +528,7 @@ namespace Web.Reporte.DataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnPlanPagoid = base.Columns["PlanPagoid"];
+                this.columnPlanPagoId = base.Columns["PlanPagoId"];
                 this.columnNumero = base.Columns["Numero"];
                 this.columnCapital = base.Columns["Capital"];
                 this.columnFechaVencimiento = base.Columns["FechaVencimiento"];
@@ -547,8 +547,8 @@ namespace Web.Reporte.DataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnPlanPagoid = new global::System.Data.DataColumn("PlanPagoid", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPlanPagoid);
+                this.columnPlanPagoId = new global::System.Data.DataColumn("PlanPagoId", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPlanPagoId);
                 this.columnNumero = new global::System.Data.DataColumn("Numero", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumero);
                 this.columnCapital = new global::System.Data.DataColumn("Capital", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -719,17 +719,17 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int PlanPagoid {
+            public int PlanPagoId {
                 get {
                     try {
-                        return ((int)(this[this.tabledsEstadoCredito.PlanPagoidColumn]));
+                        return ((int)(this[this.tabledsEstadoCredito.PlanPagoIdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("El valor de la columna \'PlanPagoid\' de la tabla \'dsEstadoCredito\' es DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'PlanPagoId\' de la tabla \'dsEstadoCredito\' es DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsEstadoCredito.PlanPagoidColumn] = value;
+                    this[this.tabledsEstadoCredito.PlanPagoIdColumn] = value;
                 }
             }
             
@@ -944,14 +944,14 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsPlanPagoidNull() {
-                return this.IsNull(this.tabledsEstadoCredito.PlanPagoidColumn);
+            public bool IsPlanPagoIdNull() {
+                return this.IsNull(this.tabledsEstadoCredito.PlanPagoIdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetPlanPagoidNull() {
-                this[this.tabledsEstadoCredito.PlanPagoidColumn] = global::System.Convert.DBNull;
+            public void SetPlanPagoIdNull() {
+                this[this.tabledsEstadoCredito.PlanPagoIdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -10,7 +10,7 @@
 <!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang="es">
- <!--<![endif]-->
+<!--<![endif]-->
 <head>
     <meta charset="utf-8">
 
@@ -241,67 +241,67 @@
 
                     @if (VendixGlobal<int>.Obtener("Usuarioid") == VendixGlobal<int>.Obtener("UsuarioidAsignadoOficina"))
                     {
-                        <li id="partial_Transferencias">
+                    <li id="partial_Transferencias">
 
-                            @{
+                        @{
                                 var listaTransferencias = BovedaMovBL.ListarTransferencias();
-                            }
-                            <a href="#"><span>@listaTransferencias.Count</span>Transferencias</a>
+                        }
+                        <a href="#"><span>@listaTransferencias.Count</span>Transferencias</a>
 
-                            <!-- Mail popup -->
-                            <div class="popup">
-                                <h3>Nuevas Transferencias</h3>
+                        <!-- Mail popup -->
+                        <div class="popup">
+                            <h3>Nuevas Transferencias</h3>
 
-                                <!-- The mail content -->
-                                <div class="content mail">
-                                    <ul>
+                            <!-- The mail content -->
+                            <div class="content mail">
+                                <ul>
 
-                                        @if (listaTransferencias == null)
+                                    @if (listaTransferencias == null)
                                         {
-                                            <li></li>
+                                        <li></li>
                                         }
-                                        @if (listaTransferencias != null)
+                                    @if (listaTransferencias != null)
                                         {
                                             foreach (var item in listaTransferencias)
                                             {
 
 
-                                                <li>
-                                                    <div class="avatar">
-                                                        <img src="~/img/elements/mail/avatar.png" height="40" width="40" />
-                                                    </div>
-                                                    <div class="info">
-                                                        <strong>Monto : S/.  @item.Monto </strong>
-                                                        <span>De : @item.From</span>
+                                        <li>
+                                            <div class="avatar">
+                                                <img src="~/img/elements/mail/avatar.png" height="40" width="40" />
+                                            </div>
+                                            <div class="info">
+                                                <strong>Monto : S/.  @item.Monto </strong>
+                                                <span>De : @item.From</span>
 
-                                                    </div>
+                                            </div>
 
-                                                    <div class="text">
-                                                        <p>Descripcion :</p>
-                                                        <p>@item.Descripcion</p>
-                                                        <p>________________________________</p>
-                                                        <p>@item.UsuarioReg </p>
-                                                        <div class="actions">
-                                                            @*<a onclick="$(this).parent().parent().parent().slideToggle($$.config.fxSpeed)" class="red left" href="javascript:void(0);">Rechazar    </a>
-                                                                <a href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>*@
-                                                            <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '2'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" class="red left" href="javascript:void(0);">Rechazar    </a>
-                                                            <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '1'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>
-                                                        </div>
-                                                    </div>
-                                                    ----------------------------------------
-                                                </li>
+                                            <div class="text">
+                                                <p>Descripcion :</p>
+                                                <p>@item.Descripcion</p>
+                                                <p>________________________________</p>
+                                                <p>@item.UsuarioReg </p>
+                                                <div class="actions">
+                                                    @*<a onclick="$(this).parent().parent().parent().slideToggle($$.config.fxSpeed)" class="red left" href="javascript:void(0);">Rechazar    </a>
+                                                        <a href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>*@
+                                                    <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '2'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" class="red left" href="javascript:void(0);">Rechazar    </a>
+                                                    <a onclick="ConfirmaTransFerencia(@item.TransferenciaId, '1'); $(this).parent().parent().parent().slideToggle($$.config.fxSpeed);return false;" href="javascript:void(0);" class="right open-message-dialog">Aceptar</a>
+                                                </div>
+                                            </div>
+                                            ----------------------------------------
+                                        </li>
                                             }
                                         }
 
-                                    </ul>
-                                </div>
-                                <!-- End of .contents -->
-
+                                </ul>
                             </div>
-                            <!-- End of .popup -->
+                            <!-- End of .contents -->
+
+                        </div>
+                        <!-- End of .popup -->
 
 
-                        </li>
+                    </li>
                         <!-- End of li -->
 
 
@@ -397,18 +397,18 @@
                             {
                                 foreach (var item in menuPadre)
                                 {
-                                    <li>
-                                        <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/ui-layered-pane.png" alt="" height="16" width="16" />@item.Denominacion<span class="badge">*</span></a>
-                                        <ul>
-                                            @{
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/icons/packs/fugue/16x16/ui-layered-pane.png" alt="" height="16" width="16" />@item.Denominacion<span class="badge">*</span></a>
+                            <ul>
+                                @{
                                                 var menuHijo = menuVendix.Where(x => x.Referencia == item.Orden).OrderBy(y => y.Orden);
                                                 foreach (var mnu in menuHijo)
                                                 {
-                                                    <li><a href="@Url.Action("Index", @mnu.Url)"><span class="icon @mnu.Icono"></span>@mnu.Denominacion</a></li>
+                                            <li><a href="@Url.Action("Index", @mnu.Url)"><span class="icon @mnu.Icono"></span>@mnu.Denominacion</a></li>
                                                 }
-                                            }
-                                        </ul>
-                                    </li>
+                                }
+                            </ul>
+                        </li>
                                                     }
                                                 }
                         }
@@ -524,8 +524,7 @@
                     <strong>Producto</strong>
                 </label>
                 <div>
-                    <select style="padding-bottom: 10px" name="cboProductos" id="cboProductos" class="required" data-placeholder="Escoger Producto">
-                    </select>
+                    <select style="padding-bottom: 10px" name="cboProductos" id="cboProductos" class="required" data-placeholder="Escoger Producto"></select>
                 </div>
             </div>
             <div class="row">
@@ -553,11 +552,24 @@
                 </div>
             </div>
             <div class="row">
+                <label for="pcboTipoGA">
+                    <strong>Tipo G. Adm</strong>
+                </label>
+                <div>
+                    <select style="padding-bottom: 10px" name="pcboTipoGA" id="pcboTipoGA" class="required" data-placeholder="Escoger TipoGA">
+                        <option value="CAP">Gasto Adm. Descuento en Capital</option>
+                        <option value="CUO">Gasto Adm. en Cuotas</option>
+                        <option value="ADE">Gasto Adm. Pago Adelantado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
                 <label for="pMonto">
                     <strong>Monto</strong>
                 </label>
                 <div>
                     <input class="required" type="number" name="pMonto" id="pMonto" value="5000.00" />
+                    <label id="plblGA"></label>
                 </div>
             </div>
             <div class="row">
@@ -565,16 +577,17 @@
                     <strong>Numero Cuotas</strong>
                 </label>
                 <div>
-                    <input class="required" type="number" name="pCuotas" id="pCuotas" value="24"/>
+                    <input class="required" type="number" name="pCuotas" id="pCuotas" value="24" />
                 </div>
             </div>
-            
+
             <div class="row">
                 <label for="pInteres">
                     <strong>TEA %</strong>
                 </label>
                 <div>
                     <input class="required" type="number" name="pInteres" id="pInteres" value="19.0" />
+                    <label id="plblInteresRango"></label>
                 </div>
             </div>
             <div class="row">
@@ -585,7 +598,7 @@
                     <input class="required" type="date" name="pFecha" id="pFecha" value="@DateTime.Now.ToShortDateString()" />
                 </div>
             </div>
-           
+
         </form>
         <div class="actions">
             <div class="left">
@@ -608,13 +621,54 @@
             }).find('button.submit').click(function () {
                 var $el = $(this).parents('.ui-dialog-content');
                 if ($el.validate().form()) {
-                    window.location = '@Url.Action("Simulador", "Credito")' + "?pProductoid=" + $('#cboProductos').val() + "&pTipo=" + $('#cboTipo').val() + "&pMonto=" + $('#pMonto').val() + '&pCuotas=' + $('#pCuotas').val() + '&pInteres=' + $('#pInteres').val() + '&pFecha=' + $('#pFecha').val() + '&pModalidad=' + $('#cboModalidad').val();
+                    //window.location = '@Url.Action("Simulador", "Credito")' + "?pProductoid=" + $('#cboProductos').val() + "&pTipo=" + $('#cboTipo').val() + "&pMonto=" + $('#pMonto').val() + '&pCuotas=' + $('#pCuotas').val() + '&pInteres=' + $('#pInteres').val() + '&pFecha=' + $('#pFecha').val() + '&pModalidad=' + $('#cboModalidad').val() + '&pGastosAdm=' + $("#plblGA").data("GastosAdm") + '&pGA=CAP';
+                    window.open('@Url.Action("ReporteSimuladorPlanPagos", "Reporte")' + "?pProductoid=" + $('#cboProductos').val() + "&pTipo=" + $('#cboTipo').val() + "&pMonto=" + $('#pMonto').val() + '&pCuotas=' + $('#pCuotas').val() + '&pInteres=' + $('#pInteres').val() + '&pFecha=' + $('#pFecha').val() + '&pModalidad=' + $('#cboModalidad').val() + '&pGastosAdm=' + $("#plblGA").data("GastosAdm") + '&pGA=' + $('#pcboTipoGA').val());
                     $el.find('form')[0].reset();
                     $el.dialog('close');
                 }
             }).end().find('button.cancel').click(function () {
                 $("#dialog_simulador").dialog('close');
             });
+
+            $(".open-simulador").click(function () {
+                Vendix.CargarCombo("@Url.Action("ListarProductos", "Credito")", "cboProductos", function () { MostrarInteresSim(); });
+                $("#cboModalidad,#pcboTipoGA,#cboTipo").trigger("liszt:updated");
+                CalcularGA();
+                $("#dialog_simulador").dialog("open");
+            });
+
+            $("#cboProductos").change(function () {
+                MostrarInteresSim();
+            });
+            $("#pMonto").numeric(2)
+                    .keyup(function (event) {
+                        if (event.which == 13) {
+                            event.preventDefault();
+                        }
+                        CalcularGA();
+                    });
+
+            $("#pInteres").numeric(2)
+            .blur(function () {
+                var num = parseFloat($(this).val());
+                var max = $("#plblInteresRango").data("max");
+                var min = $("#plblInteresRango").data("min");
+                if (num < min || num > max) {
+                    $(this).val(max.toFixed(2));
+                    Vendix.Mensaje("El Interes debe estar entre " + min.toFixed(2) + " y " + max.toFixed(2));
+                }
+            })
+
+            $("#cboModalidad").change(function () {
+                $.ajax({
+                    url: "@Url.Action("ObtenerFechaPrimerPago", "Credito")",
+                    data: { pModalidad: $(this).val() },
+                    success: function (ret) {
+                        $("#pFecha").val(ret);
+                    }
+                });
+            });
+            $("#cboModalidad").trigger("change");
 
             //Dialogo Cliente
             $("#dialogo_buscar_cliente").dialog({
@@ -626,13 +680,31 @@
                 $("#dialogo_buscar_cliente").dialog('close');
             });
 
-            $(".open-simulador").click(function () {
-                Vendix.CargarCombo("@Url.Action("ListarProductos", "Credito")", "cboProductos");
-                $("#cboModalidad").trigger("liszt:updated");
-                $("#dialog_simulador").dialog("open");
-                return false;
-            });
+
         });
+
+        function MostrarInteresSim() {
+            $.ajax({
+                url: "@Url.Action("ObtenerProducto", "Credito")",
+                data: { pProductoId: $("#cboProductos").val() },
+                success: function (ret) {
+                    $("#pInteres").val(parseFloat(ret.InteresMaxima).toFixed(2));
+                    $("#plblInteresRango").text("Interes Min: " + parseFloat(ret.InteresMinima).toFixed(2) + " Max: " + parseFloat(ret.InteresMaxima).toFixed(2));
+                    $("#plblInteresRango").data("min", ret.InteresMinima);
+                    $("#plblInteresRango").data("max", ret.InteresMaxima);
+                }
+            });
+        };
+        function CalcularGA() {
+            $.ajax({
+                url: "@Url.Action("CalcularGastosAdm", "Credito")",
+                data: { pProductoId: 1, pMonto: $("#pMonto").val() },
+                success: function (ret) {
+                    $("#plblGA").data("GastosAdm", ret);
+                    $("#plblGA").text("Gastos Administrativos: " + ret.toFixed(2));
+                }
+            });
+        };
 
         function ConfirmaTransFerencia(transferenciaId, flag) {
             $.ajax({
@@ -647,7 +719,7 @@
                         Vendix.Notificar("Grabar");
                         $("#grdBovedaMov").trigger("reloadGrid");
                         location.reload();
-                       } else {
+                    } else {
                         alert("Sucedio un Error al Realizar la Transaccion consulte Con Area de Sistemas");
                     }
                 }

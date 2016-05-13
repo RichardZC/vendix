@@ -86,7 +86,7 @@ namespace ITB.VENDIX.BL
                                    Estado = "CRE",
                                    FormaPago = "D",
                                    NumeroCuotas = 26,
-                                   InteresMensual = 7,
+                                   Interes = 7,
                                    FechaPrimerPago = DateTime.Now,
                                    FechaVencimiento = DateTime.Now,
                                    FechaReg = DateTime.Now,
