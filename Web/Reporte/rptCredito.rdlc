@@ -1202,14 +1202,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="InteresMensual">
+                    <Textbox Name="Interes">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!InteresMensual.Value</Value>
+                              <Value>=Fields!Interes.Value</Value>
                               <Style>
                                 <FontSize>7pt</FontSize>
                               </Style>
@@ -1220,7 +1220,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>InteresMensual</rd:DefaultName>
+                      <rd:DefaultName>Interes</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2042,7 +2042,6 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0cm</Top>
           <Left>21.81929cm</Left>
           <Height>0.6cm</Height>
           <Width>4.69605cm</Width>
@@ -2121,8 +2120,8 @@
           <DataField>NumeroCuotas</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="InteresMensual">
-          <DataField>InteresMensual</DataField>
+        <Field Name="Interes">
+          <DataField>Interes</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Estado">
@@ -2148,7 +2147,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>dsCredito</rd:DataSetName>
-        <rd:SchemaPath>I:\Temp\Vendix\VendixWeb\Reporte\DataSet\dsCredito.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\GITHUB\vendix\Web\Reporte\DataSet\dsCredito.xsd</rd:SchemaPath>
         <rd:TableName>dsCredito</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

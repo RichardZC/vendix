@@ -1428,14 +1428,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="InteresMensual">
+                    <Textbox Name="Interes">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!InteresMensual.Value</Value>
+                              <Value>=Fields!Interes.Value</Value>
                               <Style>
                                 <FontSize>7pt</FontSize>
                               </Style>
@@ -1446,7 +1446,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>InteresMensual</rd:DefaultName>
+                      <rd:DefaultName>Interes</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -2556,7 +2556,7 @@
         </TablixRowHierarchy>
         <DataSetName>dsCreditoRentabilidad</DataSetName>
         <Height>2.4cm</Height>
-        <Width>26.51533cm</Width>
+        <Width>26.51536cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2768,7 +2768,6 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0cm</Top>
           <Left>21.66053cm</Left>
           <Height>0.6cm</Height>
           <Width>4.8548cm</Width>
@@ -2835,8 +2834,8 @@
           <DataField>NumeroCuotas</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="InteresMensual">
-          <DataField>InteresMensual</DataField>
+        <Field Name="Interes">
+          <DataField>Interes</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="FormaPago">
@@ -2894,7 +2893,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>dsCreditoRentabilidad</rd:DataSetName>
-        <rd:SchemaPath>I:\Temp\Vendix\VendixWeb\Reporte\DataSet\dsCreditoRentabilidad.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\GITHUB\vendix\Web\Reporte\DataSet\dsCreditoRentabilidad.xsd</rd:SchemaPath>
         <rd:TableName>dsCreditoRentabilidad</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

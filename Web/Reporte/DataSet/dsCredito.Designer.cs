@@ -285,7 +285,7 @@ namespace Web.Reporte.DataSet {
             
             private global::System.Data.DataColumn columnArticulo;
             
-            private global::System.Data.DataColumn columnCreditoid;
+            private global::System.Data.DataColumn columnCreditoId;
             
             private global::System.Data.DataColumn columnFechaDesembolso;
             
@@ -295,7 +295,7 @@ namespace Web.Reporte.DataSet {
             
             private global::System.Data.DataColumn columnNumeroCuotas;
             
-            private global::System.Data.DataColumn columnInteresMensual;
+            private global::System.Data.DataColumn columnInteres;
             
             private global::System.Data.DataColumn columnEstado;
             
@@ -366,9 +366,9 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CreditoidColumn {
+            public global::System.Data.DataColumn CreditoIdColumn {
                 get {
-                    return this.columnCreditoid;
+                    return this.columnCreditoId;
                 }
             }
             
@@ -406,9 +406,9 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn InteresMensualColumn {
+            public global::System.Data.DataColumn InteresColumn {
                 get {
-                    return this.columnInteresMensual;
+                    return this.columnInteres;
                 }
             }
             
@@ -489,18 +489,18 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dsCreditoRow AdddsCreditoRow(string Producto, string Cliente, string Articulo, int Creditoid, System.DateTime FechaDesembolso, System.DateTime FechaVcto, string FormaPago, int NumeroCuotas, decimal InteresMensual, string Estado, decimal MontoProducto, decimal MontoInicial, decimal MontoCredito, decimal MontoGastosAdm) {
+            public dsCreditoRow AdddsCreditoRow(string Producto, string Cliente, string Articulo, int CreditoId, System.DateTime FechaDesembolso, System.DateTime FechaVcto, string FormaPago, int NumeroCuotas, decimal Interes, string Estado, decimal MontoProducto, decimal MontoInicial, decimal MontoCredito, decimal MontoGastosAdm) {
                 dsCreditoRow rowdsCreditoRow = ((dsCreditoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Producto,
                         Cliente,
                         Articulo,
-                        Creditoid,
+                        CreditoId,
                         FechaDesembolso,
                         FechaVcto,
                         FormaPago,
                         NumeroCuotas,
-                        InteresMensual,
+                        Interes,
                         Estado,
                         MontoProducto,
                         MontoInicial,
@@ -531,12 +531,12 @@ namespace Web.Reporte.DataSet {
                 this.columnProducto = base.Columns["Producto"];
                 this.columnCliente = base.Columns["Cliente"];
                 this.columnArticulo = base.Columns["Articulo"];
-                this.columnCreditoid = base.Columns["Creditoid"];
+                this.columnCreditoId = base.Columns["CreditoId"];
                 this.columnFechaDesembolso = base.Columns["FechaDesembolso"];
                 this.columnFechaVcto = base.Columns["FechaVcto"];
                 this.columnFormaPago = base.Columns["FormaPago"];
                 this.columnNumeroCuotas = base.Columns["NumeroCuotas"];
-                this.columnInteresMensual = base.Columns["InteresMensual"];
+                this.columnInteres = base.Columns["Interes"];
                 this.columnEstado = base.Columns["Estado"];
                 this.columnMontoProducto = base.Columns["MontoProducto"];
                 this.columnMontoInicial = base.Columns["MontoInicial"];
@@ -553,8 +553,8 @@ namespace Web.Reporte.DataSet {
                 base.Columns.Add(this.columnCliente);
                 this.columnArticulo = new global::System.Data.DataColumn("Articulo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnArticulo);
-                this.columnCreditoid = new global::System.Data.DataColumn("Creditoid", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCreditoid);
+                this.columnCreditoId = new global::System.Data.DataColumn("CreditoId", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreditoId);
                 this.columnFechaDesembolso = new global::System.Data.DataColumn("FechaDesembolso", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFechaDesembolso);
                 this.columnFechaVcto = new global::System.Data.DataColumn("FechaVcto", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -563,8 +563,8 @@ namespace Web.Reporte.DataSet {
                 base.Columns.Add(this.columnFormaPago);
                 this.columnNumeroCuotas = new global::System.Data.DataColumn("NumeroCuotas", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumeroCuotas);
-                this.columnInteresMensual = new global::System.Data.DataColumn("InteresMensual", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnInteresMensual);
+                this.columnInteres = new global::System.Data.DataColumn("Interes", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInteres);
                 this.columnEstado = new global::System.Data.DataColumn("Estado", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEstado);
                 this.columnMontoProducto = new global::System.Data.DataColumn("MontoProducto", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -767,17 +767,17 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Creditoid {
+            public int CreditoId {
                 get {
                     try {
-                        return ((int)(this[this.tabledsCredito.CreditoidColumn]));
+                        return ((int)(this[this.tabledsCredito.CreditoIdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("El valor de la columna \'Creditoid\' de la tabla \'dsCredito\' es DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'CreditoId\' de la tabla \'dsCredito\' es DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsCredito.CreditoidColumn] = value;
+                    this[this.tabledsCredito.CreditoIdColumn] = value;
                 }
             }
             
@@ -847,17 +847,17 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal InteresMensual {
+            public decimal Interes {
                 get {
                     try {
-                        return ((decimal)(this[this.tabledsCredito.InteresMensualColumn]));
+                        return ((decimal)(this[this.tabledsCredito.InteresColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("El valor de la columna \'InteresMensual\' de la tabla \'dsCredito\' es DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'Interes\' de la tabla \'dsCredito\' es DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsCredito.InteresMensualColumn] = value;
+                    this[this.tabledsCredito.InteresColumn] = value;
                 }
             }
             
@@ -979,14 +979,14 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCreditoidNull() {
-                return this.IsNull(this.tabledsCredito.CreditoidColumn);
+            public bool IsCreditoIdNull() {
+                return this.IsNull(this.tabledsCredito.CreditoIdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCreditoidNull() {
-                this[this.tabledsCredito.CreditoidColumn] = global::System.Convert.DBNull;
+            public void SetCreditoIdNull() {
+                this[this.tabledsCredito.CreditoIdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1039,14 +1039,14 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsInteresMensualNull() {
-                return this.IsNull(this.tabledsCredito.InteresMensualColumn);
+            public bool IsInteresNull() {
+                return this.IsNull(this.tabledsCredito.InteresColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetInteresMensualNull() {
-                this[this.tabledsCredito.InteresMensualColumn] = global::System.Convert.DBNull;
+            public void SetInteresNull() {
+                this[this.tabledsCredito.InteresColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

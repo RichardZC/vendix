@@ -75,6 +75,22 @@ namespace ITB.VENDIX.BL
             }
         }
 
+        public static List<Credito> LstDesembolsoJGrid(GridDataRequest request, ref int pTotalItems)
+        {
+            var personaid = int.Parse(request.DataFilters()["PersonaId"]);
+            
+            using (var db = new VENDIXEntities())
+            {
+                IQueryable<Credito> query = db.Credito.Where(x => x.PersonaId == personaid && x.Estado == "APR");
+
+                pTotalItems = query.Count();
+                var lista = query.OrderBy(request.sidx + " " + request.sord)
+                    .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
+                
+                return lista;
+            }
+        }
+
         public static List<usp_CuotasPendientes_Result> LstCuotasPendientesJGrid(GridDataRequest request,
                                                                                  ref int pTotalItems,
                                                                                  ref string pTotales)
@@ -588,6 +604,7 @@ namespace ITB.VENDIX.BL
         public decimal Monto { get; set; }
         
     }
+    
     public class MovimientoCajaDiario
     {
         public int MovimientoCajaId { get; set; }

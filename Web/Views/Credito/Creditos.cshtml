@@ -5,10 +5,10 @@
         <div class="title">
             @if (Model != null)
             {
-                <h2>
-                    @Model.Persona.NumeroDocumento  -   @Model.Persona.NombreCompleto
-                </h2>
-                <h3>@Model.EstadoCliente</h3>
+            <h2>
+                @Model.Persona.NumeroDocumento  -   @Model.Persona.NombreCompleto
+            </h2>
+            <h3>@Model.EstadoCliente</h3>
 
             }
         </div>
@@ -24,11 +24,11 @@
                     <strong>
                         @if (Model != null)
                         {
-                            @Model.TotalCreditos
+                        @Model.TotalCreditos
                         }
                         else
                         {
-                            <text>0</text>
+                        <text>0</text>
                         }
                     </strong>
                     <small>Total Créditos</small>
@@ -39,11 +39,11 @@
                     <strong>
                         @if (Model != null && Model.Creditos != null)
                         {
-                            @Model.Creditos.Count
+                        @Model.Creditos.Count
                         }
                         else
                         {
-                            <text>0</text>
+                        <text>0</text>
                         }
                     </strong>
                     <small>Créditos Pendientes</small>
@@ -58,7 +58,7 @@
             <li>
                 @if (Model != null && Model.Creditos != null)
                 {
-                    <button id="btnCrearSolicitud">Crear Solicitud de Crédito</button>
+                <button id="btnCrearSolicitud">Crear Solicitud de Crédito</button>
                 }
             </li>
         </ul>
@@ -78,14 +78,14 @@
                     <p class="_25 small" style="padding-bottom: 10px;">
                         <label>Nro Solicitud: @Model.SolicitudCredito.CreditoId</label>
                         <label>Fecha: @Model.SolicitudCredito.FechaReg</label>
-                       <label>Estado: @(Model.SolicitudCredito.Estado == "P" ? "PENDIENTE" : "APROBADO")</label>
-                      
-                       <br /><br />
+                        <label>Estado: @(Model.SolicitudCredito.Estado == "P" ? "PENDIENTE" : "APROBADO")</label>
+
+                        <br /><br />
                         <label id="lblInteresRango">Interes Min: @Model.Producto.InteresMinima% Max: @Model.Producto.InteresMaxima%</label>
-                        <label id="lblImpMoratorio">Importe Moratorio: @Model.Producto.ImporteMoratorio</label>
-                        <label id="lblDiasGracia">Dias de Gracia: @Model.Producto.DiasGracia</label>
+                        <br />
+                        <label id="lblMontoDesemb">Monto a Desembolsar: 0.00</label>
                     </p>
-                    
+
                     <p class="_25 small">
                         <label>Producto:</label>
                         @Html.DropDownList("cboProducto", (IEnumerable<SelectListItem>)ViewBag.cboProducto)
@@ -119,7 +119,7 @@
                         <label for="txtNroCuotas" class="inline">Número Cuotas:</label>
                         <input data-error-type="inline" type="text" class="required" id="txtNroCuotas" value="@Model.SolicitudCredito.NumeroCuotas" pattern="^\d{1,10}$" title="Solo números enteros" />
                     </p>
-                    
+
                     <p class="_25 small">
                         <label for="txtGa" class="inline">Gastos Adm:</label>
                         <input data-error-type="inline" type="text" class="required" name="txtGa" id="txtGa" value="@Model.SolicitudCredito.MontoGastosAdm" />
@@ -130,25 +130,23 @@
                     </p>
                     <p class="_25 small">
                         <label for="txtFechappSol" class="inline">Primer Pago:</label>
-                        <input data-error-type="inline" type="date" class="required maskDate" id="txtFechappSol" value="@DateTime.Now.AddDays(1).ToShortDateString()"/>
+                        <input data-error-type="inline" type="date" class="required maskDate" id="txtFechappSol" value="@DateTime.Now.AddDays(1).ToShortDateString()" />
                     </p>
-                    
+
                     <p class="_25 small">
                         @*<label>Modalidad:</label>*@
                         <select id="cboGA">
+                            <option value="CAP">Gastos Adm. Descuento en Capital</option>
                             <option value="CUO">Gastos Adm. en Cuotas</option>
                             <option value="ADE">Gastos Adm. Pago Adelantado</option>
                         </select>
                     </p>
-                    
+
                     <p class="_50 small" style="padding-bottom: 10px;">
                         <label for="txtObsSol" class="inline">Observación:</label>
                         <input type="text" id="txtObsSol" style="height: 45px;" value="@Model.SolicitudCredito.Observacion" />
                     </p>
-                    <p class="_25 small">
-                        <label>Analista:</label>
-                        @Html.DropDownList("cboAnalista", (IEnumerable<SelectListItem>)ViewBag.cboAnalista)
-                    </p>
+                   
                 </div>
                 <!-- End of .content -->
 
@@ -170,32 +168,83 @@
             $(function () {
                 $("#txtInteres,#txtGa").numeric(2);
                 $("#txtNroCuotas").numeric();
+                $("#lblInteresRango").data("min", @Model.Producto.InteresMinima);
+                $("#lblInteresRango").data("max", @Model.Producto.InteresMaxima);
+
                 $("#txtMontoCredito").numeric(2)
                     .keyup(function (event) {
                         if (event.which == 13) {
                             event.preventDefault();
                         }
-                        //var montoCredito = parseFloat($("#txtMontoCredito").val()) - parseFloat($("#txtInicial").val());
-                        //if (!isNaN(montoCredito)) {
-                        //    if (montoCredito < 0)
-                        //        $("#txtMontoCredito").val("0.00");
-                        //    else
-                        //        $("#txtMontoCredito").val(parseFloat(montoCredito).toFixed(2));
-                        //} else
-                        //    $("#txtMontoCredito").val("0.00");
                         CalcularGastosAdm();
                     });
+                $("#txtInteres").blur(function () {
+                    var num = parseFloat($(this).val());
+                    var max = $("#lblInteresRango").data("max");
+                    var min = $("#lblInteresRango").data("min");
+                    if (num < min || num > max) {
+                        $(this).val(max.toFixed(2));
+                        Vendix.Mensaje("El Interes debe estar entre " + min.toFixed(2) + " y " + max.toFixed(2));
+                    }
+                })
+                $("#cboProducto").change(function () {
+                    $.ajax({
+                        url: "@Url.Action("ObtenerProducto", "Credito")",
+                        data: { pProductoId: $(this).val() },
+                        success: function (ret) {
+                            $("#txtInteres").val(parseFloat(ret.InteresMaxima).toFixed(2));
+                            $("#lblInteresRango").text("Interes Min: " + parseFloat(ret.InteresMinima).toFixed(2) + " Max: " + parseFloat(ret.InteresMaxima).toFixed(2));
+                            $("#lblInteresRango").data("min", parseFloat(ret.InteresMinima));
+                            $("#lblInteresRango").data("max", parseFloat(ret.InteresMaxima));
+
+                            //$("#lblImpMoratorio").text("Importe Moratorio" + ret.ImporteMoratorio);
+                            //$("#lblDiasGracia").text("Días de Gracia" + ret.DiasGracia);
+                            CalcularGastosAdm();
+                        }
+                    });
+                });
+                $("#cboFormaPago").change(function () {
+                    $.ajax({
+                        url: "@Url.Action("ObtenerFechaPrimerPago", "Credito")",
+                        data: { pModalidad: $(this).val() },
+                        success: function (ret) {
+                            $("#txtFechappSol").val(ret);
+                        }
+                    });
+                });
+                $("#cboFormaPago").trigger("change");
+
+                $("#cboGA").change(function () {
+                    CalcularDesembolso();
+                });
+                $("#txtGa")
+                   .keyup(function (event) {
+                       if (event.which == 13) {
+                           event.preventDefault();
+                       }                       
+                       CalcularDesembolso();
+                   }).blur(function(){ CalcularDesembolso();});
             });
+            function CalcularDesembolso(){
+                var m = parseFloat( $("#txtMontoCredito").val());
+                var ga = parseFloat( $("#txtGa").val());
+                if ($('#cboGA').val()=='CAP') 
+                    $('#lblMontoDesemb').text('MONTO A DESEMBOLSAR: ' + parseFloat(m-ga).toFixed(2) );
+                else 
+                    $('#lblMontoDesemb').text('MONTO A DESEMBOLSAR: ' + m.toFixed(2) );
+            }
 
             function CalcularGastosAdm() {
                 $.ajax({
                     url: "@Url.Action("CalcularGastosAdm", "Credito")",
-                    data: { pProductoId: $("#cboProducto").val(), pMonto: $("#txtMontoCredito").val() },
+                    data: { pProductoId: 1, pMonto: $("#txtMontoCredito").val() },
                     success: function (ret) {
                         $("#txtGa").val(ret.toFixed(2));
+                        CalcularDesembolso();
                     }
                 });
             }
+
         </script>
     }
     @if (Model != null && Model.TotalCreditos > 0)
@@ -230,6 +279,14 @@
                         <label for="txtcTipoProducto" class="inline">Producto:</label>
                         <input type="text" readonly id="txtcTipoProducto" style="font-weight: bolder" />
                     </p>
+                    <p class="_50 small">
+                        <label for="txtcAnalista" class="inline">Analista:</label>
+                        <input type="text" readonly id="txtcAnalista" style="font-weight: bolder" />
+                    </p>
+                    <p class="_50 small">
+                        <label for="txtcTipoGA" class="inline">Cobro Gasto Adm:</label>
+                        <input type="text" readonly id="txtcTipoGA" style="font-weight: bolder" />
+                    </p>
                     <p class="_25 small">
                         <label for="txtcProducto" class="inline">Monto Producto:</label>
                         <input type="text" readonly id="txtcProducto" style="font-weight: bolder" />
@@ -245,6 +302,10 @@
                     <p class="_25 small">
                         <label for="txtcGA" class="inline">Gastos Administrativos:</label>
                         <input type="text" readonly id="txtcGA" style="font-weight: bolder" />
+                    </p>
+                    <p class="_25 small">
+                        <label for="txtcDesembolso" class="inline">Monto Desembolsado:</label>
+                        <input type="text" readonly id="txtcDesembolso" style="font-weight: bolder" />
                     </p>
                     <p class="_25 small">
                         <label for="txtcFormaPago" class="inline">Forma de Pago:</label>
@@ -274,10 +335,7 @@
                         <label for="txtcEstado" class="inline">Estado:</label>
                         <input type="text" readonly id="txtcEstado" style="font-weight: bolder" />
                     </p>
-                    <p class="_50 small">
-                        <label for="txtcAnalista" class="inline">Analista:</label>
-                        <input type="text" readonly id="txtcAnalista" style="font-weight: bolder" />
-                    </p>
+
                     <p class="_25 small todo des">
                         <label for="txtcCancelacion" class="inline">Saldo Cancelación:</label>
                         <input type="text" readonly id="txtcCancelacion" style="font-weight: bolder" />
@@ -288,15 +346,22 @@
                 <div class="actions">
                     <div class="left">
                         <button id="btncImpEstadoCuenta" class="todo pen des block"><span class="icon icon-print"></span>Estado de Cuenta</button>
-                        <button id="btncImpPlanPago" class="todo pen des block"><span class="icon icon-print"></span>Plan de Pagos</button>
+                        <button id="btncImpPlanPago" class="todo pen des ap1 apr block"><span class="icon icon-print"></span>Plan de Pagos</button>
                         <button id="btncImpMovimiento" class="todo des his block"><span class="icon icon-print"></span>Movimientos</button>
                         <button id="btncReprogramar" class="todo des block"><span class="icon icon-ok"></span>REPROGRAMAR</button>
                         <button id="btncCargos" class="todo des block"><span class="icon icon-repeat"></span>Cargos</button>
                     </div>
                     <div class="right">
-                        <button id="btncAnular" class="todo des block red"><span class="icon icon-remove"></span>Anular</button>
-                        <button id="btncRechazar" class="todo pen block red"><span class="icon icon-remove"></span>Rechazar</button>
-                        <button id="btncAprobar" class="todo pen block"><span class="icon icon-ok"></span>Aprobar</button>
+                        <button id="btncAnular" class="todo des apr block red"><span class="icon icon-remove"></span>Anular</button>
+                        <button id="btncRechazar" class="todo pen block red @if (ViewBag.Aprobador1>0 || ViewBag.Aprobador2>0){<text>ap1</text>}"><span class="icon icon-remove"></span>Rechazar</button>
+                        @if(ViewBag.Aprobador1>0)
+                        {
+                            <button id="btncAprobar1" class="todo pen block"><span class="icon icon-ok"></span>1ra Aprobación</button>
+                        }
+                        @if (ViewBag.Aprobador2 > 0)
+                        {
+                            <button id="btncAprobar2" class="todo ap1 block"><span class="icon icon-ok"></span>2da Aprobación</button>
+                        }
                     </div>
                 </div>
                 <div class="grid_12">
@@ -472,6 +537,9 @@
                 });
             });
 
+            
+
+
             function mostrarCredito(CreditoId) {
                 if (CreditoId == 0) {
                     $(".credito").hide();
@@ -490,14 +558,16 @@
                         $('#txtcInicial').val(ret.MontoInicial.toFixed(2));
                         $('#txtcGA').val(ret.MontoGastosAdm.toFixed(2));
                         $('#txtcCredito').val(ret.MontoCredito.toFixed(2));
-
-                        $('#txtcFormaPago').val(ret.FormaPago);
+                        $('#txtcDesembolso').val(ret.MontoDesembolso.toFixed(2));
+                        
+                        $('#txtcTipoGA').val(Constante.TIPOGA( ret.TipoGastoAdm));
+                        $('#txtcFormaPago').val(Constante.FORMAPAGO(ret.FormaPago) );
                         $('#txtcCuotas').val(ret.NumeroCuotas);
-                        $('#txtcInteres').val(ret.InteresMensual.toFixed(2));
+                        $('#txtcInteres').val(ret.Interes.toFixed(2));
                         $('#txtcFechaDesembolso').val(ret.Desembolso);
                         $('#txtcFechaAprobacion').val(ret.Aprobacion);
                         $('#txtcFechaVcto').val(ret.Vencimiento);
-                        $('#txtcEstado').val(ret.Estado);
+                        $('#txtcEstado').val(Constante.CREDITO(ret.Estado));
                         $('#txtcAnalista').val(ret.Analista);
 
                         $("#grdPrestamo").trigger("reloadGrid");
@@ -505,6 +575,8 @@
                         $('.todo').hide();
                         if (ret.Estado == 'DES') { $('.des').show(); $('#txtcCancelacion').val(ret.SaldoCancelacion.toFixed(2)); }
                         else if (ret.Estado == 'PEN') $('.pen').show();
+                        else if (ret.Estado == 'APR') $('.apr').show();
+                        else if (ret.Estado == 'AP1') $('.ap1').show();
                         else if (ret.Estado == 'PAG' || ret.Estado == 'ANU' || ret.Estado == 'REP') $('.his').show();
                     }
                 });
@@ -699,19 +771,16 @@
                     Vendix.Mensaje("Por favor seleccione un credito");
                 }
             });
-            $('#btncAprobar').click(function () {
+            $('#btncAprobar1').click(function () {
                 event.preventDefault();
                 var id = $.data(document.body, 'CreditoId');
                 if (id) {
                     Vendix.Dialogo("Desea Aprobar el crédito indicado?", "SiNo", function () {
                         $.ajax({
-                            url: "@Url.Action("AprobarCredito", "Credito")",
+                            url: "@Url.Action("AprobarCredito1ra", "Credito")",
                             data: { pCreditoId: id },
                             success: function (ret) {
                                 mostrarCredito(id);
-
-                                //$('#btnImpEstCre,#btnImpPlan,#btnMovimiento,#btnAprobarCre,#btnRechazarCre,#btnAnularCre').hide();
-                                //$("#grdCreditoPen").trigger("reloadGrid");
                                 Vendix.Notificar();
                             }
                         });
@@ -719,6 +788,24 @@
                 } else {
                     Vendix.Mensaje("Por favor seleccione un credito");
                 }
+            });
+            $('#btncAprobar2').click(function () {
+                event.preventDefault();
+                var id = $.data(document.body, 'CreditoId');
+                if (id) {
+                    Vendix.Dialogo("Desea Aprobar el crédito indicado?", "SiNo", function () {
+                        $.ajax({
+                            url: "@Url.Action("AprobarCredito", "Credito")",
+                            data: { pCreditoId: id },
+                        success: function (ret) {
+                            mostrarCredito(id);
+                            Vendix.Notificar();
+                        }
+                    });
+                });
+            } else {
+                    Vendix.Mensaje("Por favor seleccione un credito");
+            }
             });
         </script>
     }
@@ -730,6 +817,7 @@
     $$.ready(function () {
 
         $.data(document.body, 'PersonaId', '@ViewBag.PersonaId');
+
 
         $("#btnCrearSolicitud").click(function () {
             Vendix.Dialogo("Deseas crear la solicitud de crédito?", "SiNo", function () {
@@ -743,29 +831,6 @@
                         window.location = '@Url.Action("Creditos", "Credito")' + "?pPersonaId=" + $.data(document.body, 'PersonaId');
                     }
                 });
-            });
-        });
-
-        $("#cboProducto").change(function () {
-            $.ajax({
-                url: "@Url.Action("ObtenerProducto", "Credito")",
-                data: { pProductoId: $(this).val() },
-                success: function (ret) {
-                    $("#txtInteres").val(parseFloat(ret.InteresMaxima).toFixed(2));
-                    $("#lblInteresRango").text("Interes Min: " + parseFloat(ret.InteresMinima).toFixed(2) + " Max: " + parseFloat(ret.InteresMaxima).toFixed(2));
-                    $("#lblImpMoratorio").text("Importe Moratorio" + ret.ImporteMoratorio);
-                    $("#lblDiasGracia").text("Días de Gracia" + ret.DiasGracia);
-                    CalcularGastosAdm();
-                }
-            });
-        });
-        $("#cboFormaPago").change(function () {
-            $.ajax({
-                url: "@Url.Action("ObtenerFechaPrimerPago", "Credito")",
-                data: { pModalidad: $(this).val() },
-                success: function (ret) {
-                    $("#txtFechappSol").val(ret);
-                }
             });
         });
 
@@ -785,10 +850,9 @@
 
         $("#btnSimulador").click(function () {
             var ga = $("#txtGa").val();
-            if ($('#cboGA').val() == 'ADE') ga = 0;
-
+           
             var ruta = '@Url.Action("ReporteSimuladorPlanPagos", "Reporte")' +
-                '?pProductoid=' + $("#cboProducto").val() + '&pTipo=' + $("#cboTipoCuota").val() + '&pMonto=' + $("#txtMontoCredito").val() + '&pCuotas=' + $("#txtNroCuotas").val() + '&pInteres=' + $("#txtInteres").val() + '&pFecha=' + $("#txtFechappSol").val() + '&pModalidad=' + $("#cboFormaPago").val() + '&pGastosAdm=' + ga;
+                '?pProductoid=' + $("#cboProducto").val() + '&pTipo=' + $("#cboTipoCuota").val() + '&pMonto=' + $("#txtMontoCredito").val() + '&pCuotas=' + $("#txtNroCuotas").val() + '&pInteres=' + $("#txtInteres").val() + '&pFecha=' + $("#txtFechappSol").val() + '&pModalidad=' + $("#cboFormaPago").val() + '&pGastosAdm=' + ga + '&pGA=' + $('#cboGA').val() + '&pCliente=@ViewBag.Cliente' ;
             //window.open(ruta);
             Vendix.Reporte(ruta);
             return false;
@@ -809,7 +873,6 @@
                     data: {
                         pProductoId: $("#cboProducto").val(),
                         pTipoCuota: $("#cboTipoCuota").val(),
-                        pAnalistaId: $("#cboAnalista").val(),
                         pMontoInicial: 0.0,
                         pMontoGastosAdm: $("#txtGa").val(),
                         pIndGastosAdm: $("#cboGA").val(),

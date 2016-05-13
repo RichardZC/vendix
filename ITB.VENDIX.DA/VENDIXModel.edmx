@@ -228,17 +228,18 @@
           <Property Name="Descripcion" Type="varchar(max)" Nullable="false" />
           <Property Name="MontoProducto" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="MontoInicial" Type="decimal" Precision="16" Scale="2" Nullable="false" />
-          <Property Name="MontoGastosAdm" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="MontoCredito" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="MontoGastosAdm" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="MontoDesembolso" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="TipoGastoAdm" Type="char" MaxLength="3" Nullable="false" />
           <Property Name="FormaPago" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="NumeroCuotas" Type="int" Nullable="false" />
-          <Property Name="InteresMensual" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Interes" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="FechaPrimerPago" Type="date" Nullable="false" />
           <Property Name="FechaAprobacion" Type="datetime" />
           <Property Name="FechaDesembolso" Type="datetime" />
           <Property Name="Observacion" Type="varchar(max)" />
           <Property Name="Estado" Type="char" MaxLength="3" Nullable="false" />
-          <Property Name="AnalistaId" Type="int" />
           <Property Name="FechaReg" Type="datetime" Nullable="false" />
           <Property Name="UsuarioRegId" Type="int" Nullable="false" />
           <Property Name="FechaMod" Type="datetime" />
@@ -264,7 +265,7 @@
             <PropertyRef Name="GastosAdmId" />
           </Key>
           <Property Name="GastosAdmId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Denominacion" Type="varchar" MaxLength="50" />
+          <Property Name="Denominacion" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="MontoMinimo" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="MontoMaximo" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="IndPorcentaje" Type="bit" Nullable="false" />
@@ -586,6 +587,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__CajaDiari__CajaI__0EE3F362">
+          <End Role="Caja" Type="Self.Caja" Multiplicity="1" />
+          <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Caja">
+              <PropertyRef Name="CajaId" />
+            </Principal>
+            <Dependent Role="CajaDiario">
+              <PropertyRef Name="CajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__CajaDiari__Usuar__0DEFCF29">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="*" />
@@ -607,6 +620,54 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="Cargo">
               <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Credito__OrdenVe__3E5DFC5A">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="0..1" />
+          <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="Credito">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuentasxC__Movim__3A58614C">
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="0..1" />
+          <End Role="CuentaxCobrar" Type="Self.CuentaxCobrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoCaja">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Principal>
+            <Dependent Role="CuentaxCobrar">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuentaxCo__Credi__3D69D821">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="0..1" />
+          <End Role="CuentaxCobrar" Type="Self.CuentaxCobrar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="CuentaxCobrar">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Movimient__CajaD__149CCCB8">
+          <End Role="CajaDiario" Type="Self.CajaDiario" Multiplicity="1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CajaDiario">
+              <PropertyRef Name="CajaDiarioId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="CajaDiarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -655,6 +716,42 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="OrdenVentaDetSerie">
               <PropertyRef Name="SerieArticuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPago__Credit__75592B89">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="1" />
+          <End Role="PlanPago" Type="Self.PlanPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="PlanPago">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPagoL__Movim__75E33B6E">
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="0..1" />
+          <End Role="PlanPagoLibre" Type="Self.PlanPagoLibre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MovimientoCaja">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Principal>
+            <Dependent Role="PlanPagoLibre">
+              <PropertyRef Name="MovimientoCajaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlanPagoL__PlanP__74EF1735">
+          <End Role="PlanPago" Type="Self.PlanPago" Multiplicity="0..1" />
+          <End Role="PlanPagoLibre" Type="Self.PlanPagoLibre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlanPago">
+              <PropertyRef Name="PlanPagoId" />
+            </Principal>
+            <Dependent Role="PlanPagoLibre">
+              <PropertyRef Name="PlanPagoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -715,6 +812,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="TarjetaPuntoDet">
               <PropertyRef Name="TarjetaPuntoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario__Persona__33C07256">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="PersonaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -874,6 +983,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cliente_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Credito_Oficina">
           <End Role="Oficina" Type="Self.Oficina" Multiplicity="1" />
           <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
@@ -883,6 +1004,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="Credito">
               <PropertyRef Name="OficinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credito_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="Credito">
+              <PropertyRef Name="PersonaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -934,6 +1067,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DETENTRADASALIDA_EntradaSalidaId">
+          <End Role="Movimiento" Type="Self.Movimiento" Multiplicity="1" />
+          <End Role="MovimientoDet" Type="Self.MovimientoDet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movimiento">
+              <PropertyRef Name="MovimientoId" />
+            </Principal>
+            <Dependent Role="MovimientoDet">
+              <PropertyRef Name="MovimientoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DETORDENVENTA_ArticuloId">
           <End Role="Articulo" Type="Self.Articulo" Multiplicity="1" />
           <End Role="OrdenVentaDet" Type="Self.OrdenVentaDet" Multiplicity="*" />
@@ -946,6 +1091,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DETORDENVENTA_OrdenVentaId">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="1" />
+          <End Role="OrdenVentaDet" Type="Self.OrdenVentaDet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="OrdenVentaDet">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DOCENTRADASALIDA_DestinatarioId">
           <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
           <End Role="MovimientoDoc" Type="Self.MovimientoDoc" Multiplicity="*" />
@@ -955,6 +1112,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="MovimientoDoc">
               <PropertyRef Name="DestinatarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCENTRADASALIDA_MovimientoId">
+          <End Role="Movimiento" Type="Self.Movimiento" Multiplicity="0..1" />
+          <End Role="MovimientoDoc" Type="Self.MovimientoDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movimiento">
+              <PropertyRef Name="MovimientoId" />
+            </Principal>
+            <Dependent Role="MovimientoDoc">
+              <PropertyRef Name="MovimientoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1030,6 +1199,54 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MovimientoBoveda_Boveda">
+          <End Role="Boveda" Type="Self.Boveda" Multiplicity="1" />
+          <End Role="BovedaMov" Type="Self.BovedaMov" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boveda">
+              <PropertyRef Name="BovedaId" />
+            </Principal>
+            <Dependent Role="BovedaMov">
+              <PropertyRef Name="BovedaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_Credito">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_OrdenVenta">
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrdenVenta">
+              <PropertyRef Name="OrdenVentaId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovimientoCaja_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
+          <End Role="MovimientoCaja" Type="Self.MovimientoCaja" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="MovimientoCaja">
+              <PropertyRef Name="PersonaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Oficina_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Oficina" Type="Self.Oficina" Multiplicity="*" />
@@ -1051,6 +1268,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="OrdenVenta">
               <PropertyRef Name="OficinaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdenVenta_Persona">
+          <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
+          <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persona">
+              <PropertyRef Name="PersonaId" />
+            </Principal>
+            <Dependent Role="OrdenVenta">
+              <PropertyRef Name="PersonaId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1179,6 +1408,10 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         <Function Name="usp_ActualizarSaldosBoveda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="BovedaId" Type="int" Mode="In" />
         </Function>
+        <Function Name="usp_CalcularTEM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
+          <Parameter Name="TEA" Type="decimal" Mode="In" />
+          <Parameter Name="FormaPago" Type="char" Mode="In" />
+        </Function>
         <Function Name="usp_Credito_Del" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="CreditoId" Type="int" Mode="In" />
           <Parameter Name="Observacion" Type="varchar(max)" Mode="In" />
@@ -1188,7 +1421,6 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <Parameter Name="SolicitudCreditoId" Type="int" Mode="In" />
           <Parameter Name="ProductoId" Type="int" Mode="In" />
           <Parameter Name="TipoCuota" Type="char" Mode="In" />
-          <Parameter Name="AnalistaId" Type="int" Mode="In" />
           <Parameter Name="MontoInicial" Type="decimal" Mode="In" />
           <Parameter Name="MontoCredito" Type="decimal" Mode="In" />
           <Parameter Name="MontoGastosAdm" Type="decimal" Mode="In" />
@@ -1290,15 +1522,6 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         <Function Name="usp_UsuariosNoAsignadosCaja" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="OficinaId" Type="int" Mode="In" />
         </Function>
-        <Function Name="ufnCalcularDiasAtrazo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
-          <Parameter Name="FechaVencimiento" Type="date" Mode="In" />
-          <Parameter Name="FechaHoy" Type="date" Mode="In" />
-        </Function>
-        <Function Name="ufnCalcularMora" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
-          <Parameter Name="ImporteMoratorio" Type="decimal" Mode="In" />
-          <Parameter Name="DiasAtrazo" Type="int" Mode="In" />
-          <Parameter Name="DiasGracia" Type="int" Mode="In" />
-        </Function>
         <Function Name="usp_AgregarPuntos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CodCliente" Type="numeric" Mode="In" />
           <Parameter Name="OrdenVentaId" Type="int" Mode="In" />
@@ -1392,6 +1615,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Oficina" EntitySet="Oficina" />
             <End Role="Caja" EntitySet="Caja" />
           </AssociationSet>
+          <AssociationSet Name="FK__CajaDiari__CajaI__0EE3F362" Association="Self.FK__CajaDiari__CajaI__0EE3F362">
+            <End Role="Caja" EntitySet="Caja" />
+            <End Role="CajaDiario" EntitySet="CajaDiario" />
+          </AssociationSet>
           <AssociationSet Name="FK__CajaDiari__Usuar__0DEFCF29" Association="Self.FK__CajaDiari__Usuar__0DEFCF29">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="CajaDiario" EntitySet="CajaDiario" />
@@ -1399,6 +1626,22 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__Cargo__CreditoId__109731AA" Association="Self.FK__Cargo__CreditoId__109731AA">
             <End Role="Credito" EntitySet="Credito" />
             <End Role="Cargo" EntitySet="Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Credito__OrdenVe__3E5DFC5A" Association="Self.FK__Credito__OrdenVe__3E5DFC5A">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuentasxC__Movim__3A58614C" Association="Self.FK__CuentasxC__Movim__3A58614C">
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+            <End Role="CuentaxCobrar" EntitySet="CuentaxCobrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuentaxCo__Credi__3D69D821" Association="Self.FK__CuentaxCo__Credi__3D69D821">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="CuentaxCobrar" EntitySet="CuentaxCobrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Movimient__CajaD__149CCCB8" Association="Self.FK__Movimient__CajaD__149CCCB8">
+            <End Role="CajaDiario" EntitySet="CajaDiario" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
           </AssociationSet>
           <AssociationSet Name="FK__Movimient__Movim__51A5DAF8" Association="Self.FK__Movimient__Movim__51A5DAF8">
             <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
@@ -1415,6 +1658,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__OrdenVent__Serie__09952E60" Association="Self.FK__OrdenVent__Serie__09952E60">
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
             <End Role="OrdenVentaDetSerie" EntitySet="OrdenVentaDetSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPago__Credit__75592B89" Association="Self.FK__PlanPago__Credit__75592B89">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="PlanPago" EntitySet="PlanPago" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPagoL__Movim__75E33B6E" Association="Self.FK__PlanPagoL__Movim__75E33B6E">
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+            <End Role="PlanPagoLibre" EntitySet="PlanPagoLibre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlanPagoL__PlanP__74EF1735" Association="Self.FK__PlanPagoL__PlanP__74EF1735">
+            <End Role="PlanPago" EntitySet="PlanPago" />
+            <End Role="PlanPagoLibre" EntitySet="PlanPagoLibre" />
           </AssociationSet>
           <AssociationSet Name="FK__RolMenu__MenuId__6BCFC14F" Association="Self.FK__RolMenu__MenuId__6BCFC14F">
             <End Role="Menu" EntitySet="Menu" />
@@ -1435,6 +1690,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__TarjetaPu__Tarje__16500B00" Association="Self.FK__TarjetaPu__Tarje__16500B00">
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario__Persona__33C07256" Association="Self.FK__Usuario__Persona__33C07256">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
           <AssociationSet Name="FK__UsuarioOf__Ofici__768259EC" Association="Self.FK__UsuarioOf__Ofici__768259EC">
             <End Role="Oficina" EntitySet="Oficina" />
@@ -1488,8 +1747,16 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Cargo" EntitySet="Cargo" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cliente_Persona" Association="Self.FK_Cliente_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
           <AssociationSet Name="FK_Credito_Oficina" Association="Self.FK_Credito_Oficina">
             <End Role="Oficina" EntitySet="Oficina" />
+            <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Credito_Persona" Association="Self.FK_Credito_Persona">
+            <End Role="Persona" EntitySet="Persona" />
             <End Role="Credito" EntitySet="Credito" />
           </AssociationSet>
           <AssociationSet Name="FK_Credito_Producto" Association="Self.FK_Credito_Producto">
@@ -1508,12 +1775,24 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Articulo" EntitySet="Articulo" />
             <End Role="MovimientoDet" EntitySet="MovimientoDet" />
           </AssociationSet>
+          <AssociationSet Name="FK_DETENTRADASALIDA_EntradaSalidaId" Association="Self.FK_DETENTRADASALIDA_EntradaSalidaId">
+            <End Role="Movimiento" EntitySet="Movimiento" />
+            <End Role="MovimientoDet" EntitySet="MovimientoDet" />
+          </AssociationSet>
           <AssociationSet Name="FK_DETORDENVENTA_ArticuloId" Association="Self.FK_DETORDENVENTA_ArticuloId">
             <End Role="Articulo" EntitySet="Articulo" />
             <End Role="OrdenVentaDet" EntitySet="OrdenVentaDet" />
           </AssociationSet>
+          <AssociationSet Name="FK_DETORDENVENTA_OrdenVentaId" Association="Self.FK_DETORDENVENTA_OrdenVentaId">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="OrdenVentaDet" EntitySet="OrdenVentaDet" />
+          </AssociationSet>
           <AssociationSet Name="FK_DOCENTRADASALIDA_DestinatarioId" Association="Self.FK_DOCENTRADASALIDA_DestinatarioId">
             <End Role="Persona" EntitySet="Persona" />
+            <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCENTRADASALIDA_MovimientoId" Association="Self.FK_DOCENTRADASALIDA_MovimientoId">
+            <End Role="Movimiento" EntitySet="Movimiento" />
             <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
           </AssociationSet>
           <AssociationSet Name="FK_DOCENTRADASALIDA_RemitenteId" Association="Self.FK_DOCENTRADASALIDA_RemitenteId">
@@ -1540,12 +1819,32 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Marca" EntitySet="Marca" />
             <End Role="Modelo" EntitySet="Modelo" />
           </AssociationSet>
+          <AssociationSet Name="FK_MovimientoBoveda_Boveda" Association="Self.FK_MovimientoBoveda_Boveda">
+            <End Role="Boveda" EntitySet="Boveda" />
+            <End Role="BovedaMov" EntitySet="BovedaMov" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_Credito" Association="Self.FK_MovimientoCaja_Credito">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_OrdenVenta" Association="Self.FK_MovimientoCaja_OrdenVenta">
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovimientoCaja_Persona" Association="Self.FK_MovimientoCaja_Persona">
+            <End Role="Persona" EntitySet="Persona" />
+            <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
+          </AssociationSet>
           <AssociationSet Name="FK_Oficina_Usuario" Association="Self.FK_Oficina_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Oficina" EntitySet="Oficina" />
           </AssociationSet>
           <AssociationSet Name="FK_ORDENVENTA_OficinaId" Association="Self.FK_ORDENVENTA_OficinaId">
             <End Role="Oficina" EntitySet="Oficina" />
+            <End Role="OrdenVenta" EntitySet="OrdenVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdenVenta_Persona" Association="Self.FK_OrdenVenta_Persona">
+            <End Role="Persona" EntitySet="Persona" />
             <End Role="OrdenVenta" EntitySet="OrdenVenta" />
           </AssociationSet>
           <AssociationSet Name="FK_OrdenVenta_Usuario" Association="Self.FK_OrdenVenta_Usuario">
@@ -1580,8 +1879,20 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="VENDIXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="VENDIXEntities" p1:LazyLoadingEnabled="true">
+      <Schema Namespace="VENDIXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="VENDIXEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="usp_CrearMovimientoDet">
+            <Parameter Name="MovimientoId" Mode="In" Type="Int32" />
+            <Parameter Name="MovimientoDetId" Mode="In" Type="Int32" />
+            <Parameter Name="ArticuloId" Mode="In" Type="Int32" />
+            <Parameter Name="IndAutogenerar" Mode="In" Type="Boolean" />
+            <Parameter Name="ListaSerie" Mode="In" Type="String" />
+            <Parameter Name="Cantidad" Mode="In" Type="Int32" />
+            <Parameter Name="IndCorrelativo" Mode="In" Type="Boolean" />
+            <Parameter Name="PrecioUnitario" Mode="In" Type="Decimal" />
+            <Parameter Name="Descuento" Mode="In" Type="Decimal" />
+            <Parameter Name="Medida" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="usp_EliminarMovimientoDet">
           <Parameter Name="MovimientoDetId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1590,8 +1901,44 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="Cantidad" Mode="In" Type="Int32" />
             <Parameter Name="IndCorrelativo" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="usp_GenerarKardex" ReturnType="Collection(VENDIXModel.usp_GenerarKardex_Result)">
+            <Parameter Name="ArticuloId" Mode="In" Type="Int32" />
+            <Parameter Name="AlmacenId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ListarSerieKardex" ReturnType="Collection(String)">
+            <Parameter Name="MovimientoDetalleId" Mode="In" Type="Int32" />
+            <Parameter Name="IndStock" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Movimiento_Upd" ReturnType="Collection(String)">
+            <Parameter Name="Flag" Mode="In" Type="Int32" />
+            <Parameter Name="MovimientoId" Mode="In" Type="Int32" />
+            <Parameter Name="TipoMovimientoId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaMov" Mode="In" Type="DateTime" />
+            <Parameter Name="Observacion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ReporteStock" ReturnType="Collection(VENDIXModel.usp_ReporteStock_Result)">
+          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ActualizarSaldosBoveda">
+          <Parameter Name="BovedaId" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="usp_Credito_Del">
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="Observacion" Mode="In" Type="String" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Credito_Ins" ReturnType="Collection(String)">
+            <Parameter Name="SolicitudCreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="ProductoId" Mode="In" Type="Int32" />
+            <Parameter Name="TipoCuota" Mode="In" Type="String" />
+            <Parameter Name="MontoInicial" Mode="In" Type="Decimal" />
+            <Parameter Name="MontoCredito" Mode="In" Type="Decimal" />
+            <Parameter Name="MontoGastosAdm" Mode="In" Type="Decimal" />
+            <Parameter Name="IndGastoAdm" Mode="In" Type="String" />
+            <Parameter Name="FormaPago" Mode="In" Type="String" />
+            <Parameter Name="NroCuotas" Mode="In" Type="Int32" />
+            <Parameter Name="Interes" Mode="In" Type="Decimal" />
+            <Parameter Name="FechaPrimerPago" Mode="In" Type="DateTime" />
             <Parameter Name="Observacion" Mode="In" Type="String" />
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1600,18 +1947,80 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="usp_CuotasPendientes" ReturnType="Collection(VENDIXModel.usp_CuotasPendientes_Result)">
+            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaCalculo" Mode="In" Type="DateTime" />
+            <Parameter Name="IndCancelacion" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
+            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
+            <Parameter Name="Importe" Mode="In" Type="Decimal" />
+            <Parameter Name="Decripcion" Mode="In" Type="String" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
+          <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="usp_MovimientoCaja_Del">
             <Parameter Name="MovimientoCajaId" Mode="In" Type="Int32" />
             <Parameter Name="Observacion" Mode="In" Type="String" />
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_AgregarPuntos">
-            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
+          <FunctionImport Name="usp_PagarCuentaxCobrar" ReturnType="Collection(Int32)">
             <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
+            <Parameter Name="CuentaxCobrarId" Mode="In" Type="Int32" />
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_CanjearPuntos" ReturnType="Collection(String)">
-            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
-            <Parameter Name="NumeroSerie" Mode="In" Type="String" />
+          <FunctionImport Name="usp_PagarCuotas" ReturnType="Collection(Int32)">
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="ListaPlanPagoId" Mode="In" Type="String" />
+            <Parameter Name="ImporteRecibido" Mode="In" Type="Decimal" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaPago" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_PagarCuotasCancelacion" ReturnType="Collection(Int32)">
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaPago" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ReprogramarCredito">
+            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_RptCreditoMorosidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoMorosidad_Result)">
+            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+            <Parameter Name="HastaFecha" Mode="In" Type="DateTime" />
+            <Parameter Name="DiasAtrazoIni" Mode="In" Type="Int32" />
+            <Parameter Name="DiasAtrazoFin" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_RptSaldosCaja" ReturnType="Collection(VENDIXModel.usp_RptSaldosCaja_Result)">
+          <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_SimuladorCredito" ReturnType="Collection(VENDIXModel.usp_SimuladorCredito_Result)">
+            <Parameter Name="Tipo" Mode="In" Type="String" />
+            <Parameter Name="FormaPago" Mode="In" Type="String" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+            <Parameter Name="NroCuotas" Mode="In" Type="Int32" />
+            <Parameter Name="TEA" Mode="In" Type="Decimal" />
+            <Parameter Name="FechaPrimerPago" Mode="In" Type="DateTime" />
+            <Parameter Name="GastosAdm" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TransferirBoveda">
+            <Parameter Name="BovedaInicioId" Mode="In" Type="Int32" />
+            <Parameter Name="BovedaDestinoId" Mode="In" Type="Int32" />
+            <Parameter Name="Glosa" Mode="In" Type="String" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+            <Parameter Name="UsuarioRegId" Mode="In" Type="Int32" />
+            <Parameter Name="flagAceptar" Mode="In" Type="Int32" />
+            <Parameter Name="BovedaMovTempId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_UsuariosNoAsignadosCaja" ReturnType="Collection(VENDIXModel.usp_UsuariosNoAsignadosCaja_Result)">
+          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_MenuLst" ReturnType="Collection(VENDIXModel.usp_MenuLst_Result)">
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
@@ -1633,41 +2042,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="OrdenVentaDetId" Mode="In" Type="Int32" />
             <Parameter Name="Descuento" Mode="In" Type="Decimal" />
           </FunctionImport>
-          <FunctionImport Name="usp_GenerarKardex" ReturnType="Collection(VENDIXModel.usp_GenerarKardex_Result)">
-            <Parameter Name="ArticuloId" Mode="In" Type="Int32" />
-            <Parameter Name="AlmacenId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_ListarSerieKardex" ReturnType="Collection(String)">
-            <Parameter Name="MovimientoDetalleId" Mode="In" Type="Int32" />
-            <Parameter Name="IndStock" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
-            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
-            <Parameter Name="Importe" Mode="In" Type="Decimal" />
-            <Parameter Name="Decripcion" Mode="In" Type="String" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_Movimiento_Upd" ReturnType="Collection(String)">
-            <Parameter Name="Flag" Mode="In" Type="Int32" />
-            <Parameter Name="MovimientoId" Mode="In" Type="Int32" />
-            <Parameter Name="TipoMovimientoId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaMov" Mode="In" Type="DateTime" />
-            <Parameter Name="Observacion" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="usp_CrearMovimientoDet">
-            <Parameter Name="MovimientoId" Mode="In" Type="Int32" />
-            <Parameter Name="MovimientoDetId" Mode="In" Type="Int32" />
-            <Parameter Name="ArticuloId" Mode="In" Type="Int32" />
-            <Parameter Name="IndAutogenerar" Mode="In" Type="Boolean" />
-            <Parameter Name="ListaSerie" Mode="In" Type="String" />
-            <Parameter Name="Cantidad" Mode="In" Type="Int32" />
-            <Parameter Name="IndCorrelativo" Mode="In" Type="Boolean" />
-            <Parameter Name="PrecioUnitario" Mode="In" Type="Decimal" />
-            <Parameter Name="Descuento" Mode="In" Type="Decimal" />
-            <Parameter Name="Medida" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="usp_RptRentabilidadVenta" ReturnType="Collection(VENDIXModel.usp_RptRentabilidadVenta_Result)">
             <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
             <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
@@ -1675,96 +2049,23 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="IndCredito" Mode="In" Type="Boolean" />
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_ReprogramarCredito">
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+          <FunctionImport Name="usp_AgregarPuntos">
+            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
+            <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_PagarCuotasCancelacion" ReturnType="Collection(Int32)">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaPago" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="usp_RptCreditoRentabilidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoRentabilidad_Result)">
-            <Parameter Name="OficnaId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
-            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+          <FunctionImport Name="usp_CanjearPuntos" ReturnType="Collection(String)">
+            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
+            <Parameter Name="NumeroSerie" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_RptCredito" ReturnType="Collection(VENDIXModel.usp_RptCredito_Result)">
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
             <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
             <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="usp_RptCreditoMorosidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoMorosidad_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-            <Parameter Name="HastaFecha" Mode="In" Type="DateTime" />
-            <Parameter Name="DiasAtrazoIni" Mode="In" Type="Int32" />
-            <Parameter Name="DiasAtrazoFin" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_ReporteStock" ReturnType="Collection(VENDIXModel.usp_ReporteStock_Result)">
-          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_UsuariosNoAsignadosCaja" ReturnType="Collection(VENDIXModel.usp_UsuariosNoAsignadosCaja_Result)">
-          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_RptSaldosCaja" ReturnType="Collection(VENDIXModel.usp_RptSaldosCaja_Result)">
-          <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_ActualizarSaldosBoveda">
-          <Parameter Name="BovedaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_TransferirBoveda">
-            <Parameter Name="BovedaInicioId" Mode="In" Type="Int32" />
-            <Parameter Name="BovedaDestinoId" Mode="In" Type="Int32" />
-            <Parameter Name="Glosa" Mode="In" Type="String" />
-            <Parameter Name="Monto" Mode="In" Type="Decimal" />
-            <Parameter Name="UsuarioRegId" Mode="In" Type="Int32" />
-            <Parameter Name="flagAceptar" Mode="In" Type="Int32" />
-            <Parameter Name="BovedaMovTempId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_CuotasPendientes" ReturnType="Collection(VENDIXModel.usp_CuotasPendientes_Result)">
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaCalculo" Mode="In" Type="DateTime" />
-            <Parameter Name="IndCancelacion" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="usp_PagarCuentaxCobrar" ReturnType="Collection(Int32)">
-            <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
-            <Parameter Name="CuentaxCobrarId" Mode="In" Type="Int32" />
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_PagarCuotas" ReturnType="Collection(Int32)">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
-            <Parameter Name="ListaPlanPagoId" Mode="In" Type="String" />
-            <Parameter Name="ImporteRecibido" Mode="In" Type="Decimal" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaPago" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="usp_SimuladorCredito" ReturnType="Collection(VENDIXModel.usp_SimuladorCredito_Result)">
-            <Parameter Name="Tipo" Mode="In" Type="String" />
-            <Parameter Name="FormaPago" Mode="In" Type="String" />
-            <Parameter Name="Monto" Mode="In" Type="Decimal" />
-            <Parameter Name="NroCuotas" Mode="In" Type="Int32" />
-            <Parameter Name="TEA" Mode="In" Type="Decimal" />
-            <Parameter Name="FechaPrimerPago" Mode="In" Type="DateTime" />
-            <Parameter Name="GastosAdm" Mode="In" Type="Decimal" />
-          </FunctionImport>
-          <FunctionImport Name="usp_Credito_Ins" ReturnType="Collection(String)">
-            <Parameter Name="SolicitudCreditoId" Mode="In" Type="Int32" />
-            <Parameter Name="ProductoId" Mode="In" Type="Int32" />
-            <Parameter Name="TipoCuota" Mode="In" Type="String" />
-            <Parameter Name="AnalistaId" Mode="In" Type="Int32" />
-            <Parameter Name="MontoInicial" Mode="In" Type="Decimal" />
-            <Parameter Name="MontoCredito" Mode="In" Type="Decimal" />
-            <Parameter Name="MontoGastosAdm" Mode="In" Type="Decimal" />
-            <Parameter Name="IndGastoAdm" Mode="In" Type="String" />
-            <Parameter Name="FormaPago" Mode="In" Type="String" />
-            <Parameter Name="NroCuotas" Mode="In" Type="Int32" />
-            <Parameter Name="Interes" Mode="In" Type="Decimal" />
-            <Parameter Name="FechaPrimerPago" Mode="In" Type="DateTime" />
-            <Parameter Name="Observacion" Mode="In" Type="String" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
+          <FunctionImport Name="usp_RptCreditoRentabilidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoRentabilidad_Result)">
+            <Parameter Name="OficnaId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
           </FunctionImport>
           <EntitySet Name="Almacen" EntityType="VENDIXModel.Almacen" />
           <EntitySet Name="Articulo" EntityType="VENDIXModel.Articulo" />
@@ -1949,10 +2250,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Persona" EntitySet="Persona" />
             <End Role="Credito" EntitySet="Credito" />
           </AssociationSet>
-          <AssociationSet Name="FK_Credito_Persona1" Association="VENDIXModel.FK_Credito_Persona1">
-            <End Role="Persona" EntitySet="Persona" />
-            <End Role="Credito" EntitySet="Credito" />
-          </AssociationSet>
           <AssociationSet Name="FK_Credito_Producto" Association="VENDIXModel.FK_Credito_Producto">
             <End Role="Producto" EntitySet="Producto" />
             <End Role="Credito" EntitySet="Credito" />
@@ -2081,28 +2378,11 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
           </AssociationSet>
-          <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+          <FunctionImport Name="usp_CalcularTEM" ReturnType="Collection(Decimal)">
+            <Parameter Name="TEA" Mode="In" Type="Decimal" />
+            <Parameter Name="FormaPago" Mode="In" Type="String" />
           </FunctionImport>
-          </EntityContainer>
-        <ComplexType Name="usp_MenuLst_Result">
-          <Property Type="Int32" Name="MenuId" Nullable="false" />
-          <Property Type="String" Name="Denominacion" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Modulo" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Url" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Icono" Nullable="true" MaxLength="255" />
-          <Property Type="Boolean" Name="IndPadre" Nullable="true" />
-          <Property Type="Decimal" Name="Orden" Nullable="true" Precision="3" Scale="1" />
-          <Property Type="Decimal" Name="Referencia" Nullable="true" Precision="3" Scale="1" />
-        </ComplexType>
-        <ComplexType Name="usp_CodigoBarras_Lst_Result">
-          <Property Type="String" Name="Serie1" Nullable="false" MaxLength="22" />
-          <Property Type="String" Name="Articulo1" Nullable="true" MaxLength="200" />
-          <Property Type="Decimal" Name="Precio1" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="String" Name="Serie2" Nullable="false" MaxLength="22" />
-          <Property Type="String" Name="Articulo2" Nullable="true" MaxLength="200" />
-          <Property Type="Decimal" Name="Precio2" Nullable="false" Precision="16" Scale="2" />
-        </ComplexType>
+        </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
           <Property Type="Int32" Name="MovimientoDetId" Nullable="true" />
           <Property Type="DateTime" Name="Fecha" Nullable="true" />
@@ -2117,56 +2397,47 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="PUSaldo" Nullable="true" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="TotalSaldo" Nullable="true" Precision="16" Scale="2" />
         </ComplexType>
-        <ComplexType Name="usp_RptRentabilidadVenta_Result">
+        <ComplexType Name="usp_ReporteStock_Result">
           <Property Type="Int64" Name="Nro" Nullable="true" />
-          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="TipoArticulo" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="ArticuloId" Nullable="false" />
           <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="MovimientoId" Nullable="false" />
-          <Property Type="DateTime" Name="FechaEnt" Nullable="false" Precision="23" />
-          <Property Type="Decimal" Name="PrecioEnt" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Int32" Name="OrdenVentaId" Nullable="false" />
-          <Property Type="DateTime" Name="FechaSal" Nullable="false" Precision="23" />
-          <Property Type="Decimal" Name="PrecioSal" Nullable="true" Precision="15" Scale="2" />
-          <Property Type="String" Name="Modalidad" Nullable="false" MaxLength="7" />
-          <Property Type="Decimal" Name="Rentabilidad" Nullable="true" Precision="17" Scale="2" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="Stock" Nullable="false" />
+          <Property Type="String" Name="Series" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="usp_RptCreditoRentabilidad_Result">
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="String" Name="Oficina" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
-          <Property Type="Decimal" Name="InteresMensual" Nullable="false" Precision="4" Scale="2" />
-          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Int32" Name="CuotasPagadas" Nullable="true" />
-          <Property Type="Decimal" Name="SumAmortizacion" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumGastosAdm" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumInteres" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumCuota" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumMora" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumPago" Nullable="true" Precision="38" Scale="2" />
+        <ComplexType Name="usp_CuotasPendientes_Result">
+          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
+          <Property Type="String" Name="Glosa" Nullable="true" MaxLength="37" />
+          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
+          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cuota" Nullable="true" Precision="17" Scale="2" />
+          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
+          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cargo" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="PagoLibre" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="21" Scale="2" />
         </ComplexType>
-        <ComplexType Name="usp_RptCredito_Result">
-          <Property Type="String" Name="Producto" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="Articulo" Nullable="false" />
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
-          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
-          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
-          <Property Type="Decimal" Name="InteresMensual" Nullable="false" Precision="4" Scale="2" />
+        <ComplexType Name="usp_EstadoPlanPago_Result">
+          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
+          <Property Type="Int32" Name="Numero" Nullable="false" />
+          <Property Type="Decimal" Name="Capital" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
+          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cuota" Nullable="false" Precision="16" Scale="2" />
           <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
+          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="Cargo" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="PagoLibre" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="FechaPagoCuota" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="16" Scale="2" />
+          <Property Type="Int32" Name="MovimientoCajaId" Nullable="true" />
         </ComplexType>
         <ComplexType Name="usp_RptCreditoMorosidad_Result">
           <Property Type="Int32" Name="CreditoId" Nullable="false" />
@@ -2188,18 +2459,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Int32" Name="CuotasAtrazo" Nullable="true" />
           <Property Type="Decimal" Name="DeudaAtrazo" Nullable="true" Precision="16" Scale="2" />
         </ComplexType>
-        <ComplexType Name="usp_ReporteStock_Result">
-          <Property Type="Int64" Name="Nro" Nullable="true" />
-          <Property Type="String" Name="TipoArticulo" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="ArticuloId" Nullable="false" />
-          <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
-          <Property Type="Int32" Name="Stock" Nullable="false" />
-          <Property Type="String" Name="Series" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="usp_UsuariosNoAsignadosCaja_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Valor" Nullable="true" MaxLength="250" />
-        </ComplexType>
         <ComplexType Name="usp_RptSaldosCaja_Result">
           <Property Type="Int32" Name="MovimientoCajaId" Nullable="false" />
           <Property Type="String" Name="Operacion" Nullable="false" MaxLength="3" />
@@ -2209,21 +2468,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Boolean" Name="IndEntrada" Nullable="false" />
           <Property Type="String" Name="Glosa" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="usp_CuotasPendientes_Result">
-          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
-          <Property Type="String" Name="Glosa" Nullable="true" MaxLength="37" />
-          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
-          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cuota" Nullable="true" Precision="17" Scale="2" />
-          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
-          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cargo" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="PagoLibre" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="21" Scale="2" />
-        </ComplexType>
         <ComplexType Name="usp_SimuladorCredito_Result">
           <Property Type="Int32" Name="Numero" Nullable="true" />
           <Property Type="Decimal" Name="Capital" Nullable="true" Precision="16" Scale="2" />
@@ -2232,6 +2476,79 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="Interes" Nullable="true" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="GastosAdm" Nullable="true" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="Cuota" Nullable="true" Precision="16" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_UsuariosNoAsignadosCaja_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Valor" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_MenuLst_Result">
+          <Property Type="Int32" Name="MenuId" Nullable="false" />
+          <Property Type="String" Name="Denominacion" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Modulo" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Url" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Icono" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="IndPadre" Nullable="true" />
+          <Property Type="Decimal" Name="Orden" Nullable="true" Precision="3" Scale="1" />
+          <Property Type="Decimal" Name="Referencia" Nullable="true" Precision="3" Scale="1" />
+        </ComplexType>
+        <ComplexType Name="usp_CodigoBarras_Lst_Result">
+          <Property Type="String" Name="Serie1" Nullable="false" MaxLength="22" />
+          <Property Type="String" Name="Articulo1" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="Precio1" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="Serie2" Nullable="false" MaxLength="22" />
+          <Property Type="String" Name="Articulo2" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="Precio2" Nullable="false" Precision="16" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_RptRentabilidadVenta_Result">
+          <Property Type="Int64" Name="Nro" Nullable="true" />
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="MovimientoId" Nullable="false" />
+          <Property Type="DateTime" Name="FechaEnt" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="PrecioEnt" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Int32" Name="OrdenVentaId" Nullable="false" />
+          <Property Type="DateTime" Name="FechaSal" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="PrecioSal" Nullable="true" Precision="15" Scale="2" />
+          <Property Type="String" Name="Modalidad" Nullable="false" MaxLength="7" />
+          <Property Type="Decimal" Name="Rentabilidad" Nullable="true" Precision="17" Scale="2" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_RptCredito_Result">
+          <Property Type="String" Name="Producto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="Articulo" Nullable="false" />
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
+          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_RptCreditoRentabilidad_Result">
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="String" Name="Oficina" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Int32" Name="CuotasPagadas" Nullable="true" />
+          <Property Type="Decimal" Name="SumAmortizacion" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumGastosAdm" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumInteres" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumCuota" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumMora" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumPago" Nullable="true" Precision="38" Scale="2" />
         </ComplexType>
         <EntityType Name="Almacen">
           <Key>
@@ -2501,17 +2818,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="MontoProducto" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <Property Name="MontoInicial" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
-          <Property Name="MontoGastosAdm" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <Property Name="MontoCredito" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="MontoGastosAdm" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="MontoDesembolso" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="TipoGastoAdm" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
           <Property Name="FormaPago" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="NumeroCuotas" Type="Int32" Nullable="false" />
-          <Property Name="InteresMensual" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="Interes" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
           <Property Name="FechaPrimerPago" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FechaAprobacion" Type="DateTime" Precision="3" />
           <Property Name="FechaDesembolso" Type="DateTime" Precision="3" />
           <Property Name="Observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
-          <Property Name="AnalistaId" Type="Int32" />
           <Property Name="FechaReg" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsuarioRegId" Type="Int32" Nullable="false" />
           <Property Name="FechaMod" Type="DateTime" Precision="3" />
@@ -2526,7 +2844,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="PlanPago" Relationship="VENDIXModel.FK__PlanPago__Credit__75592B89" FromRole="Credito" ToRole="PlanPago" />
           <NavigationProperty Name="Oficina" Relationship="VENDIXModel.FK_Credito_Oficina" FromRole="Credito" ToRole="Oficina" />
           <NavigationProperty Name="Persona" Relationship="VENDIXModel.FK_Credito_Persona" FromRole="Credito" ToRole="Persona" />
-          <NavigationProperty Name="Persona1" Relationship="VENDIXModel.FK_Credito_Persona1" FromRole="Credito" ToRole="Persona" />
           <NavigationProperty Name="Producto" Relationship="VENDIXModel.FK_Credito_Producto" FromRole="Credito" ToRole="Producto" />
           <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Credito_Usuario3" FromRole="Credito" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="VENDIXModel.FK_Credito_Usuario4" FromRole="Credito" ToRole="Usuario" />
@@ -2550,7 +2867,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <PropertyRef Name="GastosAdmId" />
           </Key>
           <Property Name="GastosAdmId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Denominacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Denominacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MontoMinimo" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <Property Name="MontoMaximo" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
           <Property Name="IndPorcentaje" Type="Boolean" Nullable="false" />
@@ -2717,7 +3034,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="MovimientoDoc" Relationship="VENDIXModel.FK_DOCENTRADASALIDA_DestinatarioId" FromRole="Persona" ToRole="MovimientoDoc" />
           <NavigationProperty Name="MovimientoDoc1" Relationship="VENDIXModel.FK_DOCENTRADASALIDA_RemitenteId" FromRole="Persona" ToRole="MovimientoDoc" />
           <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK_Credito_Persona" FromRole="Persona" ToRole="Credito" />
-          <NavigationProperty Name="Credito1" Relationship="VENDIXModel.FK_Credito_Persona1" FromRole="Persona" ToRole="Credito" />
           <NavigationProperty Name="MovimientoCaja" Relationship="VENDIXModel.FK_MovimientoCaja_Persona" FromRole="Persona" ToRole="MovimientoCaja" />
           <NavigationProperty Name="Cliente" Relationship="VENDIXModel.FK_Cliente_Persona" FromRole="Persona" ToRole="Cliente" />
           <NavigationProperty Name="TarjetaPunto" Relationship="VENDIXModel.FK__TarjetaPu__Perso__118B55E3" FromRole="Persona" ToRole="TarjetaPunto" />
@@ -3344,18 +3660,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Credito_Persona1">
-          <End Type="VENDIXModel.Persona" Role="Persona" Multiplicity="0..1" />
-          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Persona">
-              <PropertyRef Name="PersonaId" />
-            </Principal>
-            <Dependent Role="Credito">
-              <PropertyRef Name="AnalistaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Credito_Producto">
           <End Type="VENDIXModel.Producto" Role="Producto" Multiplicity="1" />
           <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="*" />
@@ -3740,38 +4044,158 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_EstadoPlanPago_Result">
-          <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
-          <Property Type="Int32" Name="Numero" Nullable="false" />
-          <Property Type="Decimal" Name="Capital" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="DateTime" Name="FechaVencimiento" Nullable="false" />
-          <Property Type="Decimal" Name="Amortizacion" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="GastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cuota" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
-          <Property Type="Decimal" Name="ImporteMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="InteresMora" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="Cargo" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="PagoLibre" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="DateTime" Name="FechaPagoCuota" Nullable="true" Precision="23" />
-          <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="16" Scale="2" />
-          <Property Type="Int32" Name="MovimientoCajaId" Nullable="true" />
-        </ComplexType>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VENDIXModelStoreContainer" CdmEntityContainer="VENDIXEntities">
+          <FunctionImportMapping FunctionImportName="usp_CrearMovimientoDet" FunctionName="VENDIXModel.Store.usp_CrearMovimientoDet" />
           <FunctionImportMapping FunctionImportName="usp_EliminarMovimientoDet" FunctionName="VENDIXModel.Store.usp_EliminarMovimientoDet" />
           <FunctionImportMapping FunctionImportName="usp_ExisteSerieArticulo" FunctionName="VENDIXModel.Store.usp_ExisteSerieArticulo" />
+          <FunctionImportMapping FunctionImportName="usp_GenerarKardex" FunctionName="VENDIXModel.Store.usp_GenerarKardex">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_GenerarKardex_Result">
+                <ScalarProperty Name="MovimientoDetId" ColumnName="MovimientoDetId" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
+                <ScalarProperty Name="CantEnt" ColumnName="CantEnt" />
+                <ScalarProperty Name="PUEnt" ColumnName="PUEnt" />
+                <ScalarProperty Name="TotalEnt" ColumnName="TotalEnt" />
+                <ScalarProperty Name="CantSal" ColumnName="CantSal" />
+                <ScalarProperty Name="PUSal" ColumnName="PUSal" />
+                <ScalarProperty Name="TotalSal" ColumnName="TotalSal" />
+                <ScalarProperty Name="CantSaldo" ColumnName="CantSaldo" />
+                <ScalarProperty Name="PUSaldo" ColumnName="PUSaldo" />
+                <ScalarProperty Name="TotalSaldo" ColumnName="TotalSaldo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ListarSerieKardex" FunctionName="VENDIXModel.Store.usp_ListarSerieKardex" />
+          <FunctionImportMapping FunctionImportName="usp_Movimiento_Upd" FunctionName="VENDIXModel.Store.usp_Movimiento_Upd" />
+          <FunctionImportMapping FunctionImportName="usp_ReporteStock" FunctionName="VENDIXModel.Store.usp_ReporteStock">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_ReporteStock_Result">
+                <ScalarProperty Name="Nro" ColumnName="Nro" />
+                <ScalarProperty Name="TipoArticulo" ColumnName="TipoArticulo" />
+                <ScalarProperty Name="ArticuloId" ColumnName="ArticuloId" />
+                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ActualizarSaldosBoveda" FunctionName="VENDIXModel.Store.usp_ActualizarSaldosBoveda" />
           <FunctionImportMapping FunctionImportName="usp_Credito_Del" FunctionName="VENDIXModel.Store.usp_Credito_Del" />
+          <FunctionImportMapping FunctionImportName="usp_Credito_Ins" FunctionName="VENDIXModel.Store.usp_Credito_Ins" />
           <FunctionImportMapping FunctionImportName="usp_Credito_Upd" FunctionName="VENDIXModel.Store.usp_Credito_Upd" />
+          <FunctionImportMapping FunctionImportName="usp_CuotasPendientes" FunctionName="VENDIXModel.Store.usp_CuotasPendientes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_CuotasPendientes_Result">
+                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
+                <ScalarProperty Name="Glosa" ColumnName="Glosa" />
+                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
+                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
+                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
+                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
+                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
+          <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
+                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Capital" ColumnName="Capital" />
+                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
+                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
+                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
+                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
+                <ScalarProperty Name="FechaPagoCuota" ColumnName="FechaPagoCuota" />
+                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
+                <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_MovimientoCaja_Del" FunctionName="VENDIXModel.Store.usp_MovimientoCaja_Del" />
-          <FunctionImportMapping FunctionImportName="usp_AgregarPuntos" FunctionName="VENDIXModel.Store.usp_AgregarPuntos" />
-          <FunctionImportMapping FunctionImportName="usp_CanjearPuntos" FunctionName="VENDIXModel.Store.usp_CanjearPuntos" />
+          <FunctionImportMapping FunctionImportName="usp_PagarCuentaxCobrar" FunctionName="VENDIXModel.Store.usp_PagarCuentaxCobrar" />
+          <FunctionImportMapping FunctionImportName="usp_PagarCuotas" FunctionName="VENDIXModel.Store.usp_PagarCuotas" />
+          <FunctionImportMapping FunctionImportName="usp_PagarCuotasCancelacion" FunctionName="VENDIXModel.Store.usp_PagarCuotasCancelacion" />
+          <FunctionImportMapping FunctionImportName="usp_ReprogramarCredito" FunctionName="VENDIXModel.Store.usp_ReprogramarCredito" />
+          <FunctionImportMapping FunctionImportName="usp_RptCreditoMorosidad" FunctionName="VENDIXModel.Store.usp_RptCreditoMorosidad">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoMorosidad_Result">
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
+                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
+                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="SaldoCredito" ColumnName="SaldoCredito" />
+                <ScalarProperty Name="FechaUltPago" ColumnName="FechaUltPago" />
+                <ScalarProperty Name="CapitalAtrazo" ColumnName="CapitalAtrazo" />
+                <ScalarProperty Name="GA" ColumnName="GA" />
+                <ScalarProperty Name="InteresAtrazo" ColumnName="InteresAtrazo" />
+                <ScalarProperty Name="Mora" ColumnName="Mora" />
+                <ScalarProperty Name="ImporteLibre" ColumnName="ImporteLibre" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
+                <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_RptSaldosCaja" FunctionName="VENDIXModel.Store.usp_RptSaldosCaja">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptSaldosCaja_Result">
+                <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
+                <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+                <ScalarProperty Name="FechaReg" ColumnName="FechaReg" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="ImportePago" ColumnName="ImportePago" />
+                <ScalarProperty Name="IndEntrada" ColumnName="IndEntrada" />
+                <ScalarProperty Name="Glosa" ColumnName="Glosa" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_SimuladorCredito" FunctionName="VENDIXModel.Store.usp_SimuladorCredito">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_SimuladorCredito_Result">
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Capital" ColumnName="Capital" />
+                <ScalarProperty Name="FechaPago" ColumnName="FechaPago" />
+                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
+                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TransferirBoveda" FunctionName="VENDIXModel.Store.usp_TransferirBoveda" />
+          <FunctionImportMapping FunctionImportName="usp_UsuariosNoAsignadosCaja" FunctionName="VENDIXModel.Store.usp_UsuariosNoAsignadosCaja">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_UsuariosNoAsignadosCaja_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_MenuLst" FunctionName="VENDIXModel.Store.usp_MenuLst">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_MenuLst_Result">
@@ -3801,28 +4225,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <FunctionImportMapping FunctionImportName="usp_OrdenVenta_Del" FunctionName="VENDIXModel.Store.usp_OrdenVenta_Del" />
           <FunctionImportMapping FunctionImportName="usp_OrdenVentaDet_Ins" FunctionName="VENDIXModel.Store.usp_OrdenVentaDet_Ins" />
           <FunctionImportMapping FunctionImportName="usp_OrdenVentaDet_update" FunctionName="VENDIXModel.Store.usp_OrdenVentaDet_update" />
-          <FunctionImportMapping FunctionImportName="usp_GenerarKardex" FunctionName="VENDIXModel.Store.usp_GenerarKardex">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_GenerarKardex_Result">
-                <ScalarProperty Name="MovimientoDetId" ColumnName="MovimientoDetId" />
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
-                <ScalarProperty Name="CantEnt" ColumnName="CantEnt" />
-                <ScalarProperty Name="PUEnt" ColumnName="PUEnt" />
-                <ScalarProperty Name="TotalEnt" ColumnName="TotalEnt" />
-                <ScalarProperty Name="CantSal" ColumnName="CantSal" />
-                <ScalarProperty Name="PUSal" ColumnName="PUSal" />
-                <ScalarProperty Name="TotalSal" ColumnName="TotalSal" />
-                <ScalarProperty Name="CantSaldo" ColumnName="CantSaldo" />
-                <ScalarProperty Name="PUSaldo" ColumnName="PUSaldo" />
-                <ScalarProperty Name="TotalSaldo" ColumnName="TotalSaldo" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_ListarSerieKardex" FunctionName="VENDIXModel.Store.usp_ListarSerieKardex" />
-          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
-          <FunctionImportMapping FunctionImportName="usp_Movimiento_Upd" FunctionName="VENDIXModel.Store.usp_Movimiento_Upd" />
-          <FunctionImportMapping FunctionImportName="usp_CrearMovimientoDet" FunctionName="VENDIXModel.Store.usp_CrearMovimientoDet" />
           <FunctionImportMapping FunctionImportName="usp_RptRentabilidadVenta" FunctionName="VENDIXModel.Store.usp_RptRentabilidadVenta">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_RptRentabilidadVenta_Result">
@@ -3841,8 +4243,28 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_ReprogramarCredito" FunctionName="VENDIXModel.Store.usp_ReprogramarCredito" />
-          <FunctionImportMapping FunctionImportName="usp_PagarCuotasCancelacion" FunctionName="VENDIXModel.Store.usp_PagarCuotasCancelacion" />
+          <FunctionImportMapping FunctionImportName="usp_AgregarPuntos" FunctionName="VENDIXModel.Store.usp_AgregarPuntos" />
+          <FunctionImportMapping FunctionImportName="usp_CanjearPuntos" FunctionName="VENDIXModel.Store.usp_CanjearPuntos" />
+          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
+                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
+                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
+                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
+                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_RptCreditoRentabilidad" FunctionName="VENDIXModel.Store.usp_RptCreditoRentabilidad">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoRentabilidad_Result">
@@ -3851,7 +4273,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="Cliente" ColumnName="Cliente" />
                 <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
                 <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
-                <ScalarProperty Name="InteresMensual" ColumnName="InteresMensual" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
                 <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
@@ -3868,120 +4290,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
-                <ScalarProperty Name="Producto" ColumnName="Producto" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
-                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
-                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
-                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
-                <ScalarProperty Name="InteresMensual" ColumnName="InteresMensual" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
-                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
-                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_RptCreditoMorosidad" FunctionName="VENDIXModel.Store.usp_RptCreditoMorosidad">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoMorosidad_Result">
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="Celular" ColumnName="Celular" />
-                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
-                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
-                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
-                <ScalarProperty Name="SaldoCredito" ColumnName="SaldoCredito" />
-                <ScalarProperty Name="FechaUltPago" ColumnName="FechaUltPago" />
-                <ScalarProperty Name="CapitalAtrazo" ColumnName="CapitalAtrazo" />
-                <ScalarProperty Name="GA" ColumnName="GA" />
-                <ScalarProperty Name="InteresAtrazo" ColumnName="InteresAtrazo" />
-                <ScalarProperty Name="Mora" ColumnName="Mora" />
-                <ScalarProperty Name="ImporteLibre" ColumnName="ImporteLibre" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
-                <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_ReporteStock" FunctionName="VENDIXModel.Store.usp_ReporteStock">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_ReporteStock_Result">
-                <ScalarProperty Name="Nro" ColumnName="Nro" />
-                <ScalarProperty Name="TipoArticulo" ColumnName="TipoArticulo" />
-                <ScalarProperty Name="ArticuloId" ColumnName="ArticuloId" />
-                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
-                <ScalarProperty Name="Series" ColumnName="Series" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_UsuariosNoAsignadosCaja" FunctionName="VENDIXModel.Store.usp_UsuariosNoAsignadosCaja">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_UsuariosNoAsignadosCaja_Result">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Valor" ColumnName="Valor" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_RptSaldosCaja" FunctionName="VENDIXModel.Store.usp_RptSaldosCaja">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptSaldosCaja_Result">
-                <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
-                <ScalarProperty Name="Operacion" ColumnName="Operacion" />
-                <ScalarProperty Name="FechaReg" ColumnName="FechaReg" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="ImportePago" ColumnName="ImportePago" />
-                <ScalarProperty Name="IndEntrada" ColumnName="IndEntrada" />
-                <ScalarProperty Name="Glosa" ColumnName="Glosa" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_ActualizarSaldosBoveda" FunctionName="VENDIXModel.Store.usp_ActualizarSaldosBoveda" />
-          <FunctionImportMapping FunctionImportName="usp_TransferirBoveda" FunctionName="VENDIXModel.Store.usp_TransferirBoveda" />
-          <FunctionImportMapping FunctionImportName="usp_CuotasPendientes" FunctionName="VENDIXModel.Store.usp_CuotasPendientes">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_CuotasPendientes_Result">
-                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
-                <ScalarProperty Name="Glosa" ColumnName="Glosa" />
-                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
-                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
-                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
-                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
-                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
-                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
-                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_PagarCuentaxCobrar" FunctionName="VENDIXModel.Store.usp_PagarCuentaxCobrar" />
-          <FunctionImportMapping FunctionImportName="usp_PagarCuotas" FunctionName="VENDIXModel.Store.usp_PagarCuotas" />
-          <FunctionImportMapping FunctionImportName="usp_SimuladorCredito" FunctionName="VENDIXModel.Store.usp_SimuladorCredito">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_SimuladorCredito_Result">
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Capital" ColumnName="Capital" />
-                <ScalarProperty Name="FechaPago" ColumnName="FechaPago" />
-                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
-                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_Credito_Ins" FunctionName="VENDIXModel.Store.usp_Credito_Ins" />
           <EntitySetMapping Name="Almacen">
             <EntityTypeMapping TypeName="VENDIXModel.Almacen">
               <MappingFragment StoreEntitySet="Almacen">
@@ -4222,17 +4530,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="FechaMod" ColumnName="FechaMod" />
                 <ScalarProperty Name="UsuarioRegId" ColumnName="UsuarioRegId" />
                 <ScalarProperty Name="FechaReg" ColumnName="FechaReg" />
-                <ScalarProperty Name="AnalistaId" ColumnName="AnalistaId" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="Observacion" ColumnName="Observacion" />
                 <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
                 <ScalarProperty Name="FechaAprobacion" ColumnName="FechaAprobacion" />
                 <ScalarProperty Name="FechaPrimerPago" ColumnName="FechaPrimerPago" />
-                <ScalarProperty Name="InteresMensual" ColumnName="InteresMensual" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
                 <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
                 <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="TipoGastoAdm" ColumnName="TipoGastoAdm" />
+                <ScalarProperty Name="MontoDesembolso" ColumnName="MontoDesembolso" />
                 <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
                 <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
                 <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -4579,30 +4888,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
-                <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Capital" ColumnName="Capital" />
-                <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
-                <ScalarProperty Name="Amortizacion" ColumnName="Amortizacion" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="GastosAdm" ColumnName="GastosAdm" />
-                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="ImporteMora" ColumnName="ImporteMora" />
-                <ScalarProperty Name="InteresMora" ColumnName="InteresMora" />
-                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
-                <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
-                <ScalarProperty Name="FechaPagoCuota" ColumnName="FechaPagoCuota" />
-                <ScalarProperty Name="PagoCuota" ColumnName="PagoCuota" />
-                <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="usp_CalcularTEM" FunctionName="VENDIXModel.Store.usp_CalcularTEM" />
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -4616,10 +4903,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
-        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

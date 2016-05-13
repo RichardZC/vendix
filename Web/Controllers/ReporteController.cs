@@ -8,7 +8,7 @@ using ITB.VENDIX.BE;
 using ITB.VENDIX.BL;
 using VendixWeb.Models;
 using Microsoft.Reporting.WebForms;
-
+using System.Globalization;
 
 namespace VendixWeb.Controllers
 {
@@ -164,23 +164,33 @@ namespace VendixWeb.Controllers
             var rd = new ReportDataSource("dsKardex", kardexData);
             return Reporte("PDF", "rptKardex.rdlc", rd, "A4Horizontal0.25");
         }
-        public ActionResult ReporteSimuladorPlanPagos(int pProductoId,string pTipo, decimal pMonto, int pCuotas, decimal pInteres, string pFecha, string pModalidad, decimal? pGastosAdm = null)
+        public ActionResult ReporteSimuladorPlanPagos(int pProductoId,string pTipo, decimal pMonto, int pCuotas, decimal pInteres, 
+            string pFecha, string pModalidad, decimal? pGastosAdm = null, string pGA = "CAP",string pCliente="")
         {
-            var oPlanPago = CreditoBL.SimuladorCredito(pProductoId, pTipo,pMonto, pModalidad,  pCuotas, pInteres, DateTime.Parse(pFecha), pGastosAdm);
+            decimal desemb = pMonto;
+            decimal pga = 0;
+            if (pGA == "CAP")         
+                desemb = pMonto - (pGastosAdm.HasValue ? pGastosAdm.Value : 0);
+                        
+            if (pGA == "CUO")
+                pga = pGastosAdm.Value;
+
+
+            var oPlanPago = CreditoBL.SimuladorCredito(pProductoId, pTipo,pMonto, pModalidad,  pCuotas, pInteres, DateTime.Parse(pFecha), pga);
             var rd = new ReportDataSource("dsSimuladorPlanPago", oPlanPago);
 
-            var periodoAnio = 0.0;
-            
+                       
             switch (pModalidad)
             {
-                case "D": pModalidad = "DIARIO"; periodoAnio = 360.0; break;
-                case "S": pModalidad = "SEMANAL"; periodoAnio = 52.0; break;
-                case "Q": pModalidad = "QUINCENAL"; periodoAnio = 24.0; break;
-                case "M": pModalidad = "MENSUAL"; periodoAnio = 12.0; break;
+                case "D": pModalidad = "DIARIO";  break;
+                case "S": pModalidad = "SEMANAL"; break;
+                case "Q": pModalidad = "QUINCENAL";  break;
+                case "M": pModalidad = "MENSUAL";  break;
             }
 
-            var pTem = Math.Round(Math.Pow(double.Parse((1 + pInteres/100).ToString()), 1/periodoAnio) - 1, 6);
-            
+            var pTem = CreditoBL.ObtenerTEM(pInteres, pModalidad); // Math.Round(Math.Pow(double.Parse((1 + pInteres/100).ToString()), 1/periodoAnio) - 1, 6);
+                      
+
             var parametros = new List<ReportParameter>
                                  {
                                      new ReportParameter("Monto", "S/. " + pMonto),
@@ -188,9 +198,11 @@ namespace VendixWeb.Controllers
                                      new ReportParameter("Producto", ProductoBL.Obtener(pProductoId).Denominacion),
                                      new ReportParameter("Fecha", pFecha),
                                      new ReportParameter("Modalidad", pModalidad),
-                                     new ReportParameter("Cliente", string.Empty),
+                                     new ReportParameter("Cliente", pCliente),
                                      new ReportParameter("TEA",pInteres + " %"),
-                                     new ReportParameter("TEM",pTem + " %")
+                                     new ReportParameter("TEM",Math.Round( pTem,6).ToString() + " %"),
+                                     new ReportParameter("Desembolso", "S/. " + desemb),
+                                     new ReportParameter("GastosAdm", "S/. " + Math.Round( pGastosAdm.Value,2).ToString("0.00",CultureInfo.InvariantCulture))
                                  };
 
             return Reporte("PDF", "rptSimuladorPlanPago.rdlc", rd, "A4Vertical0.25", parametros);
@@ -209,6 +221,8 @@ namespace VendixWeb.Controllers
                 case "Q": pModalidad = "QUINCENAL"; break;
                 case "M": pModalidad = "MENSUAL"; break;
             }
+            var pTem = CreditoBL.ObtenerTEM(credito.Interes, pModalidad);
+
             var parametros = new List<ReportParameter>
                                  {
                                      new ReportParameter("Monto", credito.MontoCredito.ToString()),
@@ -216,7 +230,11 @@ namespace VendixWeb.Controllers
                                      new ReportParameter("Producto", ProductoBL.Obtener(credito.ProductoId).Denominacion),
                                      new ReportParameter("Fecha", credito.FechaPrimerPago.ToShortDateString()),
                                      new ReportParameter("Modalidad", pModalidad),
-                                     new ReportParameter("Cliente", credito.Persona.NombreCompleto)
+                                     new ReportParameter("Cliente", credito.Persona.NombreCompleto),
+                                     new ReportParameter("TEA", credito.Interes.ToString() + "%"),
+                                     new ReportParameter("TEM",Math.Round(pTem,6).ToString() + "%"),
+                                     new ReportParameter("Desembolso", credito.MontoDesembolso.ToString()),
+                                     new ReportParameter("GastosAdm", credito.MontoGastosAdm.ToString())
                                  };
 
             return Reporte("PDF", "rptSimuladorPlanPago.rdlc", rd, "A4Vertical0.25", parametros);
@@ -224,7 +242,7 @@ namespace VendixWeb.Controllers
         public ActionResult ReporteEstadoCredito(int pCreditoId)
         {
             string pModalidad = string.Empty;
-            var credito = CreditoBL.Obtener(x => x.CreditoId == pCreditoId, includeProperties: "Persona,Persona1");
+            var credito = CreditoBL.Obtener(x => x.CreditoId == pCreditoId, includeProperties: "Persona,Producto");
             var data = CreditoBL.ListarEstadoPlanPago(pCreditoId);
             var rd = new ReportDataSource("dsEstadoCredito", data);
 
@@ -237,16 +255,18 @@ namespace VendixWeb.Controllers
             }
             var parametros = new List<ReportParameter>
                                  {
-                                     new ReportParameter("Cliente", credito.Persona.NumeroDocumento + " " + credito.Persona.NombreCompleto),
-                                     new ReportParameter("Producto", credito.Descripcion),
+                                     new ReportParameter("Producto", credito.Producto.Denominacion),
                                      new ReportParameter("MontoProducto", credito.MontoProducto.ToString()),
                                      new ReportParameter("MontoInicial", credito.MontoInicial.ToString()),
                                      new ReportParameter("MontoCredito", credito.MontoCredito.ToString()),
                                      new ReportParameter("Modalidad", pModalidad),
                                      new ReportParameter("Cuotas", credito.NumeroCuotas.ToString()),
-                                     new ReportParameter("Interes", credito.InteresMensual.ToString()),
+                                     new ReportParameter("Interes", credito.Interes.ToString()),
                                      new ReportParameter("Estado", credito.Estado),
-                                     new ReportParameter("Analista", credito.Persona1.NombreCompleto)
+                                     new ReportParameter("Cliente", credito.Persona.NumeroDocumento + " " + credito.Persona.NombreCompleto),
+                                     new ReportParameter("Analista", UsuarioBL.ObtenerNombre(credito.UsuarioRegId)),
+                                     new ReportParameter("GastoAdm", credito.MontoGastosAdm.ToString()),
+                                     new ReportParameter("Desembolso", credito.MontoDesembolso.ToString())
                                  };
             return Reporte("PDF", "rptEstadoCredito.rdlc", rd, "A4Vertical0.25", parametros);
         }

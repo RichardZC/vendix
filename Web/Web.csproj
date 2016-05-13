@@ -16,7 +16,7 @@
     <RootNamespace>Web</RootNamespace>
     <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -1866,6 +1866,7 @@
     <Content Include="Scripts\i18n\grid.locale-en.js" />
     <Content Include="Scripts\i18n\grid.locale-es.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <None Include="Properties\PublishProfiles\CACMEA2.pubxml" />
     <None Include="Properties\PublishProfiles\vendix.pubxml" />
     <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -2220,7 +2221,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4779</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:4779/</IISUrl>
+          <IISUrl>http://localhost/cacmea</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
