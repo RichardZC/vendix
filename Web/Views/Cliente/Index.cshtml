@@ -184,7 +184,7 @@
 
 <script>
     $$.ready(function () {
-        $("#txtDocumento").mask("99999999").keypress(function() {
+        @*$("#txtDocumento").mask("99999999").keypress(function() {
             if (event.which == 13) {
                 event.preventDefault();
                 $(this).trigger('blur');
@@ -220,7 +220,82 @@
                 });
 
             }
+        });*@
+
+        $("#txtDocumento").mask("99999999").keypress(function () {
+            if (event.which == 13) {
+                event.preventDefault();
+                $(this).trigger('blur');
+            }
+        }).blur(function () {
+
+            if (isNaN($(this).val())) return false;
+
+            if ($(this).val().length > 0) {
+
+                $.data(document.body, 'NumDocumento', $(this).val());
+
+                $.ajax({
+                    url: "@Url.Action("ValidarClienteDNI", "Cliente")",
+                    data: { pDNI: $(this).val() },
+                success: function (rpta) {
+                    if (rpta) {
+                        Vendix.Mensaje("Ya existe un Cliente  con este DNI");
+                        $("#txtNombre").val('');
+                        $("#txtApePaterno").val('');
+                        $("#txtApeMaterno").val('');
+                        $("#txtEmailPersonal").val('');
+                        $("#txtcelular1").val('');
+                        $("#txtcelular2").val('');
+                        $("#txtFechaNacimiento").val('');
+                        $("#txtFechaCaptacion").val('');
+                        $("#txtDireccion").val('');
+                        $("#txtDocumento").val('').focus();
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "@Url.Action("ObtenerClienteDNI", "Cliente")",
+                        data: { pDNI: $.data(document.body, 'NumDocumento') },
+                    success: function (rpta) {
+                        if (rpta == null) {
+                            $("#txtNombre").val('');
+                            $("#txtApePaterno").val('');
+                            $("#txtApeMaterno").val('');
+                            $("#txtEmailPersonal").val('');
+                            $("#txtcelular1").val('');
+                            $("#txtcelular2").val('');
+                            $("#txtFechaNacimiento").val('');
+                            $("#txtFechaCaptacion").val('');
+                            $("#txtDireccion").val('');
+                            $("#txtNombre").focus();
+                            return;
+                        }
+
+                        $("#txtNombre").val(rpta.Persona.Nombre);
+                        $("#txtApePaterno").val(rpta.Persona.ApePaterno);
+                        $("#txtApeMaterno").val(rpta.Persona.ApeMaterno);
+                        $("#txtEmailPersonal").val(rpta.Persona.EmailPersonal);
+                        $("#txtcelular1").val(rpta.Persona.Celular1);
+                        $("#txtcelular2").val(rpta.Persona.Celular2);
+                        $("#txtFechaNacimiento").val(rpta.FNacimiento);
+                        $("#txtDireccion").val(rpta.Persona.Direccion);
+                        $("#rbSexoM").prop("checked", rpta.Persona.Sexo == 'M' ? true : false);
+                        $("#rbSexoF").prop("checked", rpta.Persona.Sexo == 'F' ? true : false);
+                        $("#rbN").prop("checked", rpta.Persona.TipoPersona == 'N' ? true : false);
+                        $("#rbJ").prop("checked", rpta.Persona.TipoPersona == 'J' ? true : false);
+                        
+
+                        $("#cboOcupacion").focus();
+                    }
+                });
+            }
         });
+
+
+
+    }
+    });
         
         $("#rbN,#rbJ").change(function () {
             if ($("#rbN").prop('checked')) {

@@ -49,14 +49,17 @@ namespace Web.Controllers
                                         DateTime? pFechaNacimiento, string pDireccion, DateTime pFechaCaptacion, int? pOcupacionId,
                                         string pCalificacion, decimal? pMontoInscripcion, bool pActivo)
         {
-            var persona = new Persona();
-            var cliente = new Cliente();
             
-            if (pClienteId > 0)
-            {
-                cliente = ClienteBL.Obtener(pClienteId);
-                persona = PersonaBL.Obtener(cliente.PersonaId);
-            }
+            var cliente = new Cliente();
+            var persona = PersonaBL.Obtener(x => x.NumeroDocumento == pNumeroDocumento);
+            if (persona == null)
+                persona = new Persona();
+
+            //if (pClienteId > 0)
+            //{
+            //    cliente = ClienteBL.Obtener(pClienteId);
+            //    persona = PersonaBL.Obtener(cliente.PersonaId);
+            //}
 
             pNombre = pNombre.ToUpper();
             if (pTipoPersona == "N")
@@ -88,10 +91,17 @@ namespace Web.Controllers
             persona.Direccion = pDireccion;
             persona.Estado = pActivo;
 
-            if (pClienteId == 0)
+            if (persona.PersonaId == 0)
                 PersonaBL.Crear(persona);
             else
                 PersonaBL.Actualizar(persona);
+
+            //if (pClienteId == 0)
+            //    PersonaBL.Crear(persona);
+            //else
+            //    PersonaBL.Actualizar(persona);
+            if (pClienteId > 0)
+                cliente = ClienteBL.Obtener(pClienteId);
 
             cliente.PersonaId = persona.PersonaId;
             cliente.FechaRegistro = DateTime.Now;
@@ -160,6 +170,30 @@ namespace Web.Controllers
         public JsonResult BuscarPersona(string term)
         {
             return Json(ClienteBL.BuscarPersona(term), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ObtenerClienteDNI(string pDNI)
+        {
+            var persona = PersonaBL.Obtener(x => x.NumeroDocumento == pDNI);
+
+            if (persona == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+
+            return Json(new
+            {
+                Persona = persona,
+                FNacimiento = persona.FechaNacimiento != null ? persona.FechaNacimiento.Value.ToShortDateString() : String.Empty,
+            }
+                , JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ValidarClienteDNI(string pDNI)
+        {
+            var users = ClienteBL.Contar(x => x.Persona.NumeroDocumento == pDNI, includeProperties: "Persona");
+            if (users > 0)
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
     }
 }

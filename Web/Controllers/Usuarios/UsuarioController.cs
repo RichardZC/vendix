@@ -12,7 +12,7 @@ namespace VendixWeb.Controllers
 {
     public class UsuarioController : Controller
     {
-        
+
         public ActionResult Index()
         {
             ViewBag.cboOficina = new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion");
@@ -32,7 +32,7 @@ namespace VendixWeb.Controllers
                         select new
                         {
                             id = item.UsuarioId,
-                            cell = new string[] { 
+                            cell = new string[] {
                                                     item.UsuarioId.ToString(),
                                                     item.NombreUsuario,
                                                     item.Persona.NombreCompleto,
@@ -46,20 +46,17 @@ namespace VendixWeb.Controllers
             };
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         public ActionResult GuardarUsuario(int pUsuarioId, string pApePaterno, string pApeMaterno, string pNombre,
                                            string pNumeroDocumento, string pSexoM, DateTime? pFechaNacimiento, string pTelefonoMovil,
-                                           string pEmailPersonal,string pDireccion, string pNombreUsuario, string pClaveUsuario, bool pActivo)
+                                           string pEmailPersonal, string pDireccion, string pNombreUsuario, string pClaveUsuario, bool pActivo)
         {
-            var perso = new Persona();
             var user = new Usuario();
-            
-            if (pUsuarioId > 0)
-            {
-                user = UsuarioBL.Obtener(pUsuarioId);
-                perso = PersonaBL.Obtener(user.PersonaId);
-            }
+            var perso = PersonaBL.Obtener(x => x.NumeroDocumento == pNumeroDocumento);
+            if (perso==null)
+                perso= new Persona();  
+           
             pApePaterno = pApePaterno.ToUpper();
             pApeMaterno = pApeMaterno.ToUpper();
             pNombreUsuario = pNombreUsuario.ToUpper();
@@ -78,11 +75,15 @@ namespace VendixWeb.Controllers
             perso.TipoPersona = "N";
             perso.Estado = pActivo;
 
-            if (pUsuarioId == 0)
+            if (perso.PersonaId == 0)
                 PersonaBL.Crear(perso);
             else
                 PersonaBL.Actualizar(perso);
-                        
+
+
+            if (pUsuarioId > 0)            
+                user = UsuarioBL.Obtener(pUsuarioId);
+            
             user.PersonaId = perso.PersonaId;
             user.UsuarioId = pUsuarioId;
             user.NombreUsuario = pNombreUsuario;
@@ -95,21 +96,21 @@ namespace VendixWeb.Controllers
 
             return Json(user.UsuarioId, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult ObtenerUsuarioPersona(int pUsuarioId)
         {
             var user = UsuarioBL.Obtener(pUsuarioId);
             var persona = PersonaBL.Obtener(user.PersonaId);
-            var oficinas =  (from of in OficinaBL.Listar(x => x.Estado)
-                             join us in UsuarioOficinaBL.Listar(x => x.Estado && x.UsuarioId == pUsuarioId) on of.OficinaId equals
-                                 us.OficinaId into factDesc
-                             from fd in factDesc.DefaultIfEmpty()
-                             select new
-                                        {
-                                            of.OficinaId,
-                                            of.Denominacion,
-                                            Asignado = (fd == null) ? 0 : 1
-                                        }
+            var oficinas = (from of in OficinaBL.Listar(x => x.Estado)
+                            join us in UsuarioOficinaBL.Listar(x => x.Estado && x.UsuarioId == pUsuarioId) on of.OficinaId equals
+                                us.OficinaId into factDesc
+                            from fd in factDesc.DefaultIfEmpty()
+                            select new
+                            {
+                                of.OficinaId,
+                                of.Denominacion,
+                                Asignado = (fd == null) ? 0 : 1
+                            }
                             ).ToList();
 
 
@@ -117,10 +118,11 @@ namespace VendixWeb.Controllers
             {
                 Usuario = user,
                 Persona = PersonaBL.Obtener(user.PersonaId),
-                FNacimiento = persona.FechaNacimiento!=null? persona.FechaNacimiento.Value.ToShortDateString():String.Empty,
+                FNacimiento = persona.FechaNacimiento != null ? persona.FechaNacimiento.Value.ToShortDateString() : String.Empty,
                 Oficinas = oficinas
             }, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpPost]
         public ActionResult ResetearClave(int pUsuarioId)
@@ -130,7 +132,7 @@ namespace VendixWeb.Controllers
             UsuarioBL.Actualizar(ousuario);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
- 
+
         [HttpPost]
         public ActionResult Activar(int pid)
         {
@@ -139,22 +141,22 @@ namespace VendixWeb.Controllers
             UsuarioBL.Actualizar(ousuario);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
-        public ActionResult AsignarOficina(int pUsuarioId,string pOficinas)
+        public ActionResult AsignarOficina(int pUsuarioId, string pOficinas)
         {
             var lst = pOficinas.Split(',');
             UsuarioOficinaBL.EjecutarSql("DELETE FROM MAESTRO.UsuarioOficina WHERE UsuarioId=" + pUsuarioId.ToString());
             foreach (var item in lst)
             {
                 UsuarioOficinaBL.Crear(new UsuarioOficina()
-                                           {UsuarioId = pUsuarioId, OficinaId = int.Parse(item), Estado = true});
+                { UsuarioId = pUsuarioId, OficinaId = int.Parse(item), Estado = true });
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult AsignarRol(int pUsuarioId,int pOficinaId , string pRoles)
+        public ActionResult AsignarRol(int pUsuarioId, int pOficinaId, string pRoles)
         {
             var lst = pRoles.Split(',');
             UsuarioRolBL.EjecutarSql("DELETE FROM MAESTRO.UsuarioRol WHERE UsuarioId=" + pUsuarioId.ToString() + " and OficinaId=" + pOficinaId.ToString());
@@ -167,11 +169,11 @@ namespace VendixWeb.Controllers
 
         public ActionResult ListarOficinas()
         {
-            return Json(OficinaBL.Listar(x => x.Estado).Select(s => new {s.OficinaId, s.Denominacion}),
+            return Json(OficinaBL.Listar(x => x.Estado).Select(s => new { s.OficinaId, s.Denominacion }),
                         JsonRequestBehavior.AllowGet);
         }
-        
-        public ActionResult ObtenerUsuarioRol(int? pOficinaId,int pUsuarioId)
+
+        public ActionResult ObtenerUsuarioRol(int? pOficinaId, int pUsuarioId)
         {
             if (!pOficinaId.HasValue)
                 return Json(null, JsonRequestBehavior.AllowGet);
@@ -180,14 +182,38 @@ namespace VendixWeb.Controllers
                          join us in UsuarioRolBL.Listar(x => x.UsuarioId == pUsuarioId && x.OficinaId == pOficinaId) on of.RolId equals us.RolId into factDesc
                          from fd in factDesc.DefaultIfEmpty()
                          select new
-                                    {
-                                        of.RolId,
-                                        of.Denominacion,
-                                        Asignado = (fd == null) ? 0 : 1
-                                    }
+                         {
+                             of.RolId,
+                             of.Denominacion,
+                             Asignado = (fd == null) ? 0 : 1
+                         }
                         ).ToList();
 
             return Json(roles, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ObtenerPersonaDNI(string pDNI)
+        {
+            var persona = PersonaBL.Obtener(x => x.NumeroDocumento == pDNI);
+
+            if (persona == null)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+
+            return Json(new
+            {
+                Persona = persona,
+                FNacimiento = persona.FechaNacimiento != null ? persona.FechaNacimiento.Value.ToShortDateString() : String.Empty,
+            }
+                , JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ValidarUsuarioDNI(string pDNI)
+        {
+            var users = UsuarioBL.Contar(x => x.Persona.NumeroDocumento == pDNI, includeProperties: "Persona");
+            if (users > 0)
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
     }
 }
