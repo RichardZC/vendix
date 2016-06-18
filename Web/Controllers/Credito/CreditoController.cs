@@ -538,6 +538,11 @@ namespace VendixWeb.Controllers
             return Json(CajaDiarioBL.EntradaSalida(pPersonaId, pTipoOperacionId, pDescripcion, pImporte)
                     , JsonRequestBehavior.AllowGet);
         }
+        public ActionResult RealizarDesembolso(int pCreditoId)
+        {
+            return Json(CajaDiarioBL.RealizarDesembolso(pCreditoId)
+                    , JsonRequestBehavior.AllowGet);
+        }
         public ActionResult RealizarPagarCuentaxCobrar(int pOrdenVentaId, int pCuentaxCobrarId)
         {
             return Json(CajaDiarioBL.RealizarPagarCuentaxCobrar(pOrdenVentaId, pCuentaxCobrarId), JsonRequestBehavior.AllowGet);
@@ -605,7 +610,10 @@ namespace VendixWeb.Controllers
         {
             return Json(CajaDiarioBL.AnularMovimientoCaja(pMovimientoCajaId, pObservacion), JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult ExisteDesembolso(int pPersonaId)
+        {
+            return Json(CreditoBL.Contar(x => x.PersonaId == pPersonaId && x.Estado == "APR"), JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
     public class DatosCredito

@@ -70,7 +70,7 @@ namespace VendixWeb.Controllers
                                              new ReportParameter("ProximaCuota", data.ProximaCuota),
                                              new ReportParameter("CuotasAtrazadas", data.CuotasAtrazadas.ToString())
                                          };
-                    return Reporte("PDF", "rptMovCajaCuota.rdlc", null, "TicketCaja", parametros);
+                    return Reporte("PDF", "rptMovCajaCuota.rdlc", null, "VoucherCaja", parametros);
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace VendixWeb.Controllers
                                              new ReportParameter("Articulo", data.Articulo),
                                              new ReportParameter("Concepto", "PAGO LIBRE")
                                          };
-                    return Reporte("PDF", "rptMovCaja.rdlc", null, "TicketCaja", parametros);
+                    return Reporte("PDF", "rptMovCaja.rdlc", null, "VoucherCaja", parametros);
                 }
             }
             if (operacion == "INI" || operacion == "GAD")
@@ -114,7 +114,7 @@ namespace VendixWeb.Controllers
                                          new ReportParameter("Articulo", data.Articulo),
                                          new ReportParameter("Concepto", concepto)
                                      };
-                return Reporte("PDF", "rptMovCaja.rdlc", null, "TicketCaja", parametros);
+                return Reporte("PDF", "rptMovCaja.rdlc", null, "VoucherCaja", parametros);
             }
             if (operacion == "CON")
             {
@@ -132,7 +132,7 @@ namespace VendixWeb.Controllers
                                          new ReportParameter("Articulo", data.Articulo),
                                          new ReportParameter("Concepto", "PAGO CONTADO")
                                      };
-                return Reporte("PDF", "rptMovCaja.rdlc", null, "TicketCaja", parametros);
+                return Reporte("PDF", "rptMovCaja.rdlc", null, "VoucherCaja", parametros);
             }
 
             var dato = MovimientoCajaBL.RptMovCajaOtros(pMovimientoCajaId);
@@ -149,7 +149,7 @@ namespace VendixWeb.Controllers
                                          new ReportParameter("Articulo", dato.Articulo),
                                          new ReportParameter("Concepto", dato.IndEntrada?"ENTRADA":"SALIDA")
                                      };
-            return Reporte("PDF", "rptMovCaja.rdlc", null, "TicketCaja", param);
+            return Reporte("PDF", "rptMovCaja.rdlc", null, "VoucherCaja", param);
 
         }
         public ActionResult ReporteCodBarras(int pMovimientoId)
@@ -484,6 +484,16 @@ namespace VendixWeb.Controllers
                     return "<DeviceInfo>" +
                            "  <OutputFormat>[TipoReporte]</OutputFormat>" +
                            "  <PageWidth>3.5in</PageWidth>" +
+                           "  <PageHeight>5.0in</PageHeight>" +
+                           "  <MarginTop>0in</MarginTop>" +
+                           "  <MarginLeft>0.1in</MarginLeft>" +
+                           "  <MarginRight>0in</MarginRight>" +
+                           "  <MarginBottom>0in</MarginBottom>" +
+                           "</DeviceInfo>";
+                case "VoucherCaja":
+                    return "<DeviceInfo>" +
+                           "  <OutputFormat>[TipoReporte]</OutputFormat>" +
+                           "  <PageWidth>9.0in</PageWidth>" +
                            "  <PageHeight>5.0in</PageHeight>" +
                            "  <MarginTop>0in</MarginTop>" +
                            "  <MarginLeft>0.1in</MarginLeft>" +

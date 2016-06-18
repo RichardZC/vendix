@@ -41,29 +41,29 @@ namespace ITB.VENDIX.BL
             {
                 IQueryable<CxcJgrid> query = db.CuentaxCobrar.Where(x => x.Credito.PersonaId == personaid && x.Estado == "PEN")
                     .Select(x => new CxcJgrid
-                                     {
-                                         OrdenVentaId = x.Credito.OrdenVentaId.Value,
-                                         CuentaxCobrarId = x.CuentaxCobrarId,
-                                         Oficina = x.Credito.Oficina.Denominacion,
-                                         Operacion = x.Operacion,
-                                         Origen = "ORDEN: " + SqlFunctions.StringConvert((decimal)x.Credito.OrdenVentaId).Trim() + " CREDITO: " + SqlFunctions.StringConvert((decimal)x.CreditoId).Trim(),
-                                         Monto = x.Monto,
-                                         Estado = x.Estado,
-                                         FechaReg = x.Credito.FechaAprobacion.Value
-                                     })
-                    .Union(db.OrdenVenta.Where(x => x.PersonaId == personaid && x.TipoVenta=="CON" && x.Estado == "ENV")
+                    {
+                        OrdenVentaId = x.Credito.OrdenVentaId == null ? 0 : x.Credito.OrdenVentaId.Value,
+                        CuentaxCobrarId = x.CuentaxCobrarId,
+                        Oficina = x.Credito.Oficina.Denominacion,
+                        Operacion = x.Operacion,
+                        Origen = " CREDITO: " + SqlFunctions.StringConvert((decimal)x.CreditoId).Trim(),// + x.Credito.OrdenVentaId == null ? "" : ("ORDEN: " + SqlFunctions.StringConvert((decimal)x.Credito.OrdenVentaId).Trim()),
+                        Monto = x.Monto,
+                        Estado = x.Estado,
+                        FechaReg = x.Credito.FechaAprobacion.Value
+                    })
+                    .Union(db.OrdenVenta.Where(x => x.PersonaId == personaid && x.TipoVenta == "CON" && x.Estado == "ENV")
                                .Select(x => new CxcJgrid
-                                                {
-                                                    OrdenVentaId = x.OrdenVentaId,
-                                                    CuentaxCobrarId = 0,
-                                                    Oficina = x.Oficina.Denominacion,
-                                                    Operacion = "CON",
-                                                    Origen = "ORDEN: " + SqlFunctions.StringConvert((decimal) x.OrdenVentaId).Trim(),
-                                                    Monto = x.TotalNeto,
-                                                    Estado = "PEN",
-                                                    FechaReg = x.FechaReg
-                                                }));
-               
+                               {
+                                   OrdenVentaId = x.OrdenVentaId,
+                                   CuentaxCobrarId = 0,
+                                   Oficina = x.Oficina.Denominacion,
+                                   Operacion = "CON",
+                                   Origen = "ORDEN: " + SqlFunctions.StringConvert((decimal)x.OrdenVentaId).Trim(),
+                                   Monto = x.TotalNeto,
+                                   Estado = "PEN",
+                                   FechaReg = x.FechaReg
+                               }));
+
                 pTotalItems = query.Count();
                 var lista = query.OrderBy(request.sidx + " " + request.sord)
                     .Skip((request.page - 1)*request.rows).Take(request.rows).ToList();
@@ -276,7 +276,67 @@ namespace ITB.VENDIX.BL
                 }
             }
         }
+        
+        public static string RealizarDesembolso(int pCreditoId)
+        {
+            var cajadiarioid = VendixGlobal.GetCajaDiarioId();
+            var usuarioid = VendixGlobal.GetUsuarioId();
+            int movimientoCajaId = 0;
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    using (var db = new VENDIXEntities())
+                    {
+                        var credito = db.Credito.Find(pCreditoId);
+                        credito.FechaDesembolso = DateTime.Now;
+                        credito.Estado = "DES";
+                        credito.UsuarioModId = usuarioid;
+                        credito.FechaMod = DateTime.Now;
+                        CreditoBL.Actualizar(db, credito);
 
+                        var mov = new MovimientoCaja()
+                        {
+                            CajaDiarioId = cajadiarioid,
+                            Operacion="DES",
+                            ImportePago = credito.MontoDesembolso,
+                            ImporteRecibido = credito.MontoDesembolso,
+                            MontoVuelto = 0,
+                            PersonaId = credito.PersonaId,
+                            Descripcion = "DESEMBOLSO CREDITO " + credito.CreditoId.ToString(),
+                            IndEntrada = false,
+                            Estado = true,
+                            UsuarioRegId= usuarioid,
+                            FechaReg = DateTime.Now,
+                            OrdenVentaId = null,
+                            CreditoId = credito.CreditoId
+                        };
+
+                        db.MovimientoCaja.Add(mov);
+                        db.SaveChanges();
+                        movimientoCajaId = mov.MovimientoCajaId;
+
+                        var oCajaDiario = db.CajaDiario.Find(cajadiarioid);
+                        var qry = db.MovimientoCaja.Where(z => z.CajaDiarioId == oCajaDiario.CajaDiarioId && z.Estado).Select(x => new { x.ImportePago, x.IndEntrada });
+                        if (qry.Count(x => x.IndEntrada) > 0)
+                            oCajaDiario.Entradas = qry.Where(z => z.IndEntrada).Sum(x => x.ImportePago);
+                        if (qry.Count(x => x.IndEntrada == false) > 0)
+                            oCajaDiario.Salidas = qry.Where(z => z.IndEntrada == false).Sum(x => x.ImportePago);
+                        oCajaDiario.SaldoFinal = oCajaDiario.SaldoInicial + oCajaDiario.Entradas - oCajaDiario.Salidas;
+                                               
+                        db.SaveChanges();
+
+                    }
+                    scope.Complete();
+                    return movimientoCajaId.ToString();
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    return ex.Message;
+                }                
+            }
+        }
         public static int? RealizarPagarCuentaxCobrar(int pOrdenVentaId,int pCuentaxCobrarId)
         {
             using (var scope = new TransactionScope())
