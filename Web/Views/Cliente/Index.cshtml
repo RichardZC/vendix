@@ -418,6 +418,7 @@
             width: 'auto',
             height: '347px',
             ondblClickRow: function () {
+                $("#txtDocumento,#rbN,#rbJ").prop("disabled", true);
                 var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
                 if (id) {
                     var ret = $("#grdBuscar").jqGrid('getRowData', id);
