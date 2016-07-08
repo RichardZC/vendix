@@ -528,6 +528,27 @@
                 });
             });
 
+            $("#btnDesembolso").click(function () {
+                Vendix.Dialogo("CONFIRMAR para realizar DESEMBOLSO.", "SiNo", function () {
+                    $.ajax({
+                        url: "@Url.Action("RealizarDesembolso", "Credito")",
+                        data: {
+                            pCreditoId: $.data(document.body, 'CreditoDesembolsoId')
+                        },
+                        success: function (movcajaid) {
+                            if (movcajaid.length <= 8) {
+                                Vendix.Notificar();
+                                $("#txtClienteds").prop('value', '');
+                                ImprimirMovCaja(movcajaid);
+                                MostrarSaldoCajaDiario();
+                                $(".msjClienteEncontradods").hide();
+                                $("#divdesembolso").hide();
+                            }
+                        }
+                    });
+                });
+            });
+
             $("#txtCliente").autocomplete({
                 source: "@Url.Action("BuscarCliente", "Cliente")",
                 minLength: 2,
@@ -595,11 +616,10 @@
                     event.preventDefault();
                     $.data(document.body, 'PersonaDesembolsoId', ui.item.id);
                     $(".msjClienteEncontradods").show('slow');
+                    $("#actDesembolso").hide();
                     $("#lblClienteds").text(ui.item.value);
-                    $("#txtClienteds").val("");
-                    
+                    $("#txtClienteds").val("");                    
                     CargarGrillaDesembolso();
-
                 }
         });
 
@@ -922,6 +942,19 @@
             }
         }
         function CargarGrillaDesembolso() {
+            $.ajax({
+                url: "@Url.Action("ExisteDesembolso", "Credito")",
+                data: { pPersonaId: $.data(document.body, 'PersonaDesembolsoId') },
+                success: function (ret) {
+                    if (ret > 0)
+                        $("#divdesembolso").show();
+                    else {
+                        $("#divdesembolso").hide();
+                        return;
+                    }                        
+                }
+            });
+
             if ($("#gbox_grdDesembolso").length > 0)
                 $("#grdDesembolso").trigger("reloadGrid");
             else {
@@ -959,7 +992,7 @@
                         if (id) {
                             var ret = $("#grdDesembolso").jqGrid('getRowData', id);
                             $("#btnDesembolso").text("Credito Nro:" + ret.CreditoId + " Desembolso:" + ret.MontoDesembolso);
-                            
+                            $.data(document.body, 'CreditoDesembolsoId', ret.CreditoId);
                         }
 
                     },
