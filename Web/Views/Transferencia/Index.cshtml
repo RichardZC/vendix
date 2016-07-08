@@ -78,7 +78,7 @@
                             <td>
                                 <span id="lblNroEntrada"></span>&nbsp;
                                 <span id="lblEstado"></span>&nbsp;
-                            </td>
+                            </td>lblAlmacen
                         </tr>
                         <tr>
                             <th>Fecha Op:</th>
@@ -92,7 +92,8 @@
                         </tr>
                         <tr>
                             <th>Destino:</th>
-                            <td>@Html.DropDownList("cboDestino")</td>
+                            <td><span id="lblDestino"></span></td>
+                            @*<td>@Html.DropDownList("cboDestino")</td>*@
                         </tr>
 
                         <tr>
@@ -151,21 +152,14 @@
 <div style="display: none;" id="dlgNuevo" title="Crear Entrada de Almacen">
     <form action="#" class="full validate">
         <div class="row">
-            <label for="cboAlmacen2">
+            <label for="cboDestino">
                 <strong>Almacen</strong>
             </label>
             <div style="margin-left: 130px;">
-                @Html.DropDownList("cboAlmacen2")
+                @Html.DropDownList("cboDestino")
             </div>
         </div>
-        <div class="row">
-            <label for="cboTipoMovimiento">
-                <strong>TipoMovimiento</strong>
-            </label>
-            <div style="margin-left: 130px;">
-                @Html.DropDownList("cboTipoMovimiento2")
-            </div>
-        </div>
+        
     </form>
     <div class="actions">
         <div class="left">
@@ -225,8 +219,7 @@
                     url: "@Url.Action("Guardar", "Entrada")",
                     data: {
                         pMovimientoId: 0,
-                        pAlmacenId: $("#cboAlmacen2").val(),
-                        pTipoMovimientoId: $("#cboTipoMovimiento2").val(),
+                        pAlmacenId: $("#cboDestino").val(),                        
                         pFecha: ''
                     },
                     success: function (movid) {
@@ -480,7 +473,7 @@
                 $("#lblNroEntrada").text(mov.MovimientoId);
                 $("#cboTipoMovimiento").val(mov.TipoMovimientoId).trigger("liszt:updated");
                 $("#txtObs").val(mov.Observacion);
-                $("#cboAlmacen2,#cboTipoMovimiento2").trigger("liszt:updated");
+                $("#cboDestino").trigger("liszt:updated");
 
                 $.ajax({
                     url: "@Url.Action("ObtenerMovimientoExt", "Entrada")",
@@ -490,6 +483,7 @@
                         $("#lblAlmacen").text(movext.Almacen);
                         $("#lblEstado").text(movext.Estado);
                         $("#txtfecha").text(movext.Fecha);
+                        
                     }
                 });
 
