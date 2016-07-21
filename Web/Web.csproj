@@ -65,6 +65,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -1868,6 +1869,17 @@
     <Content Include="Scripts\jquery.jqGrid.min.js" />
     <None Include="Properties\PublishProfiles\CACMEA2.pubxml" />
     <None Include="Properties\PublishProfiles\vendix.pubxml" />
+    <Content Include="Reporte\DataSet\dsStokAnulados.xsc">
+      <DependentUpon>dsStokAnulados.xsd</DependentUpon>
+    </Content>
+    <None Include="Reporte\DataSet\dsStokAnulados.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsStokAnulados.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reporte\DataSet\dsStokAnulados.xss">
+      <DependentUpon>dsStokAnulados.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1878,6 +1890,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Almacen\EntradaController.cs" />
     <Compile Include="Controllers\Almacen\KardexController.cs" />
+    <Compile Include="Controllers\Almacen\SalidaController.cs" />
     <Compile Include="Controllers\Almacen\TransferenciaController.cs" />
     <Compile Include="Controllers\ArticuloController.cs" />
     <Compile Include="Controllers\BovedaController.cs" />
@@ -1962,6 +1975,11 @@
       <DependentUpon>dsStock.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reporte\DataSet\dsStokAnulados.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsStokAnulados.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -2144,6 +2162,7 @@
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Transferencia\Index.cshtml" />
+    <Content Include="Views\Salida\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2205,6 +2224,9 @@
       <Project>{6054577c-75f1-46d5-b9d3-10962a343763}</Project>
       <Name>ITB.VENDIX.BL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reporte\rptStockAnulados.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

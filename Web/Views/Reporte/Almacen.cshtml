@@ -31,6 +31,26 @@
 	</form>
 </div>
 
+<div class="grid_4">
+    <form method="post" action="#" class="box validate">
+        <div class="header">
+            <h2>
+                <img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Productos Anulados
+            </h2>
+        </div>
+        <div class="content">
+            <p class="_100 small" style="padding-top: 10px;">
+               
+            </p>
+        </div>
+        <div class="actions">
+            <div class="right">
+                <input type="submit" value="Anulados PDF" id="btnRptStockAnuladoPdf" />
+                <input type="submit" value="Anulados EXCEL" id="btnRptStockAnuladoExcel" />
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/javascript">
 	$(document).ready(function () {
 		$("#btnRptStockPdf").click(function () {
@@ -43,6 +63,17 @@
 			verReporte('Excel');
 			return false;
 		});
+
+		$("#btnRptStockAnuladoPdf").click(function () {
+		    event.preventDefault();
+		    verReporteAnulado('PDF');
+		    return false;
+		});
+		$("#btnRptStockAnuladoExcel").click(function () {
+		    event.preventDefault();
+		    verReporteAnulado('Excel');
+		    return false;
+		});
 	});
 
 	function verReporte(tipoReporte) {
@@ -52,5 +83,9 @@
 		var ruta = '@Url.Action("ReporteStock", "Reporte")' + '?pOficinaid=' + oficina + '&pTipoReporte=' + tipoReporte;
 		window.open(ruta);
 	}
+    function verReporteAnulado(tipoReporte) {
+        var ruta = '@Url.Action("ReporteStockAnulados", "Reporte")' + '?pTipoReporte=' + tipoReporte;
+        window.open(ruta);
+    }
 </script>
 

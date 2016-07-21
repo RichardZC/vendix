@@ -376,6 +376,18 @@ namespace VendixWeb.Controllers
             //return Reporte("Excel", "rptStock.rdlc", rd, "A4Vertical0.25", parametros);
             return Reporte(pTipoReporte, "rptStock.rdlc", rd, "A4Horizontal0.25", parametros);
         }
+        public ActionResult ReporteStockAnulados(string pTipoReporte = "PDF")
+        {
+            var data = ReporteBL.ListarReporteStockAnulados();
+            var rd = new ReportDataSource("dsStokAnulados", data);
+                        
+            //var parametros = new List<ReportParameter>
+            //                     {
+            //                         new ReportParameter("Oficina", oficina)
+            //                     };
+            //return Reporte("Excel", "rptStock.rdlc", rd, "A4Vertical0.25", parametros);
+            return Reporte(pTipoReporte, "rptStockAnulados.rdlc", rd, "A4Horizontal0.25", null);
+        }
         public ActionResult ReporteSaldoCajaActual()
         {
             return ReporteSaldoCaja(VendixGlobal.GetCajaDiarioId());
