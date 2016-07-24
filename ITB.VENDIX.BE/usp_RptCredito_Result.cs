@@ -15,7 +15,6 @@ namespace ITB.VENDIX.BE
     {
         public string Producto { get; set; }
         public string Cliente { get; set; }
-        public string Articulo { get; set; }
         public int CreditoId { get; set; }
         public Nullable<System.DateTime> FechaDesembolso { get; set; }
         public Nullable<System.DateTime> FechaVcto { get; set; }
@@ -26,6 +25,8 @@ namespace ITB.VENDIX.BE
         public decimal MontoProducto { get; set; }
         public decimal MontoInicial { get; set; }
         public decimal MontoCredito { get; set; }
+        public string TipoGastoAdm { get; set; }
         public decimal MontoGastosAdm { get; set; }
+        public decimal MontoDesembolso { get; set; }
     }
 }

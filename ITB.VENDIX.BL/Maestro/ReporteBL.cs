@@ -63,11 +63,11 @@ namespace ITB.VENDIX.BL
             }
         }
 
-        public static List<usp_RptCredito_Result> ListarReporteCredito(int? pOficinaId, DateTime pFechaIni, DateTime pFechaFin)
+        public static List<usp_RptCredito_Result> ListarReporteCredito(int? pOficinaId,string pEstadoCredito, DateTime pFechaIni, DateTime pFechaFin)
         {
             using (var db = new VENDIXEntities())
             {
-                return db.usp_RptCredito(pOficinaId, pFechaIni, pFechaFin).ToList();
+                return db.usp_RptCredito(pOficinaId, pEstadoCredito, pFechaIni, pFechaFin).ToList();
             }
         }
         public static List<usp_RptRentabilidadVenta_Result> ListarReporteRentabilidadVenta(DateTime pFechaIni, DateTime pFechaFin, bool indContado, bool indCredito, int? pOficinaId)

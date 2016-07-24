@@ -1484,6 +1484,7 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         </Function>
         <Function Name="usp_RptCredito" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="OficinaId" Type="int" Mode="In" />
+          <Parameter Name="Estado" Type="char" Mode="In" />
           <Parameter Name="FechaDesIni" Type="date" Mode="In" />
           <Parameter Name="FechaDesFin" Type="date" Mode="In" />
         </Function>
@@ -2057,11 +2058,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
             <Parameter Name="NumeroSerie" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="usp_RptCredito" ReturnType="Collection(VENDIXModel.usp_RptCredito_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
-            <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="usp_RptCreditoRentabilidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoRentabilidad_Result)">
             <Parameter Name="OficnaId" Mode="In" Type="Int32" />
             <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
@@ -2382,6 +2378,12 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="TEA" Mode="In" Type="Decimal" />
             <Parameter Name="FormaPago" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="usp_RptCredito" ReturnType="Collection(VENDIXModel.usp_RptCredito_Result)">
+            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+            <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
           <Property Type="Int32" Name="MovimientoDetId" Nullable="true" />
@@ -2512,22 +2514,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="String" Name="Modalidad" Nullable="false" MaxLength="7" />
           <Property Type="Decimal" Name="Rentabilidad" Nullable="true" Precision="17" Scale="2" />
           <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-        </ComplexType>
-        <ComplexType Name="usp_RptCredito_Result">
-          <Property Type="String" Name="Producto" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="Articulo" Nullable="false" />
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
-          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
-          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
         </ComplexType>
         <ComplexType Name="usp_RptCreditoRentabilidad_Result">
           <Property Type="Int32" Name="CreditoId" Nullable="false" />
@@ -4044,6 +4030,23 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="usp_RptCredito_Result">
+          <Property Type="String" Name="Producto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
+          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="TipoGastoAdm" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoDesembolso" Nullable="false" Precision="16" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4245,26 +4248,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_AgregarPuntos" FunctionName="VENDIXModel.Store.usp_AgregarPuntos" />
           <FunctionImportMapping FunctionImportName="usp_CanjearPuntos" FunctionName="VENDIXModel.Store.usp_CanjearPuntos" />
-          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
-                <ScalarProperty Name="Producto" ColumnName="Producto" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
-                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
-                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
-                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
-                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
-                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_RptCreditoRentabilidad" FunctionName="VENDIXModel.Store.usp_RptCreditoRentabilidad">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoRentabilidad_Result">
@@ -4889,6 +4872,27 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="usp_CalcularTEM" FunctionName="VENDIXModel.Store.usp_CalcularTEM" />
+          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
+                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
+                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
+                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
+                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="TipoGastoAdm" ColumnName="TipoGastoAdm" />
+                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
+                <ScalarProperty Name="MontoDesembolso" ColumnName="MontoDesembolso" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

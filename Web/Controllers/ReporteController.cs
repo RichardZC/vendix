@@ -270,18 +270,28 @@ namespace VendixWeb.Controllers
                                  };
             return Reporte("PDF", "rptEstadoCredito.rdlc", rd, "A4Vertical0.25", parametros);
         }
-        public ActionResult ReporteCredito(int? pOficinaId, string pFechaIni, string pFechaFin)
+        public ActionResult ReporteCredito(int? pOficinaId,string pEstadoCredito, string pFechaIni, string pFechaFin)
         {
-            var data = ReporteBL.ListarReporteCredito(pOficinaId, DateTime.Parse(pFechaIni), DateTime.Parse(pFechaFin));
+            var data = ReporteBL.ListarReporteCredito(pOficinaId, pEstadoCredito, DateTime.Parse(pFechaIni), DateTime.Parse(pFechaFin));
             var rd = new ReportDataSource("dsCredito", data);
 
             var oficina = "TODOS";
             if (pOficinaId != null)
                 oficina = OficinaBL.Obtener(pOficinaId.Value).Denominacion;
+            switch (pEstadoCredito)
+            {
+                case "CRE": pEstadoCredito = "SOLICITUDES DE CREDITO"; break;
+                case "PEN": pEstadoCredito = "PENDIENTES"; break;
+                case "PAG": pEstadoCredito = "PAGADOS"; break;
+                case "DES": pEstadoCredito = "DESEMBOLSADOS"; break;
+                case "ANU": pEstadoCredito = "ANULADOS"; break;
+                case "REP": pEstadoCredito = "REPROGRAMADOS"; break;
+            }
 
             var parametros = new List<ReportParameter>
                                  {
                                      new ReportParameter("Oficina", oficina),
+                                     new ReportParameter("Estado", pEstadoCredito),
                                      new ReportParameter("FechaIni", DateTime.Parse(pFechaIni).ToShortDateString()),
                                      new ReportParameter("FechaFin", DateTime.Parse(pFechaFin).ToShortDateString())
                                  };

@@ -529,24 +529,34 @@
             });
 
             $("#btnDesembolso").click(function () {
-                Vendix.Dialogo("CONFIRMAR para realizar DESEMBOLSO.", "SiNo", function () {
-                    $.ajax({
-                        url: "@Url.Action("RealizarDesembolso", "Credito")",
-                        data: {
-                            pCreditoId: $.data(document.body, 'CreditoDesembolsoId')
-                        },
-                        success: function (movcajaid) {
-                            if (movcajaid.length <= 8) {
-                                Vendix.Notificar();
-                                $("#txtClienteds").prop('value', '');
-                                ImprimirMovCaja(movcajaid);
-                                MostrarSaldoCajaDiario();
-                                $(".msjClienteEncontradods").hide();
-                                $("#divdesembolso").hide();
-                            }
+                $.ajax({
+                    url: "@Url.Action("ValidarDesembolso", "Credito")",
+                    data: { pCreditoId: $.data(document.body, 'CreditoDesembolsoId') },
+                    success: function (ret) {
+                        if (ret.error) {
+                            Vendix.Dialogo(ret.mensaje, "Aceptar");
                         }
-                    });
+                        else {
+                            Vendix.Dialogo("CONFIRMAR para realizar DESEMBOLSO.", "SiNo", function () {
+                                $.ajax({
+                                    url: "@Url.Action("RealizarDesembolso", "Credito")",
+                                    data: { pCreditoId: $.data(document.body, 'CreditoDesembolsoId') },
+                                    success: function (movcajaid) {
+                                        if (movcajaid.length <= 8) {
+                                            Vendix.Notificar();
+                                            $("#txtClienteds").prop('value', '');
+                                            ImprimirMovCaja(movcajaid);
+                                            MostrarSaldoCajaDiario();
+                                            $(".msjClienteEncontradods").hide();
+                                            $("#divdesembolso").hide();
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    }
                 });
+
             });
 
             $("#txtCliente").autocomplete({
@@ -618,10 +628,10 @@
                     $(".msjClienteEncontradods").show('slow');
                     $("#actDesembolso").hide();
                     $("#lblClienteds").text(ui.item.value);
-                    $("#txtClienteds").val("");                    
+                    $("#txtClienteds").val("");
                     CargarGrillaDesembolso();
                 }
-        });
+            });
 
             $("#txtImporteRecibido")
 				.numeric(2)
@@ -951,7 +961,7 @@
                     else {
                         $("#divdesembolso").hide();
                         return;
-                    }                        
+                    }
                 }
             });
 
@@ -971,7 +981,7 @@
                     [
                         { name: 'CreditoId', index: 'CreditoId', sortable: false, align: 'center', width: '50' },
                         { name: 'MontoCredito', index: 'MontoCredito', align: 'center', sortable: false },
-                        { name: 'MontoGastosAdm', index: 'MontoGastosAdm', align: 'center',sortable: false },
+                        { name: 'MontoGastosAdm', index: 'MontoGastosAdm', align: 'center', sortable: false },
                         { name: 'MontoDesembolso', index: 'MontoDesembolso', align: 'center', sortable: false },
                         { name: 'Estado', index: 'Estado', align: 'center', sortable: false }
                     ],

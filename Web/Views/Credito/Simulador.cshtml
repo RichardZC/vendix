@@ -7,7 +7,7 @@
                 <h2>Simulador de Créditos<a id="btnExportar" class="button" style="float: right; margin-top: 0; padding:4px">Exportar a PDF</a></h2>
             </div>
             <div class="content invoice">
-                <h3><button id="lnkSimulador">Simulador de Créditos</button></h3>
+                <h3><button id="lnkSimulador" class="open-simulador">Simulador de Créditos</button></h3>
                 <div class="details">
                     <div class="highlighted">
                         <span>Producto:</span> <strong>@ViewBag.pProducto</strong>
@@ -69,12 +69,12 @@
 
     <script>
         $(function () {
-            $("#lnkSimulador").click(function () {
+            @*$("#lnkSimulador").click(function () {
                 Vendix.CargarCombo("@Url.Action("ListarProductos", "Credito")", "cboProductos");
                 $("#cboModalidad").trigger("liszt:updated");
                 $("#dialog_simulador").dialog("open");
                 return false;
-            });
+            });*@
 
             $("#btnExportar").click(function () {
             Vendix.Reporte('@Url.Action("ReporteSimuladorPlanPagos", "Reporte")' + window.location.search);

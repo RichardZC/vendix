@@ -680,23 +680,6 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("usp_CanjearPuntos", codClienteParameter, numeroSerieParameter);
         }
     
-        public virtual ObjectResult<usp_RptCredito_Result> usp_RptCredito(Nullable<int> oficinaId, Nullable<System.DateTime> fechaDesIni, Nullable<System.DateTime> fechaDesFin)
-        {
-            var oficinaIdParameter = oficinaId.HasValue ?
-                new ObjectParameter("OficinaId", oficinaId) :
-                new ObjectParameter("OficinaId", typeof(int));
-    
-            var fechaDesIniParameter = fechaDesIni.HasValue ?
-                new ObjectParameter("FechaDesIni", fechaDesIni) :
-                new ObjectParameter("FechaDesIni", typeof(System.DateTime));
-    
-            var fechaDesFinParameter = fechaDesFin.HasValue ?
-                new ObjectParameter("FechaDesFin", fechaDesFin) :
-                new ObjectParameter("FechaDesFin", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCredito_Result>("usp_RptCredito", oficinaIdParameter, fechaDesIniParameter, fechaDesFinParameter);
-        }
-    
         public virtual ObjectResult<usp_RptCreditoRentabilidad_Result> usp_RptCreditoRentabilidad(Nullable<int> oficnaId, Nullable<System.DateTime> fechaIni, Nullable<System.DateTime> fechaFin)
         {
             var oficnaIdParameter = oficnaId.HasValue ?
@@ -725,6 +708,27 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("FormaPago", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("usp_CalcularTEM", tEAParameter, formaPagoParameter);
+        }
+    
+        public virtual ObjectResult<usp_RptCredito_Result> usp_RptCredito(Nullable<int> oficinaId, string estado, Nullable<System.DateTime> fechaDesIni, Nullable<System.DateTime> fechaDesFin)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            var estadoParameter = estado != null ?
+                new ObjectParameter("Estado", estado) :
+                new ObjectParameter("Estado", typeof(string));
+    
+            var fechaDesIniParameter = fechaDesIni.HasValue ?
+                new ObjectParameter("FechaDesIni", fechaDesIni) :
+                new ObjectParameter("FechaDesIni", typeof(System.DateTime));
+    
+            var fechaDesFinParameter = fechaDesFin.HasValue ?
+                new ObjectParameter("FechaDesFin", fechaDesFin) :
+                new ObjectParameter("FechaDesFin", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCredito_Result>("usp_RptCredito", oficinaIdParameter, estadoParameter, fechaDesIniParameter, fechaDesFinParameter);
         }
     }
 }

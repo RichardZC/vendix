@@ -352,7 +352,7 @@
                         <button id="btncCargos" class="todo des block"><span class="icon icon-repeat"></span>Cargos</button>
                     </div>
                     <div class="right">
-                        <button id="btncAnular" class="todo des apr block red"><span class="icon icon-remove"></span>Anular</button>
+                        
                         <button id="btncRechazar" class="todo pen block red @if (ViewBag.Aprobador1>0 || ViewBag.Aprobador2>0){<text>ap1</text>}"><span class="icon icon-remove"></span>Rechazar</button>
                         @if(ViewBag.Aprobador1>0)
                         {
@@ -360,6 +360,7 @@
                         }
                         @if (ViewBag.Aprobador2 > 0)
                         {
+                            <button id="btncAnular" class="todo des apr block red"><span class="icon icon-remove"></span>Anular</button>
                             <button id="btncAprobar2" class="todo ap1 block"><span class="icon icon-ok"></span>2da Aprobación</button>
                         }
                     </div>
@@ -724,29 +725,29 @@
                 event.preventDefault();
                 var id = $.data(document.body, 'CreditoId');
                 if (id) {
-                    $.ajax({
+                    @*$.ajax({
                         url: "@Url.Action("ValidarAnularCredito", "Credito")",
                         data: { pCreditoId: id },
                         success: function (ret) {
-                            if (ret) {
-                                Vendix.DialogoObs("Ingrese la Observación para anular.", function () {
-                                    $.ajax({
-                                        url: "@Url.Action("AnularCredito", "Credito")",
-                                        data: { pCreditoId: id, pObservacion: $.data(document.body, 'txtObsBase') },
-                                        success: function (rpt) {
-                                            if (rpt) {
-                                                window.location.reload();
-                                                //$('#btnImpEstCre,#btnImpPlan,#btnMovimiento,#btnAprobarCre,#btnRechazarCre,#btnAnularCre').hide();
-                                                //$("#grdCreditoPen,#grdCredito").trigger("reloadGrid");
-                                                //Vendix.Notificar();
-                                            }
-                                        }
-                                    });
-                                });
-                            } else
+                            if (ret) {*@
+                    Vendix.DialogoObs("Ingrese la Observación para anular.", function () {
+                        $.ajax({
+                            url: "@Url.Action("AnularCredito", "Credito")",
+                            data: { pCreditoId: id, pObservacion: $.data(document.body, 'txtObsBase') },
+                            success: function (rpt) {
+                                if (rpt) {
+                                    window.location.reload();
+                                    //$('#btnImpEstCre,#btnImpPlan,#btnMovimiento,#btnAprobarCre,#btnRechazarCre,#btnAnularCre').hide();
+                                    //$("#grdCreditoPen,#grdCredito").trigger("reloadGrid");
+                                    //Vendix.Notificar();
+                                }
+                            }
+                        });
+                    });
+                    @*        } else
                                 Vendix.Dialogo("Tiene Pagos, No se Puede Anular el Crédito", "Aceptar");
                         }
-                    });
+                    });*@
                 } else {
                     Vendix.Mensaje("Por favor seleccione un credito");
                 }

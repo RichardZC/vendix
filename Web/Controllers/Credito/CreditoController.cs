@@ -543,6 +543,14 @@ namespace VendixWeb.Controllers
             return Json(CajaDiarioBL.RealizarDesembolso(pCreditoId)
                     , JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ValidarDesembolso(int pCreditoId)
+        {
+            if (CuentaxCobrarBL.Contar(x=>x.CreditoId== pCreditoId && x.Estado=="PEN")>0)
+                return Json(new { error = true, mensaje = "Tiene Cuentas por cobrar Pendientes!" }, JsonRequestBehavior.AllowGet);
+
+            return Json(new { error = false }, JsonRequestBehavior.AllowGet);
+        }
+        
         public ActionResult RealizarPagarCuentaxCobrar(int pOrdenVentaId, int pCuentaxCobrarId)
         {
             return Json(CajaDiarioBL.RealizarPagarCuentaxCobrar(pOrdenVentaId, pCuentaxCobrarId), JsonRequestBehavior.AllowGet);

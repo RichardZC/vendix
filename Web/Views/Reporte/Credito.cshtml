@@ -8,23 +8,32 @@
 					
             <p class="_100 small" style="padding-top: 10px;">
                 @Html.DropDownList("cboOficina","TODOS")
-            </p>
-						
+            </p>n
+            <p class="_100 small">
+                <select id="cboEstadoCredito">
+                    <option value="CRE">SOLICITUD CREDITO</option>
+                    <option value="PEN">PENDIENTE</option>
+                    <option value="DES">DESEMBOLSADO</option>
+                    <option value="PAG">PAGADO</option>
+                    <option value="REP">REPROGRAMADO</option>
+                    <option value="ANU">ANULADO</option>
+                </select>
+            </p>			
             <p class="_100 small">
                 <label for="txtFechaIni" class="inline">Fecha Inicial:</label>
-                <input data-error-type="inline" type="date" class="required" name="txtFechaIni" id="txtFechaIni" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day + 1).ToShortDateString()" />
+                <input data-error-type="inline" type="date" class="required maskDate" name="txtFechaIni" id="txtFechaIni" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day + 1).ToShortDateString()" />
             </p>
             
             <p class="_100 small">
                 <label for="txtFechaFin" class="inline">Fecha Final:</label>
-                <input data-error-type="inline" type="date" class="required" name="txtFechaFin" id="txtFechaFin" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day +1).AddMonths(1).AddDays(-1).ToShortDateString()" />
+                <input data-error-type="inline" type="date" class="required maskDate" name="txtFechaFin" id="txtFechaFin" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day +1).AddMonths(1).AddDays(-1).ToShortDateString()" />
             </p>
             
         </div>
         <br/>
         <div class="actions">
             <div class="right">
-                <input type="submit" value="Créditos Desembolsados" id="btnRptCredito" />
+                <input type="submit" value="Reporte Créditos" id="btnRptCredito" />
             </div>
         </div>
         <div class="actions">
@@ -47,10 +56,10 @@
             <p class="_100 small" style="padding-top: 10px;">
                 @Html.DropDownList("cboOficina1","TODOS")
             </p>
-						
+			
             <p class="_100 small">
                 <label for="txtHastaFecha" class="inline">Hasta la fecha:</label>
-                <input data-error-type="inline" type="date" class="required" name="txtHastaFecha" id="txtHastaFecha" class="maskDate" placeholder="DD/MM/YYYY" value="@DateTime.Now.ToShortDateString()" />
+                <input data-error-type="inline" type="date" class="required maskDate" name="txtHastaFecha" id="txtHastaFecha" placeholder="DD/MM/YYYY" value="@DateTime.Now.ToShortDateString()" />
             </p>
             
             <p class="_100 small">
@@ -80,7 +89,8 @@
             if (oficina.length == 0) oficina = null;
 
             var ruta = '@Url.Action("ReporteCredito", "Reporte")'
-                + '?pOficinaid=' + oficina  
+                + '?pOficinaid=' + oficina
+                + '&pEstadoCredito=' + $("#cboEstadoCredito").val()
                 + '&pFechaIni=' + $('#txtFechaIni').val()
                 + '&pFechaFin=' + $('#txtFechaFin').val();
                 

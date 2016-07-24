@@ -283,8 +283,6 @@ namespace Web.Reporte.DataSet {
             
             private global::System.Data.DataColumn columnCliente;
             
-            private global::System.Data.DataColumn columnArticulo;
-            
             private global::System.Data.DataColumn columnCreditoId;
             
             private global::System.Data.DataColumn columnFechaDesembolso;
@@ -305,7 +303,11 @@ namespace Web.Reporte.DataSet {
             
             private global::System.Data.DataColumn columnMontoCredito;
             
+            private global::System.Data.DataColumn columnTipoGastoAdm;
+            
             private global::System.Data.DataColumn columnMontoGastosAdm;
+            
+            private global::System.Data.DataColumn columnMontoDesembolso;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -353,14 +355,6 @@ namespace Web.Reporte.DataSet {
             public global::System.Data.DataColumn ClienteColumn {
                 get {
                     return this.columnCliente;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ArticuloColumn {
-                get {
-                    return this.columnArticulo;
                 }
             }
             
@@ -446,9 +440,25 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TipoGastoAdmColumn {
+                get {
+                    return this.columnTipoGastoAdm;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn MontoGastosAdmColumn {
                 get {
                     return this.columnMontoGastosAdm;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MontoDesembolsoColumn {
+                get {
+                    return this.columnMontoDesembolso;
                 }
             }
             
@@ -489,12 +499,11 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dsCreditoRow AdddsCreditoRow(string Producto, string Cliente, string Articulo, int CreditoId, System.DateTime FechaDesembolso, System.DateTime FechaVcto, string FormaPago, int NumeroCuotas, decimal Interes, string Estado, decimal MontoProducto, decimal MontoInicial, decimal MontoCredito, decimal MontoGastosAdm) {
+            public dsCreditoRow AdddsCreditoRow(string Producto, string Cliente, int CreditoId, System.DateTime FechaDesembolso, System.DateTime FechaVcto, string FormaPago, int NumeroCuotas, decimal Interes, string Estado, decimal MontoProducto, decimal MontoInicial, decimal MontoCredito, string TipoGastoAdm, decimal MontoGastosAdm, decimal MontoDesembolso) {
                 dsCreditoRow rowdsCreditoRow = ((dsCreditoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Producto,
                         Cliente,
-                        Articulo,
                         CreditoId,
                         FechaDesembolso,
                         FechaVcto,
@@ -505,7 +514,9 @@ namespace Web.Reporte.DataSet {
                         MontoProducto,
                         MontoInicial,
                         MontoCredito,
-                        MontoGastosAdm};
+                        TipoGastoAdm,
+                        MontoGastosAdm,
+                        MontoDesembolso};
                 rowdsCreditoRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdsCreditoRow);
                 return rowdsCreditoRow;
@@ -530,7 +541,6 @@ namespace Web.Reporte.DataSet {
             internal void InitVars() {
                 this.columnProducto = base.Columns["Producto"];
                 this.columnCliente = base.Columns["Cliente"];
-                this.columnArticulo = base.Columns["Articulo"];
                 this.columnCreditoId = base.Columns["CreditoId"];
                 this.columnFechaDesembolso = base.Columns["FechaDesembolso"];
                 this.columnFechaVcto = base.Columns["FechaVcto"];
@@ -541,7 +551,9 @@ namespace Web.Reporte.DataSet {
                 this.columnMontoProducto = base.Columns["MontoProducto"];
                 this.columnMontoInicial = base.Columns["MontoInicial"];
                 this.columnMontoCredito = base.Columns["MontoCredito"];
+                this.columnTipoGastoAdm = base.Columns["TipoGastoAdm"];
                 this.columnMontoGastosAdm = base.Columns["MontoGastosAdm"];
+                this.columnMontoDesembolso = base.Columns["MontoDesembolso"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -551,8 +563,6 @@ namespace Web.Reporte.DataSet {
                 base.Columns.Add(this.columnProducto);
                 this.columnCliente = new global::System.Data.DataColumn("Cliente", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCliente);
-                this.columnArticulo = new global::System.Data.DataColumn("Articulo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnArticulo);
                 this.columnCreditoId = new global::System.Data.DataColumn("CreditoId", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreditoId);
                 this.columnFechaDesembolso = new global::System.Data.DataColumn("FechaDesembolso", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -573,8 +583,12 @@ namespace Web.Reporte.DataSet {
                 base.Columns.Add(this.columnMontoInicial);
                 this.columnMontoCredito = new global::System.Data.DataColumn("MontoCredito", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMontoCredito);
+                this.columnTipoGastoAdm = new global::System.Data.DataColumn("TipoGastoAdm", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTipoGastoAdm);
                 this.columnMontoGastosAdm = new global::System.Data.DataColumn("MontoGastosAdm", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMontoGastosAdm);
+                this.columnMontoDesembolso = new global::System.Data.DataColumn("MontoDesembolso", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMontoDesembolso);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_dsCredito");
                 this.ExtendedProperties.Add("Generator_UserTableName", "dsCredito");
             }
@@ -751,22 +765,6 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Articulo {
-                get {
-                    try {
-                        return ((string)(this[this.tabledsCredito.ArticuloColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("El valor de la columna \'Articulo\' de la tabla \'dsCredito\' es DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledsCredito.ArticuloColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int CreditoId {
                 get {
                     try {
@@ -927,6 +925,22 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TipoGastoAdm {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsCredito.TipoGastoAdmColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'TipoGastoAdm\' de la tabla \'dsCredito\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsCredito.TipoGastoAdmColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal MontoGastosAdm {
                 get {
                     try {
@@ -938,6 +952,22 @@ namespace Web.Reporte.DataSet {
                 }
                 set {
                     this[this.tabledsCredito.MontoGastosAdmColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal MontoDesembolso {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledsCredito.MontoDesembolsoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'MontoDesembolso\' de la tabla \'dsCredito\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsCredito.MontoDesembolsoColumn] = value;
                 }
             }
             
@@ -963,18 +993,6 @@ namespace Web.Reporte.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetClienteNull() {
                 this[this.tabledsCredito.ClienteColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsArticuloNull() {
-                return this.IsNull(this.tabledsCredito.ArticuloColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetArticuloNull() {
-                this[this.tabledsCredito.ArticuloColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1099,6 +1117,18 @@ namespace Web.Reporte.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTipoGastoAdmNull() {
+                return this.IsNull(this.tabledsCredito.TipoGastoAdmColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTipoGastoAdmNull() {
+                this[this.tabledsCredito.TipoGastoAdmColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMontoGastosAdmNull() {
                 return this.IsNull(this.tabledsCredito.MontoGastosAdmColumn);
             }
@@ -1107,6 +1137,18 @@ namespace Web.Reporte.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMontoGastosAdmNull() {
                 this[this.tabledsCredito.MontoGastosAdmColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMontoDesembolsoNull() {
+                return this.IsNull(this.tabledsCredito.MontoDesembolsoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMontoDesembolsoNull() {
+                this[this.tabledsCredito.MontoDesembolsoColumn] = global::System.Convert.DBNull;
             }
         }
         
