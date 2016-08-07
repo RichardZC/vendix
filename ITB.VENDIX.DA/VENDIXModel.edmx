@@ -129,6 +129,16 @@
           <Property Name="IndDevolucion" Type="bit" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Aprobacion">
+          <Key>
+            <PropertyRef Name="CreditoId" />
+            <PropertyRef Name="Nivel" />
+          </Key>
+          <Property Name="CreditoId" Type="int" Nullable="false" />
+          <Property Name="Nivel" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" />
+          <Property Name="Fecha" Type="datetime" />
+        </EntityType>
         <EntityType Name="Boveda">
           <Key>
             <PropertyRef Name="BovedaId" />
@@ -217,6 +227,19 @@
           <Property Name="Estado" Type="char" MaxLength="3" Nullable="false" />
           <Property Name="UsuarioId" Type="int" Nullable="false" />
           <Property Name="Fecha" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CentralRiesgo">
+          <Key>
+            <PropertyRef Name="Anio" />
+            <PropertyRef Name="Mes" />
+            <PropertyRef Name="CreditoId" />
+          </Key>
+          <Property Name="Anio" Type="int" Nullable="false" />
+          <Property Name="Mes" Type="int" Nullable="false" />
+          <Property Name="CreditoId" Type="int" Nullable="false" />
+          <Property Name="DiasAtrazo" Type="int" Nullable="false" />
+          <Property Name="CuotasAtrazo" Type="int" Nullable="false" />
+          <Property Name="DeudaAtrazo" Type="decimal" Precision="15" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Credito">
           <Key>
@@ -362,6 +385,21 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <Property Name="FechaRegistro" Type="datetime" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="idDepa" />
+          </Key>
+          <Property Name="idDepa" Type="int" Nullable="false" />
+          <Property Name="departamento" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="idDist" />
+          </Key>
+          <Property Name="idDist" Type="int" Nullable="false" />
+          <Property Name="distrito" Type="varchar" MaxLength="50" />
+          <Property Name="idProv" Type="int" />
+        </EntityType>
         <EntityType Name="Menu">
           <Key>
             <PropertyRef Name="MenuId" />
@@ -414,6 +452,14 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="Celular1" Type="varchar" MaxLength="10" />
           <Property Name="Celular2" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="idProv" />
+          </Key>
+          <Property Name="idProv" Type="int" Nullable="false" />
+          <Property Name="provincia" Type="varchar" MaxLength="50" />
+          <Property Name="idDepa" Type="int" />
         </EntityType>
         <EntityType Name="Rol">
           <Key>
@@ -623,6 +669,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__CentralRi__Credi__6E0D0F7C">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="1" />
+          <End Role="CentralRiesgo" Type="Self.CentralRiesgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="CentralRiesgo">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Credito__OrdenVe__3E5DFC5A">
           <End Role="OrdenVenta" Type="Self.OrdenVenta" Multiplicity="0..1" />
           <End Role="Credito" Type="Self.Credito" Multiplicity="*" />
@@ -632,6 +690,30 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="Credito">
               <PropertyRef Name="OrdenVentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CreditoEx__Credi__5AFA3B08">
+          <End Role="Credito" Type="Self.Credito" Multiplicity="1" />
+          <End Role="Aprobacion" Type="Self.Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CreditoEx__Usuar__5BEE5F41">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Aprobacion" Type="Self.Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -656,6 +738,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="CuentaxCobrar">
               <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distrito__idProv__05E4990D">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="idProv" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="idProv" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -752,6 +846,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="PlanPagoLibre">
               <PropertyRef Name="PlanPagoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Provincia__idDep__002BBFB7">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="0..1" />
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="idDepa" />
+            </Principal>
+            <Dependent Role="Provincia">
+              <PropertyRef Name="idDepa" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1412,6 +1518,11 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <Parameter Name="TEA" Type="decimal" Mode="In" />
           <Parameter Name="FormaPago" Type="char" Mode="In" />
         </Function>
+        <Function Name="usp_CentralRiesgoGenerar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
+          <Parameter Name="OficinaId" Type="int" Mode="In" />
+          <Parameter Name="Anio" Type="int" Mode="In" />
+          <Parameter Name="Mes" Type="int" Mode="In" />
+        </Function>
         <Function Name="usp_Credito_Del" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="CreditoId" Type="int" Mode="In" />
           <Parameter Name="Observacion" Type="varchar(max)" Mode="In" />
@@ -1569,12 +1680,14 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <EntitySet Name="SerieArticulo" EntityType="Self.SerieArticulo" Schema="ALMACEN" store:Type="Tables" />
           <EntitySet Name="TipoArticulo" EntityType="Self.TipoArticulo" Schema="ALMACEN" store:Type="Tables" />
           <EntitySet Name="TipoMovimiento" EntityType="Self.TipoMovimiento" Schema="ALMACEN" store:Type="Tables" />
+          <EntitySet Name="Aprobacion" EntityType="Self.Aprobacion" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Boveda" EntityType="Self.Boveda" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="BovedaMov" EntityType="Self.BovedaMov" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="BovedaMovTemp" EntityType="Self.BovedaMovTemp" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Caja" EntityType="Self.Caja" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="CajaDiario" EntityType="Self.CajaDiario" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Cargo" EntityType="Self.Cargo" Schema="CREDITO" store:Type="Tables" />
+          <EntitySet Name="CentralRiesgo" EntityType="Self.CentralRiesgo" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Credito" EntityType="Self.Credito" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="CuentaxCobrar" EntityType="Self.CuentaxCobrar" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="GastosAdm" EntityType="Self.GastosAdm" Schema="CREDITO" store:Type="Tables" />
@@ -1583,10 +1696,13 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <EntitySet Name="PlanPago" EntityType="Self.PlanPago" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Producto" EntityType="Self.Producto" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="MAESTRO" store:Type="Tables" />
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="MAESTRO" store:Type="Tables" />
+          <EntitySet Name="Distrito" EntityType="Self.Distrito" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="Ocupacion" EntityType="Self.Ocupacion" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="Oficina" EntityType="Self.Oficina" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="Persona" EntityType="Self.Persona" Schema="MAESTRO" store:Type="Tables" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="Rol" EntityType="Self.Rol" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="RolMenu" EntityType="Self.RolMenu" Schema="MAESTRO" store:Type="Tables" />
           <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" Schema="MAESTRO" store:Type="Tables" />
@@ -1628,9 +1744,21 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Credito" EntitySet="Credito" />
             <End Role="Cargo" EntitySet="Cargo" />
           </AssociationSet>
+          <AssociationSet Name="FK__CentralRi__Credi__6E0D0F7C" Association="Self.FK__CentralRi__Credi__6E0D0F7C">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="CentralRiesgo" EntitySet="CentralRiesgo" />
+          </AssociationSet>
           <AssociationSet Name="FK__Credito__OrdenVe__3E5DFC5A" Association="Self.FK__Credito__OrdenVe__3E5DFC5A">
             <End Role="OrdenVenta" EntitySet="OrdenVenta" />
             <End Role="Credito" EntitySet="Credito" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CreditoEx__Credi__5AFA3B08" Association="Self.FK__CreditoEx__Credi__5AFA3B08">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CreditoEx__Usuar__5BEE5F41" Association="Self.FK__CreditoEx__Usuar__5BEE5F41">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
           </AssociationSet>
           <AssociationSet Name="FK__CuentasxC__Movim__3A58614C" Association="Self.FK__CuentasxC__Movim__3A58614C">
             <End Role="MovimientoCaja" EntitySet="MovimientoCaja" />
@@ -1639,6 +1767,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__CuentaxCo__Credi__3D69D821" Association="Self.FK__CuentaxCo__Credi__3D69D821">
             <End Role="Credito" EntitySet="Credito" />
             <End Role="CuentaxCobrar" EntitySet="CuentaxCobrar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distrito__idProv__05E4990D" Association="Self.FK__Distrito__idProv__05E4990D">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Distrito" EntitySet="Distrito" />
           </AssociationSet>
           <AssociationSet Name="FK__Movimient__CajaD__149CCCB8" Association="Self.FK__Movimient__CajaD__149CCCB8">
             <End Role="CajaDiario" EntitySet="CajaDiario" />
@@ -1671,6 +1803,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__PlanPagoL__PlanP__74EF1735" Association="Self.FK__PlanPagoL__PlanP__74EF1735">
             <End Role="PlanPago" EntitySet="PlanPago" />
             <End Role="PlanPagoLibre" EntitySet="PlanPagoLibre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Provincia__idDep__002BBFB7" Association="Self.FK__Provincia__idDep__002BBFB7">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Provincia" EntitySet="Provincia" />
           </AssociationSet>
           <AssociationSet Name="FK__RolMenu__MenuId__6BCFC14F" Association="Self.FK__RolMenu__MenuId__6BCFC14F">
             <End Role="Menu" EntitySet="Menu" />
@@ -2384,6 +2520,36 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
             <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="Aprobacion" EntityType="VENDIXModel.Aprobacion" />
+          <EntitySet Name="CentralRiesgo" EntityType="VENDIXModel.CentralRiesgo" />
+          <EntitySet Name="Departamento" EntityType="VENDIXModel.Departamento" />
+          <EntitySet Name="Distrito" EntityType="VENDIXModel.Distrito" />
+          <EntitySet Name="Provincia" EntityType="VENDIXModel.Provincia" />
+          <AssociationSet Name="FK__CreditoEx__Credi__5AFA3B08" Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CreditoEx__Usuar__5BEE5F41" Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CentralRi__Credi__6E0D0F7C" Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="CentralRiesgo" EntitySet="CentralRiesgo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Provincia__idDep__002BBFB7" Association="VENDIXModel.FK__Provincia__idDep__002BBFB7">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Provincia" EntitySet="Provincia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distrito__idProv__05E4990D" Association="VENDIXModel.FK__Distrito__idProv__05E4990D">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Distrito" EntitySet="Distrito" />
+          </AssociationSet>
+          <FunctionImport Name="usp_CentralRiesgoGenerar" ReturnType="Collection(VENDIXModel.usp_CentralRiesgoGenerar_Result)">
+            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
           <Property Type="Int32" Name="MovimientoDetId" Nullable="true" />
@@ -2834,6 +3000,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Credito_Usuario3" FromRole="Credito" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="VENDIXModel.FK_Credito_Usuario4" FromRole="Credito" ToRole="Usuario" />
           <NavigationProperty Name="MovimientoCaja" Relationship="VENDIXModel.FK_MovimientoCaja_Credito" FromRole="Credito" ToRole="MovimientoCaja" />
+          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Credito" ToRole="Aprobacion" />
+          <NavigationProperty Name="CentralRiesgo" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="Credito" ToRole="CentralRiesgo" />
         </EntityType>
         <EntityType Name="CuentaxCobrar">
           <Key>
@@ -3092,6 +3260,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="UsuarioRol" Relationship="VENDIXModel.FK__UsuarioRo__Usuar__7094766C" FromRole="Usuario" ToRole="UsuarioRol" />
           <NavigationProperty Name="OrdenVenta" Relationship="VENDIXModel.FK_OrdenVenta_Usuario" FromRole="Usuario" ToRole="OrdenVenta" />
           <NavigationProperty Name="OrdenVenta1" Relationship="VENDIXModel.FK_OrdenVenta_Usuario1" FromRole="Usuario" ToRole="OrdenVenta" />
+          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Usuario" ToRole="Aprobacion" />
         </EntityType>
         <EntityType Name="UsuarioOficina">
           <Key>
@@ -4047,6 +4216,140 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
           <Property Type="Decimal" Name="MontoDesembolso" Nullable="false" Precision="16" Scale="2" />
         </ComplexType>
+        <EntityType Name="Aprobacion">
+          <Key>
+            <PropertyRef Name="CreditoId" />
+            <PropertyRef Name="Nivel" />
+          </Key>
+          <Property Name="CreditoId" Type="Int32" Nullable="false" />
+          <Property Name="Nivel" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Aprobacion" ToRole="Credito" />
+          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Aprobacion" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="CentralRiesgo">
+          <Key>
+            <PropertyRef Name="Anio" />
+            <PropertyRef Name="Mes" />
+            <PropertyRef Name="CreditoId" />
+          </Key>
+          <Property Name="Anio" Type="Int32" Nullable="false" />
+          <Property Name="Mes" Type="Int32" Nullable="false" />
+          <Property Name="CreditoId" Type="Int32" Nullable="false" />
+          <Property Name="DiasAtrazo" Type="Int32" Nullable="false" />
+          <Property Name="CuotasAtrazo" Type="Int32" Nullable="false" />
+          <Property Name="DeudaAtrazo" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="CentralRiesgo" ToRole="Credito" />
+        </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="idDepa" />
+          </Key>
+          <Property Name="idDepa" Type="Int32" Nullable="false" />
+          <Property Name="departamento1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Departamento" ToRole="Provincia" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="idDist" />
+          </Key>
+          <Property Name="idDist" Type="Int32" Nullable="false" />
+          <Property Name="distrito1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idProv" Type="Int32" />
+          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Distrito" ToRole="Provincia" />
+        </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="idProv" />
+          </Key>
+          <Property Name="idProv" Type="Int32" Nullable="false" />
+          <Property Name="provincia1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idDepa" Type="Int32" />
+          <NavigationProperty Name="Departamento" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Provincia" ToRole="Departamento" />
+          <NavigationProperty Name="Distrito" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Provincia" ToRole="Distrito" />
+        </EntityType>
+        <Association Name="FK__CreditoEx__Credi__5AFA3B08">
+          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
+          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CreditoEx__Usuar__5BEE5F41">
+          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CentralRi__Credi__6E0D0F7C">
+          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
+          <End Type="VENDIXModel.CentralRiesgo" Role="CentralRiesgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="CentralRiesgo">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Provincia__idDep__002BBFB7">
+          <End Type="VENDIXModel.Departamento" Role="Departamento" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="idDepa" />
+            </Principal>
+            <Dependent Role="Provincia">
+              <PropertyRef Name="idDepa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distrito__idProv__05E4990D">
+          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Distrito" Role="Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="idProv" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="idProv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="usp_CentralRiesgoGenerar_Result">
+          <Property Type="Int32" Name="Anio" Nullable="true" />
+          <Property Type="Int32" Name="Mes" Nullable="true" />
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="String" Name="Periodo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="Entidad" Nullable="false" MaxLength="3" />
+          <Property Type="Int32" Name="TipoDoc" Nullable="false" />
+          <Property Type="String" Name="NumDoc" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="RazonSocial" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ApePat" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ApeMat" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Nombres" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="TipoPersona" Nullable="false" />
+          <Property Type="Int32" Name="ModalidadCredito" Nullable="false" />
+          <Property Type="String" Name="DeudaMenor30" Nullable="true" MaxLength="13" />
+          <Property Type="String" Name="DeudaMayor30" Nullable="true" MaxLength="13" />
+          <Property Type="Int32" Name="Calificacion" Nullable="true" />
+          <Property Type="Int32" Name="DiasAtrazo" Nullable="false" />
+          <Property Type="String" Name="Direccion" Nullable="true" />
+          <Property Type="String" Name="celular" Nullable="true" MaxLength="10" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4890,6 +5193,79 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="TipoGastoAdm" ColumnName="TipoGastoAdm" />
                 <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
                 <ScalarProperty Name="MontoDesembolso" ColumnName="MontoDesembolso" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Aprobacion">
+            <EntityTypeMapping TypeName="VENDIXModel.Aprobacion">
+              <MappingFragment StoreEntitySet="Aprobacion">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CentralRiesgo">
+            <EntityTypeMapping TypeName="VENDIXModel.CentralRiesgo">
+              <MappingFragment StoreEntitySet="CentralRiesgo">
+                <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
+                <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departamento">
+            <EntityTypeMapping TypeName="VENDIXModel.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="departamento1" ColumnName="departamento" />
+                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distrito">
+            <EntityTypeMapping TypeName="VENDIXModel.Distrito">
+              <MappingFragment StoreEntitySet="Distrito">
+                <ScalarProperty Name="idProv" ColumnName="idProv" />
+                <ScalarProperty Name="distrito1" ColumnName="distrito" />
+                <ScalarProperty Name="idDist" ColumnName="idDist" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provincia">
+            <EntityTypeMapping TypeName="VENDIXModel.Provincia">
+              <MappingFragment StoreEntitySet="Provincia">
+                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
+                <ScalarProperty Name="provincia1" ColumnName="provincia" />
+                <ScalarProperty Name="idProv" ColumnName="idProv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_CentralRiesgoGenerar" FunctionName="VENDIXModel.Store.usp_CentralRiesgoGenerar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_CentralRiesgoGenerar_Result">
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Entidad" ColumnName="Entidad" />
+                <ScalarProperty Name="TipoDoc" ColumnName="TipoDoc" />
+                <ScalarProperty Name="NumDoc" ColumnName="NumDoc" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="ApePat" ColumnName="ApePat" />
+                <ScalarProperty Name="ApeMat" ColumnName="ApeMat" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="TipoPersona" ColumnName="TipoPersona" />
+                <ScalarProperty Name="ModalidadCredito" ColumnName="ModalidadCredito" />
+                <ScalarProperty Name="DeudaMenor30" ColumnName="DeudaMenor30" />
+                <ScalarProperty Name="DeudaMayor30" ColumnName="DeudaMayor30" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

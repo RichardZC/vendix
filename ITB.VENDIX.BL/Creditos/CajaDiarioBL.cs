@@ -17,19 +17,69 @@ namespace ITB.VENDIX.BL
     {
         public static List<CajaDiario> LstSaldosCajaDiarioJGrid(GridDataRequest request, ref int pTotalItems)
         {
-            string filterExpression = string.Empty;
+            //string filterExpression = string.Empty;
+           // var bovedaid = int.Parse(request.DataFilters()["BovedaId"]);
 
-            
+
             using (var db = new VENDIXEntities())
             {
                 IQueryable<CajaDiario> query = db.CajaDiario.Include("Caja").Include("Usuario");
-                if (!String.IsNullOrEmpty(filterExpression))
-                    query = query.Where(filterExpression);
+                                
+                //if (!String.IsNullOrEmpty(filterExpression))
+                //    query = query.Where(filterExpression);
 
                 pTotalItems = query.Count();
                 return query.OrderBy(request.sidx + " " + request.sord)
                     .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
             }
+        }
+
+        public static List<CajaDiarioBoveda> LstSaldosBovedaCajaDiarioJGrid(GridDataRequest request, ref int pTotalItems)
+        {
+            //string filterExpression = string.Empty;
+            var bovedaid = int.Parse(request.DataFilters()["BovedaId"]);
+
+
+            using (var db = new VENDIXEntities())
+            {
+                IQueryable<CajaDiarioBoveda> query = null;
+                if (bovedaid > 0)
+                {
+                    query = from cd in db.CajaDiario.Include("Caja").Include("Usuario")
+                            join mb in db.BovedaMov on cd.CajaDiarioId equals mb.CajaDiarioId
+                            where mb.BovedaId == bovedaid
+                            select new CajaDiarioBoveda
+                            {
+                                CajaDiarioId = cd.CajaDiarioId,
+                                Caja = cd.Caja.Denominacion,
+                                Usuario = cd.Usuario.NombreUsuario,
+                                SaldoInicial = cd.SaldoInicial,
+                                SaldoFinal = cd.SaldoFinal,
+                                FechaFinOperacion = cd.FechaFinOperacion,
+                                FechaIniOperacion = cd.FechaIniOperacion,
+                                IndCierre = cd.IndCierre,
+                                TransBoveda = cd.TransBoveda
+                            };
+                }
+
+                //if (!String.IsNullOrEmpty(filterExpression))
+                //    query = query.Where(filterExpression);
+
+                pTotalItems = query.Count();
+                return query.OrderBy(request.sidx + " " + request.sord)
+                    .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
+            }
+        }
+        public class CajaDiarioBoveda {
+            public int CajaDiarioId { get; set; }
+            public string Usuario { get; set; }
+            public string Caja { get; set; }
+            public decimal SaldoInicial { get; set; }
+            public decimal SaldoFinal { get; set; }
+            public DateTime FechaIniOperacion { get; set; }
+            public DateTime? FechaFinOperacion { get; set; }
+            public bool IndCierre { get; set; }
+            public bool TransBoveda { get; set; }
         }
 
         public static List<CxcJgrid> LstCuentasxCobrarJGrid(GridDataRequest request, ref int pTotalItems)
@@ -172,7 +222,7 @@ namespace ITB.VENDIX.BL
                     return retid;
                     //return 0;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     scope.Dispose();
                     return -1;
@@ -235,7 +285,7 @@ namespace ITB.VENDIX.BL
                     scope.Complete();
                     return retid;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     scope.Dispose();
                     return -1;
@@ -352,7 +402,7 @@ namespace ITB.VENDIX.BL
                     scope.Complete();
                     return retid;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     scope.Dispose();
                     return -1;
@@ -381,7 +431,7 @@ namespace ITB.VENDIX.BL
                     scope.Complete();
                     return oCajadiario.CajaDiarioId;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     scope.Dispose();
                     return 0;

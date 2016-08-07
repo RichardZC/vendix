@@ -71,6 +71,11 @@ namespace ITB.VENDIX.BE
         public DbSet<TarjetaPunto> TarjetaPunto { get; set; }
         public DbSet<TarjetaPuntoDet> TarjetaPuntoDet { get; set; }
         public DbSet<PlanPagoLibre> PlanPagoLibre { get; set; }
+        public DbSet<Aprobacion> Aprobacion { get; set; }
+        public DbSet<CentralRiesgo> CentralRiesgo { get; set; }
+        public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Distrito> Distrito { get; set; }
+        public DbSet<Provincia> Provincia { get; set; }
     
         public virtual int usp_CrearMovimientoDet(Nullable<int> movimientoId, Nullable<int> movimientoDetId, Nullable<int> articuloId, Nullable<bool> indAutogenerar, string listaSerie, Nullable<int> cantidad, Nullable<bool> indCorrelativo, Nullable<decimal> precioUnitario, Nullable<decimal> descuento, Nullable<int> medida)
         {
@@ -729,6 +734,23 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("FechaDesFin", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCredito_Result>("usp_RptCredito", oficinaIdParameter, estadoParameter, fechaDesIniParameter, fechaDesFinParameter);
+        }
+    
+        public virtual ObjectResult<usp_CentralRiesgoGenerar_Result> usp_CentralRiesgoGenerar(Nullable<int> oficinaId, Nullable<int> anio, Nullable<int> mes)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CentralRiesgoGenerar_Result>("usp_CentralRiesgoGenerar", oficinaIdParameter, anioParameter, mesParameter);
         }
     }
 }

@@ -115,6 +115,16 @@
         <AssociationConnector Association="VENDIXModel.FK_DETORDENVENTA_OrdenVentaId" />
         <AssociationConnector Association="VENDIXModel.FK__OrdenVent__Orden__08A10A27" />
         <AssociationConnector Association="VENDIXModel.FK__TarjetaPu__Tarje__16500B00" />
+        <EntityTypeShape EntityType="VENDIXModel.Aprobacion" Width="1.5" PointX="12.75" PointY="14" />
+        <EntityTypeShape EntityType="VENDIXModel.CentralRiesgo" Width="1.5" PointX="9.75" PointY="20.375" />
+        <EntityTypeShape EntityType="VENDIXModel.Departamento" Width="1.5" PointX="7.375" PointY="1.125" />
+        <EntityTypeShape EntityType="VENDIXModel.Distrito" Width="1.5" PointX="11.875" PointY="1" />
+        <EntityTypeShape EntityType="VENDIXModel.Provincia" Width="1.5" PointX="9.625" PointY="0.875" />
+        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" />
+        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" />
+        <AssociationConnector Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" />
+        <AssociationConnector Association="VENDIXModel.FK__Provincia__idDep__002BBFB7" />
+        <AssociationConnector Association="VENDIXModel.FK__Distrito__idProv__05E4990D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -46,6 +46,37 @@ namespace VendixWeb.Controllers.CajaDiario
             };
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ListarSaldoCajaDiarioBoveda(GridDataRequest request)
+        {
+            int totalRecords = 0;
+            var lstItem = CajaDiarioBL.LstSaldosBovedaCajaDiarioJGrid(request, ref totalRecords);
+            var productsData = new
+            {
+                total = (int)Math.Ceiling((float)totalRecords / (float)request.rows),
+                page = request.page,
+                records = totalRecords,
+                rows = (from item in lstItem
+                        select new
+                        {
+                            id = item.CajaDiarioId,
+                            cell = new string[] {
+                                                    item.CajaDiarioId.ToString(),
+                                                    item.Caja,
+                                                    item.Usuario,
+                                                    item.SaldoInicial.ToString(),
+                                                    item.SaldoFinal.ToString(),
+                                                    item.FechaIniOperacion.ToString(),
+                                                    item.FechaFinOperacion.ToString(),
+                                                    item.IndCierre ? "SI":"NO",
+                                                    item.TransBoveda ? "SI":"NO",
+                                                    item.CajaDiarioId.ToString()
+                                                }
+                        }
+                       ).ToArray()
+            };
+            return Json(productsData, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ListarCajasAsignadas(GridDataRequest request)
         {
             var lstGrd = CajaBL.LstCajaDiarioOficina();

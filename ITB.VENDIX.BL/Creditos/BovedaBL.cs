@@ -10,18 +10,30 @@ namespace ITB.VENDIX.BL
 {
     public class BovedaBL: Repositorio<Boveda>
     {
-        public static List<BovedaMov> LstBovedaMovJGrid(GridDataRequest request, ref int pTotalItems)
+        public static List<Boveda> LstBovedaJGrid(GridDataRequest request, ref int pTotalItems)
         {
-            //string filterExpression = string.Empty;
-
             var oficinaid = VendixGlobal.GetOficinaId();
             using (var db = new VENDIXEntities())
             {
-                var bovedaid = db.Boveda.First(x => x.OficinaId == oficinaid && x.IndCierre == false).BovedaId;
+                IQueryable<Boveda> query = db.Boveda.Where(x=>x.OficinaId== oficinaid);             
 
-                IQueryable<BovedaMov> query = db.BovedaMov.Where(x => x.BovedaId == bovedaid);
-                //if (!String.IsNullOrEmpty(filterExpression))
-                //    query = query.Where(filterExpression);
+                pTotalItems = query.Count();
+                return query.OrderBy(request.sidx + " " + request.sord)
+                    .Skip((request.page - 1) * request.rows).Take(request.rows).ToList();
+            }
+        }
+        public static List<BovedaMov> LstBovedaMovJGrid(GridDataRequest request, ref int pTotalItems)
+        {
+            string filterExpression = string.Empty;
+
+            if (request.DataFilters()["BovedaId"] != string.Empty)
+                filterExpression = "BovedaId == " + request.DataFilters()["BovedaId"];
+            
+            using (var db = new VENDIXEntities())
+            {                
+                IQueryable<BovedaMov> query = db.BovedaMov;
+                if (!String.IsNullOrEmpty(filterExpression))
+                    query = query.Where(filterExpression);
 
                 pTotalItems = query.Count();
                 return query.OrderBy(request.sidx + " " + request.sord)

@@ -33,6 +33,7 @@ namespace VendixWeb.Controllers
             var lstoficina = new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion");
             ViewBag.cboOficina = lstoficina;
             ViewBag.cboOficina1 = lstoficina;
+            ViewBag.cboOficina2 = lstoficina;
             return View();
         }
         public ActionResult Venta()
@@ -435,6 +436,30 @@ namespace VendixWeb.Controllers
 
             return Reporte("PDF", "rptCreditoMov.rdlc", rd, "A4Vertical0.25", parametros);
         }
+
+        public FileContentResult ReporteCentrarRiegoTXT(int? pOficinaId, int pAnio, int pMes)
+        {
+            var rpt = ReporteBL.ListarReporteCentralRiesgo(pOficinaId, pAnio, pMes);
+            int numeroItems = rpt.Count();
+            string vacio = string.Empty;
+
+            var sw = new StringWriter();
+            using (sw)
+            {
+                for (int i = 0; i < numeroItems; i++)
+                {                    
+                    sw.WriteLine(rpt[i].Periodo + rpt[i].Entidad + rpt[i].TipoDoc.ToString().PadLeft(31,' ') + rpt[i].NumDoc.PadLeft(12,' ') 
+                        + rpt[i].RazonSocial.PadLeft(100, ' ') + rpt[i].ApePat.PadRight(20, ' ') + rpt[i].ApeMat.PadRight(20, ' ') + rpt[i].Nombres.PadRight(30, ' ')
+                        + rpt[i].TipoPersona + rpt[i].ModalidadCredito + rpt[i].DeudaMenor30.Replace(".","").PadLeft(39,' ') + rpt[i].DeudaMayor30.Replace(".", "").PadLeft(13, ' ')
+                        + vacio.PadLeft(65,' ') + vacio.PadLeft(117, ' ')+ rpt[i].Calificacion+ rpt[i].DiasAtrazo.ToString().PadRight(5,' ') 
+                        + rpt[i].Direccion.PadRight(80,' ') + vacio.PadLeft(120, ' ') + rpt[i].celular.PadRight(10,' ')) ;
+                }
+            }
+
+            String NombreArchivo = "DM007898";
+            return File(new System.Text.UTF8Encoding().GetBytes(sw.ToString()), "text/txt", NombreArchivo + ".txt");
+        }
+
         public ActionResult Reporte(string pTipoReporte, string rdlc, ReportDataSource rds, string pPapel, List<ReportParameter> pParametros = null)
         {
             var lr = new LocalReport();
