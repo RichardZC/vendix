@@ -73,11 +73,14 @@ namespace VendixWeb.Controllers.Mantenimiento
         [HttpPost]
         public ActionResult Asignar(int pRolId, string pRoles)
         {
-            var lst = pRoles.Split(',');
             RolMenuBL.EjecutarSql("DELETE FROM MAESTRO.RolMenu WHERE RolId=" + pRolId.ToString());
-            foreach (var item in lst)
+            if (!string.IsNullOrEmpty(pRoles))
             {
-                RolMenuBL.Crear(new RolMenu() { RolId = pRolId, MenuId = int.Parse(item) });
+                var lst = pRoles.Split(',');
+                foreach (var item in lst)
+                {
+                    RolMenuBL.Crear(new RolMenu() { RolId = pRolId, MenuId = int.Parse(item) });
+                }
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }

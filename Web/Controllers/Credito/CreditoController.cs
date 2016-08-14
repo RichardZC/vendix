@@ -300,6 +300,19 @@ namespace VendixWeb.Controllers
 
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ObtenerCreditoPendiente(int pCreditoId) {
+            var lstGrd = CreditoBL.ListarEstadoPlanPago(pCreditoId);
+            var lstGrdPen = lstGrd.Where(x => x.Estado == "PEN").ToList();
+
+            var pendiente = new usp_EstadoPlanPago_Result()
+            {
+                Amortizacion = lstGrdPen.Sum(x => x.Amortizacion),
+                Interes = lstGrdPen.Sum(x => x.Interes),
+                Cargo = lstGrdPen.Sum(x => x.GastosAdm) + lstGrdPen.Sum(x => x.ImporteMora) + lstGrdPen.Sum(x => x.InteresMora) + lstGrdPen.Sum(x => x.Cargo)
+            };
+
+            return Json(pendiente, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ListarPlanPagoActGrd(GridDataRequest request)
         {
             var lstGrd = CreditoBL.ListarEstadoPlanPago(int.Parse(request.DataFilters()["pCreditoId"]));
