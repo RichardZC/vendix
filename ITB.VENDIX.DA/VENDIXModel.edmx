@@ -1556,6 +1556,7 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         <Function Name="usp_EntradaSalidaCajaDiario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CREDITO">
           <Parameter Name="CajaDiarioId" Type="int" Mode="In" />
           <Parameter Name="PersonaId" Type="int" Mode="In" />
+          <Parameter Name="IndEntrada" Type="bit" Mode="In" />
           <Parameter Name="TipoOperacionId" Type="int" Mode="In" />
           <Parameter Name="Importe" Type="decimal" Mode="In" />
           <Parameter Name="Decripcion" Type="varchar(max)" Mode="In" />
@@ -2089,14 +2090,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="FechaCalculo" Mode="In" Type="DateTime" />
             <Parameter Name="IndCancelacion" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
-            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
-            <Parameter Name="Importe" Mode="In" Type="Decimal" />
-            <Parameter Name="Decripcion" Mode="In" Type="String" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
           <Parameter Name="CreditoId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -2549,6 +2542,15 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
             <Parameter Name="Anio" Mode="In" Type="Int32" />
             <Parameter Name="Mes" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
+            <Parameter Name="IndEntrada" Mode="In" Type="Boolean" />
+            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
+            <Parameter Name="Importe" Mode="In" Type="Decimal" />
+            <Parameter Name="Decripcion" Mode="In" Type="String" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
@@ -4414,7 +4416,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
           <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
@@ -5269,6 +5270,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -431,55 +431,57 @@
             </div>
         </div>
         <div style="display: none;" id="dlgCondonar" title="Condonar Credito">
-            <form class="full validate" >
-                <div class="row">
-                    <label >
-                        <strong>Credito Pendiente:</strong>
-                    </label>
-                    <div>
-                        
-                        <table style="width: 100%;font-weight:bolder">
-                            <tr>
-                                <td>
-                                    Capital: <label id="lblCondonarCapital">0</label>
-                                    Interes: <label id="lblCondonarInteres">0</label>
-                                    Cargos y Moras: <label id="lblCondonarCargos">0</label>
-                                </td>
-                            </tr>
-                        </table>
+            <form class="full ">
+                <fieldset>
+                    <div class="row">
+                        <label>
+                            <strong>DEUDA:</strong>
+                        </label>
+                        <div>
+                            <div><strong id="lblCondonarCapital">0</strong></div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label>
-                        <strong>Condonar:</strong>
-                    </label>
-                    <div>
-                        <table>
-                            <tr>
-                                <td>
-                                    <select id="cboCondonar">
-                                        <option value="M">Mora</option>
-                                        <option value="I">Interes</option>
-                                        <option value="P">Monto</option>
-                                    </select>
-                               </td>
-                                <td style="text-align: center">
-                                    <strong>Monto:</strong>
-                                </td>
-                                <td>
-                                    <input type="text" class="required" id="txtMontoCondonar" value="0.00" style="text-align: center" min="1" />
-                                </td>
-                            </tr>
-                        </table>
+                    <div class="row">
+                        <label>
+                            <strong>Interes: <label id="lblCondonarInteres">0</label></strong>
+                        </label>
+                        <div>
+                            <div>
+                                <input type="checkbox" name="chkcInteres" id="chkcInteres" /> <label for="chkcInteres">Condonar?</label>
+                                <input type="text" id="txtcCondonarInteres" style="text-align: center; display:none" min="0" />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <label>
+                            <strong>Moras: <label id="lblCondonarMoras">0</label></strong>
+                        </label>
+                        <div>
+                            <div>
+                                <input type="checkbox" name="chkcMoras" id="chkcMoras" /> <label for="chkcMoras">Condonar?</label>
+                                <input type="text" id="txtcCondonarMoras" style="text-align: center; display:none" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label>
+                            <strong>Cargos: <label id="lblCondonarCargos">0</label></strong>
+                        </label>
+                        <div>
+                            <div>
+                                <input type="checkbox" name="chkcCargos" id="chkcCargos" /> <label for="chkcCargos">Condonar?</label>
+                                <input type="text" id="txtcCondonarCargos" style="text-align: center; display:none" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
                 
                 <div class="row">
                     <label for="txtdescCargo">
-                        <strong>Descripcion:</strong>
+                        <strong>Observacion:</strong>
                     </label>
                     <div>
-                        <input class="required" type="text" name="txtdescCargo" id="txtdescCargo" />
+                        <input class="required" type="text" name="txtcCondonarObs" id="txtcCondonarObs" />
                     </div>
                 </div>
 
@@ -490,7 +492,8 @@
                     <button class="grey cancel">Salir</button>
                 </div>
                 <div class="right">
-                    <button class="submit">Condonar</button>
+                    <strong id="lblcCxcCondonar">0.00</strong>
+                    <button class="submit" id="btnCrearCondonarCredito">Crear Cuenta x Cobrar y Condonar</button>
                 </div>
             </div>
         </div>
@@ -524,8 +527,23 @@
         <script>
             $(function () {
                 mostrarCredito(@(Model.Creditos.FirstOrDefault() == null ? 0 : Model.Creditos.First().CreditoId));
-                $("#txtMontoCargo,#txtMontoCondonar").numeric(2);
-                
+                $("#txtMontoCargo,#txtcCondonarInteres,#txtcCondonarMoras,#txtcCondonarCargos").numeric(2);
+                $("#txtcCondonarInteres,#txtcCondonarMoras,#txtcCondonarCargos").change(function(){
+                    CalcularMontoCondonar();
+                });
+
+                $("#chkcInteres").change(function () {
+                    $("#chkcInteres").prop('checked')?$("#txtcCondonarInteres").show()  .focus():$("#txtcCondonarInteres").hide();
+                    CalcularMontoCondonar();
+                });
+                $("#chkcCargos").change(function () {
+                    $("#chkcCargos").prop('checked')?$("#txtcCondonarCargos").show().focus():$("#txtcCondonarCargos").hide();
+                    CalcularMontoCondonar();
+                });
+                $("#chkcMoras").change(function () {
+                    $("#chkcMoras").prop('checked')?$("#txtcCondonarMoras").show().focus():$("#txtcCondonarMoras").hide();
+                    CalcularMontoCondonar();
+                });
 
                 $("#dlgCargo").dialog({
                     autoOpen: false,
@@ -574,6 +592,23 @@
                     $el.dialog('close');
                 });
 
+                $("#btnCrearCondonarCredito").click(function(){
+                    var montocxc = $.data(document.body, 'cDeudaCondonarCXC');
+
+                    Vendix.Dialogo("Desea condonar el crédito y generar la cuenta por cobrar de " + montocxc.toFixed(2) , "SiNo", function () {
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("CondonarCredito", "Credito")",
+                            data: { pCreditoId: $.data(document.body, 'CreditoId') , pMontocxc:montocxc, pObs:$.data(document.body, 'cDeudaObs')},
+                            success: function (ret) {
+                                Vendix.Notificar();
+                                $("#dlgCondonar").dialog('close');
+                            }
+                        });
+                    });
+                });
+
                 $("#btnCrearCargo").click(function () {
                     if ($("#frmcargo").validate().form()) {
                         $.ajax({
@@ -604,14 +639,27 @@
                         type: 'GET',
                         url: "@Url.Action("ObtenerCreditoPendiente", "Credito")",
                         data: {pCreditoId: $.data(document.body, 'CreditoId')},
-                        success: function (ret) {
-                            $("#lblCondonarCapital").text(ret.Amortizacion.toFixed(2));
+                        success: function (ret) {                           
                             $("#lblCondonarInteres").text(ret.Interes.toFixed(2));
                             $("#lblCondonarCargos").text(ret.Cargo.toFixed(2));
+                            $("#lblCondonarMoras").text(ret.ImporteMora.toFixed(2));
+                            
+                            $("#txtcCondonarInteres").val(ret.Interes.toFixed(2));
+                            $("#txtcCondonarCargos").val(ret.Cargo.toFixed(2));
+                            $("#txtcCondonarMoras").val(ret.ImporteMora.toFixed(2));
+
+                            var deuda = ret.Amortizacion + ret.Interes + ret.ImporteMora + ret.Cargo;
+                            $.data(document.body, 'cDeuda',deuda);
+                            $.data(document.body, 'cDeudaCapital',ret.Amortizacion);
+                            $.data(document.body, 'cDeudaInteres',ret.Interes);
+                            $.data(document.body, 'cDeudaMoras',ret.ImporteMora);
+                            $.data(document.body, 'cDeudaCargos',ret.Cargo);
+                            $("#lblCondonarCapital,#lblcCxcCondonar").text(deuda.toFixed(2));
+
                             $("#dlgCondonar").dialog('open');
                         }
                     });
-                                        
+
                     return false;
                 });
                 $("#btncCargos").click(function () {
@@ -657,9 +705,40 @@
                 });
             });
 
+            function CalcularMontoCondonar(){
+                var deuda =  parseFloat($.data(document.body, 'cDeuda'));
+                var deudacapital = $.data(document.body, 'cDeudaCapital');
+                var deudainteres = $.data(document.body, 'cDeudaInteres');
+                var deudaMoras = $.data(document.body, 'cDeudaMoras');
+                var deudaCargos = $.data(document.body, 'cDeudaCargos');
+                
+                var interes = 0;
+                var cargo = 0;
+                var moras = 0;
 
+                if ($("#chkcInteres").prop('checked')) {
+                    if (parseFloat($('#txtcCondonarInteres').val()) > deudainteres) 
+                        $('#txtcCondonarInteres').val(deudainteres);
+                    interes = parseFloat($('#txtcCondonarInteres').val()) ;
+                }
+                if ($("#chkcCargos").prop('checked')) {
+                    if (parseFloat($('#txtcCondonarCargos').val()) > deudainteres) 
+                        $('#txtcCondonarCargos').val(deudaCargos);
+                    cargo = parseFloat($('#txtcCondonarCargos').val()) ;
+                }
+                if ($("#chkcMoras").prop('checked')) {
+                    if (parseFloat($('#txtcCondonarMoras').val()) > deudainteres) 
+                        $('#txtcCondonarMoras').val(deudaMoras);
+                    moras = parseFloat($('#txtcCondonarMoras').val()) ;
+                }
+                
+                var m = deuda - interes  - cargo - moras;
+                $.data(document.body, 'cDeudaCondonarCXC',m);
+                $.data(document.body, 'cDeudaObs','DEUDA('+deuda.toFixed(2)+')=CAPITAL('+deudacapital.toFixed(2)+')+INTERES('+deudainteres.toFixed(2)+')+MORAS('+deudaMoras.toFixed(2)+')+CARGOS('+deudaCargos.toFixed(2)+')' + ' ==> PAGO CONDONACION ('+m.toFixed(2)+') ==> INTERES('+interes.toFixed(2)+') MORAS('+moras.toFixed(2)+') CARGOS('+cargo.toFixed(2)+')' );
+                $("#lblcCxcCondonar").text(m.toFixed(2));                
 
-
+            }
+            
             function mostrarCredito(CreditoId) {
                 if (CreditoId == 0) {
                     $(".credito").hide();

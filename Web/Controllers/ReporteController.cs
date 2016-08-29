@@ -63,11 +63,11 @@ namespace VendixWeb.Controllers
                                              new ReportParameter("SaldoAnterior", data.SaldoAnterior.ToString()),
                                              new ReportParameter("PagoDeuda", data.PagoDeuda.ToString()),
                                              new ReportParameter("Interes", data.Interes.ToString()),
-                                             new ReportParameter("GastosAdm", data.GastosAdm.ToString()),
                                              new ReportParameter("MoraCargo", data.MoraCargo.ToString()),
                                              new ReportParameter("ImporteLibre", data.ImporteLibre.ToString()),
                                              new ReportParameter("ImportePagado", data.ImportePagado.ToString()),
                                              new ReportParameter("SaldoCapital", data.SaldoCapital.ToString()),
+                                             new ReportParameter("CuotasPagadas", data.CuotasPagadas),
                                              new ReportParameter("ProximaCuota", data.ProximaCuota),
                                              new ReportParameter("CuotasAtrazadas", data.CuotasAtrazadas.ToString())
                                          };
@@ -540,10 +540,10 @@ namespace VendixWeb.Controllers
                 case "VoucherCaja":
                     return "<DeviceInfo>" +
                            "  <OutputFormat>[TipoReporte]</OutputFormat>" +
-                           "  <PageWidth>9.0in</PageWidth>" +
+                           "  <PageWidth>8.5in</PageWidth>" +
                            "  <PageHeight>5.0in</PageHeight>" +
                            "  <MarginTop>0in</MarginTop>" +
-                           "  <MarginLeft>0.1in</MarginLeft>" +
+                           "  <MarginLeft>0in</MarginLeft>" +
                            "  <MarginRight>0in</MarginRight>" +
                            "  <MarginBottom>0in</MarginBottom>" +
                            "</DeviceInfo>";

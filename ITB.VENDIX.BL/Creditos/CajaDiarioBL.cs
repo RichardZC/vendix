@@ -293,15 +293,15 @@ namespace ITB.VENDIX.BL
             }
         }
 
-        public static string EntradaSalida(int pPersonaId, int pTipoOperacionId, string pDescripcion,decimal pImporte)
+        public static string EntradaSalida(int pPersonaId, bool pIndEntrada , int pTipoOperacionId, string pDescripcion,decimal pImporte)
         {
 
             if (string.IsNullOrEmpty(pDescripcion))
                 return "Ingrese Descripción";
 
             var cajadiarioid = VendixGlobal.GetCajaDiarioId();
-            bool indEntrada = TipoOperacionBL.Obtener(pTipoOperacionId).IndEntrada;
-            if (!indEntrada)
+            
+            if (!pIndEntrada)
             {
                 if (pImporte > Obtener(cajadiarioid).SaldoFinal)
                     return "Saldo Insuficiente!";
@@ -313,7 +313,7 @@ namespace ITB.VENDIX.BL
                 {
                     using (var db = new VENDIXEntities())
                     {
-                        db.usp_EntradaSalidaCajaDiario(cajadiarioid, pPersonaId, pTipoOperacionId, pImporte,
+                        db.usp_EntradaSalidaCajaDiario(cajadiarioid, pPersonaId, pIndEntrada, pTipoOperacionId, pImporte,
                                                        pDescripcion, VendixGlobal.GetUsuarioId());
                     }
                     scope.Complete();

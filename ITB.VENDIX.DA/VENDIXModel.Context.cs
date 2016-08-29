@@ -325,35 +325,6 @@ namespace ITB.VENDIX.BE
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CuotasPendientes_Result>("usp_CuotasPendientes", creditoIdParameter, fechaCalculoParameter, indCancelacionParameter);
         }
     
-        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
-        {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            var personaIdParameter = personaId.HasValue ?
-                new ObjectParameter("PersonaId", personaId) :
-                new ObjectParameter("PersonaId", typeof(int));
-    
-            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
-                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
-                new ObjectParameter("TipoOperacionId", typeof(int));
-    
-            var importeParameter = importe.HasValue ?
-                new ObjectParameter("Importe", importe) :
-                new ObjectParameter("Importe", typeof(decimal));
-    
-            var decripcionParameter = decripcion != null ?
-                new ObjectParameter("Decripcion", decripcion) :
-                new ObjectParameter("Decripcion", typeof(string));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
-        }
-    
         public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
         {
             var creditoIdParameter = creditoId.HasValue ?
@@ -751,6 +722,39 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("Mes", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CentralRiesgoGenerar_Result>("usp_CentralRiesgoGenerar", oficinaIdParameter, anioParameter, mesParameter);
+        }
+    
+        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<bool> indEntrada, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
+        {
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            var personaIdParameter = personaId.HasValue ?
+                new ObjectParameter("PersonaId", personaId) :
+                new ObjectParameter("PersonaId", typeof(int));
+    
+            var indEntradaParameter = indEntrada.HasValue ?
+                new ObjectParameter("IndEntrada", indEntrada) :
+                new ObjectParameter("IndEntrada", typeof(bool));
+    
+            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
+                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
+                new ObjectParameter("TipoOperacionId", typeof(int));
+    
+            var importeParameter = importe.HasValue ?
+                new ObjectParameter("Importe", importe) :
+                new ObjectParameter("Importe", typeof(decimal));
+    
+            var decripcionParameter = decripcion != null ?
+                new ObjectParameter("Decripcion", decripcion) :
+                new ObjectParameter("Decripcion", typeof(string));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, indEntradaParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
         }
     }
 }

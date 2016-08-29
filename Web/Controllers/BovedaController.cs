@@ -14,7 +14,7 @@ namespace VendixWeb.Controllers
         {
             var oficinaid = VendixGlobal.GetOficinaId();
 
-            ViewBag.cboCajas = new SelectList(CajaBL.Listar(x => x.Estado && x.IndAbierto), "CajaId", "Denominacion");
+            ViewBag.cboCajas = new SelectList(CajaBL.ListarCajasAbiertas(), "id", "value");
 
             var oficinaId = VendixGlobal.GetOficinaId();
             ViewBag.cboOficinas = new SelectList(OficinaBL.Listar(x => x.Estado && x.OficinaId != oficinaId), "OficinaId", "Denominacion");
