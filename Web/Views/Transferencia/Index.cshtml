@@ -214,13 +214,12 @@
         }).find('button.submit').click(function () {
             var $el = $(this).parents('.ui-dialog-content');
             if ($el.validate().form()) {
+
                 $.ajax({
                     type: 'POST',
-                    url: "@Url.Action("Guardar", "Entrada")",
-                    data: {
-                        pMovimientoId: 0,
-                        pAlmacenId: $("#cboDestino").val(),                        
-                        pFecha: ''
+                    url: "@Url.Action("CrearTransferencia", "Transferencia")",
+                    data: {                      
+                        pAlmacenId: $("#cboDestino").val()
                     },
                     success: function (movid) {
                         Vendix.Notificar("Modificar");
