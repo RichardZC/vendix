@@ -58,6 +58,9 @@
     <Compile Include="Almacen.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Aprobacion.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Articulo.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
@@ -79,6 +82,9 @@
     <Compile Include="Cargo.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CentralRiesgo.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Cliente.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
@@ -86,6 +92,12 @@
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CuentaxCobrar.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Departamento.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Distrito.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GastosAdm.cs">
@@ -146,6 +158,9 @@
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provincia.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Rol.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
@@ -171,6 +186,9 @@
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TipoOperacion.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_CentralRiesgoGenerar_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="usp_CodigoBarras_Lst_Result.cs">

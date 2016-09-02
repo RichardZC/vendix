@@ -3,10 +3,10 @@
         <div class="header">
             <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Lista Cajas Asignadas</h2>
         </div>
-        <table id="grdCajadiario" ></table>
+        <table id="grdCajadiario"></table>
         <div class="actions">
             <div class="left">
-                 <a id="btnNuevo" href="#" class="button">Asignar Caja</a>
+                <a id="btnNuevo" href="#" class="button">Asignar Caja</a>
             </div>
             <div class="right">
                 <a id="btnTransferir" href="#" class="button red">CERRAR CAJAS</a>
@@ -16,22 +16,62 @@
 </div>
 
 <div class="grid_12">
-    <table id="grdBuscar" ></table>
+    <table id="grdBuscar"></table>
     <div id="grdpBuscar"></div>
 </div>
 
+<div class="clearfix"></div><br />
+
+<div class="grid_6">
+    <form method="post" action="#" class="box">
+
+        <div class="header">
+            <h2>Anular Movimiento de Caja</h2>
+        </div>
+
+        <div class="content">
+            <p class="_100 small" style="padding-top: 10px;">
+                <label for="txtAnularMovCaja" class="inline">Nro. Movimiento:</label>
+                <input data-error-type="inline" type="text" name="txtAnularMovCaja" id="txtAnularMovCaja" />
+            </p>
+            <p class="_50 small">
+                <label>CajaDiario: <span id="lblaCajaDiarioId" class="lbla"></span></label>
+            </p>
+            <p class="_50 small">
+                <label>Operación: <span id="lblaOperacion" class="lbla"></span></label>
+            </p>
+            <p class="_100 small">
+                <label>Descripcion: <span id="lblaDescripcion" class="lbla"></span></label>
+            </p>
+            <p class="_100 small">
+                <label>Persona: <span id="lblaPersona" class="lbla"></span></label>
+            </p>            
+            <p class="_50 small">
+                <label>Fecha Pago: <span id="lblaFecha" class="lbla"></span></label>
+            </p>
+            <p class="_50 small">
+                <label>Importe Pago: <span id="lblaImportePago" class="lbla"></span></label>
+            </p>
+        </div>
+        <div class="actions">
+            <div class="right" >
+                <input type="button" style="display:none" value="Anular Movimiento" id="btnAnularMovCaja" />
+            </div>
+        </div>
+    </form>
+</div>
+
 <div style="display: none;" id="dialog_AsignarCaja" title="Asignar Caja">
-    <form  class="full validate" >
+    <form class="full validate">
         <div class="row">
             <label for="cboCaja">
                 <strong>Caja Disponible:</strong>
             </label>
             <div>
-                <select  id ='cboCaja' name='cboCaja' >
-                </select>
+                <select id='cboCaja' name='cboCaja'></select>
             </div>
         </div>
-            
+
         <div class="row">
             <label for="cboUsuario">
                 <strong>Usuario:</strong>
@@ -44,15 +84,15 @@
 
         <div class="row">
             <label for="pSaldoInicial">
-                <strong >Saldo Inicial</strong>
+                <strong>Saldo Inicial</strong>
             </label>
             <div>
                 <span id="lblMontoBoveda" style="color:blue"><strong></strong></span>
-                <input class="required" type="text" name="pSaldoInicial" id="pSaldoInicial"  placeholder="0.00" />
+                <input class="required" type="text" name="pSaldoInicial" id="pSaldoInicial" placeholder="0.00" />
             </div>
         </div>
-        <br/>
-        <br/>
+        <br />
+        <br />
     </form>
 
     <div class="actions">
@@ -67,6 +107,39 @@
 
 <script type="text/javascript">
     $$.ready(function () {
+       
+
+        $("#txtAnularMovCaja").numeric().keypress(function (event) {
+            if (event.which == 13) {
+                //event.preventDefault();
+                $.ajax({
+                    url: "@Url.Action("ObtenerMovimientoCajaAnular", "CajaDiario")",
+                    data: { pMovimientoCajaId: $(this).val() },
+                    success: function (ret) {
+                        if (ret.rpta.Error) {
+                            Vendix.Dialogo(ret.rpta.Mensaje);
+                            $("#btnAnularMovCaja").hide();
+                            $(".lbla").text("");                            
+                        }
+                        else {
+                            $.data(document.body, 'MovimientoCajaId', ret.val.MovimientoCajaId);
+                            $("#lblaCajaDiarioId").text(ret.val.MovimientoCajaId);
+                            $("#lblaOperacion").text(ret.val.Operacion);
+                            $("#lblaDescripcion").text(ret.val.Descripcion);
+                            $("#lblaImportePago").text(ret.val.ImportePago);
+                            $("#lblaFecha").text(ret.rpta.Valor);
+                            $("#lblaPersona").text(ret.rpta.Valor1);
+                            $("#btnAnularMovCaja").show().focus();
+                        }                        
+                    }
+                });
+                return false;
+            }            
+        });
+        $("#btnAnularMovCaja").click(function () {
+            AnularMovCaja($.data(document.body, 'MovimientoCajaId'));
+        });
+
         $("#btnNuevo").click(function () {
             Vendix.CargarCombo("@Url.Action("ObtnerListaCajasCombo", "Saldos")", "cboCaja");
             Vendix.CargarCombo("@Url.Action("ObtnerListaUsuariosCombo", "Saldos")", "cboUsuario");
@@ -194,19 +267,19 @@
             datatype: "json",
             postData: {
                 filters: function () {
-                    return $.toJSON([{ Key: "Buscar", Value: '1' }]);
+                    return $.toJSON([{ Key: "BovedaId", Value: '0' }]);
                 }
             },
-            colNames: ['NRO', 'CAJA', 'RESPONSABLE', 'SALDO INICIAL', 'SALDO FINAL', 'F.INICIO', 'F.FIN','CERRADO','BOVEDA','ACCION'],
+            colNames: ['NRO', 'CAJA', 'RESPONSABLE', 'SALDO INICIAL', 'SALDO FINAL', 'F.INICIO', 'F.FIN', 'CERRADO', 'BOVEDA', 'ACCION'],
             colModel:
                 [
                     { name: 'CajaDiarioId', index: 'CajaDiarioId', width: 75 },
                     { name: 'Caja', index: 'Caja', width: 150 },
                     { name: 'NombreUsuario', index: 'NombreUsuario', width: 150 },
                     { name: 'SaldoInicial', index: 'SaldoInicial' },
-                    { name: 'SaldoFinal', index: 'SaldoFinal'},
-                    { name: 'FechaIniOperacion', index: 'FechaIniOperacion'},
-                    { name: 'FechaFinOperacion', index: 'FechaFinOperacion'},
+                    { name: 'SaldoFinal', index: 'SaldoFinal' },
+                    { name: 'FechaIniOperacion', index: 'FechaIniOperacion' },
+                    { name: 'FechaFinOperacion', index: 'FechaFinOperacion' },
                     { name: 'IndCierre', index: 'IndCierre', width: 70, align: "center" },
                     { name: 'TransBoveda', index: 'TransBoveda', width: 70, align: "center" },
                     { name: 'imprimir', index: 'imprimir', align: 'center', width: 60, formatter: ImprimirFormatter }
@@ -234,5 +307,28 @@
         window.open(ruta);
         return false;
     }
-
+    function AnularMovCaja(pMovimientoCajaId) {
+        @*$.ajax({
+            url: "@Url.Action("ValidarAnularMovimientoCaja", "Credito")",
+            data: { pMovimientoCajaId: pMovimientoCajaId },
+            success: function (ret) {
+                if (ret == false) {*@
+                    Vendix.DialogoObs("Ingrese la Observación para anular.", function () {
+                        $.ajax({
+                            url: "@Url.Action("AnularMovimientoCaja", "Credito")",
+                            data: { pMovimientoCajaId: pMovimientoCajaId, pObservacion: $.data(document.body, 'txtObsBase') },
+                            success: function (rpt) {
+                                if (rpt) {
+                                    Vendix.Notificar('Anular');
+                                    $("#btnAnularMovCaja").hide();
+                                    $(".lbla").text("");
+                                }
+                            }
+                        });
+                    });
+        @*        } else
+                    Vendix.Dialogo("Tiene Pagos de cuotas, No se Puede Anular el Crédito", "Aceptar");
+            }
+                    });*@
+    }
 </script>

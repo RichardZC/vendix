@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ITB.VENDIX.BE;
+using System.Data.Objects.SqlClient;
 
 namespace ITB.VENDIX.BL
 {
@@ -45,10 +46,15 @@ namespace ITB.VENDIX.BL
         {
             using (var db = new VENDIXEntities())
             {
-                var plan = db.PlanPago.Where(x => x.MovimientoCajaId == pMovimientoCajaId);
+                var plan = db.PlanPago.Where(x => x.MovimientoCajaId == pMovimientoCajaId).ToList();
                 var creditoid = plan.First().CreditoId;
                 var saldoAnt = plan.OrderBy(x => x.Numero).First().Capital;
+                var cuotaspagadas = plan.Max(x => x.Numero);
                 var pagodeuda = plan.Sum(x => x.Amortizacion);
+                var interes = plan.Sum(x => x.Interes + x.GastosAdm);
+                var importelibre = plan.Sum(x => x.PagoLibre);
+                var cargosmora = plan.Sum(x => x.ImporteMora + x.InteresMora + x.Cargo);
+                var pagocuota = plan.Sum(x => x.PagoCuota.Value);
                 var proxcuota = string.Empty;
                 var proxcuotapen = db.PlanPago
                                     .Where(x => x.CreditoId == creditoid && x.Estado == "PEN")
@@ -58,29 +64,29 @@ namespace ITB.VENDIX.BL
                 
                 var cuotasAtrazadas = db.PlanPago
                     .Count(x => x.CreditoId == creditoid && x.Estado == "PEN" && x.FechaVencimiento < DateTime.Now);
-                                    
+
                 var qrycre = from mc in db.MovimientoCaja
                              where mc.MovimientoCajaId == pMovimientoCajaId
                              select new MovCajaCredito
-                                        {
-                                            MovimientoCajaId = mc.MovimientoCajaId,
-                                            PersonaId = mc.PersonaId,
-                                            Cliente = mc.Persona.NombreCompleto,
-                                            User = mc.Usuario.NombreUsuario,
-                                            FechaReg = mc.FechaReg,
-                                            Oficina = mc.CajaDiario.Caja.Oficina.Denominacion,
-                                            Producto = plan.FirstOrDefault().Credito.Producto.Denominacion,
-                                            SaldoAnterior = saldoAnt,
-                                            PagoDeuda = pagodeuda,
-                                            Interes = plan.Sum(x => x.Interes),
-                                            GastosAdm = plan.Sum(x => x.GastosAdm),
-                                            MoraCargo = plan.Sum(x => x.InteresMora + x.InteresMora),
-                                            ImporteLibre = mc.ImportePago - plan.Sum(x => x.PagoCuota.Value),
-                                            ImportePagado = mc.ImportePago,
-                                            SaldoCapital = saldoAnt - pagodeuda,
-                                            ProximaCuota = proxcuota,
-                                            CuotasAtrazadas = cuotasAtrazadas
-                                        };
+                             {
+                                 MovimientoCajaId = mc.MovimientoCajaId,
+                                 PersonaId = mc.PersonaId,
+                                 Cliente = mc.Persona.NombreCompleto,
+                                 User = mc.Usuario.NombreUsuario,
+                                 FechaReg = mc.FechaReg,
+                                 Oficina = mc.CajaDiario.Caja.Oficina.Denominacion,
+                                 Producto = mc.Credito.Producto.Denominacion,
+                                 SaldoAnterior = saldoAnt,
+                                 PagoDeuda = pagodeuda,
+                                 Interes = interes,
+                                 MoraCargo = cargosmora,
+                                 ImporteLibre = mc.ImportePago - pagocuota - importelibre,
+                                 ImportePagado = mc.ImportePago,
+                                 SaldoCapital = saldoAnt - pagodeuda,
+                                 CuotasPagadas = SqlFunctions.StringConvert((double)cuotaspagadas).Trim() + " de " + SqlFunctions.StringConvert((double)mc.Credito.NumeroCuotas).Trim(),
+                                 ProximaCuota = proxcuota,
+                                 CuotasAtrazadas = cuotasAtrazadas
+                             };
                 return qrycre.ToList()[0];
             }
         }
@@ -195,11 +201,11 @@ namespace ITB.VENDIX.BL
         public decimal SaldoAnterior { get; set; }
         public decimal PagoDeuda { get; set; }
         public decimal Interes { get; set; }
-        public decimal GastosAdm { get; set; }
         public decimal MoraCargo { get; set; }
         public decimal ImporteLibre { get; set; }
         public decimal ImportePagado { get; set; }
         public decimal SaldoCapital { get; set; }
+        public string CuotasPagadas { get; set; }
         public string ProximaCuota { get; set; }
         public int CuotasAtrazadas { get; set; }
     }

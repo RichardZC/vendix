@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ITB.VENDIX.BE;
 using ITB.VENDIX.BL;
+using Web.Models;
 
 namespace VendixWeb.Controllers.CajaDiario
 {
@@ -39,6 +40,35 @@ namespace VendixWeb.Controllers.CajaDiario
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ObtenerMovimientoCajaAnular(int pMovimientoCajaId)
+        {
+            var rpta = new Respuesta() { Error = false };
+            var movcaja = MovimientoCajaBL.Obtener(x=>x.MovimientoCajaId== pMovimientoCajaId,includeProperties:"CajaDiario");
+            if (movcaja== null)
+            {
+                rpta.Error = true;
+                rpta.Mensaje = "Movimiento no encontrado!";
+                return Json(new { rpta = rpta }, JsonRequestBehavior.AllowGet);
+            }
+            if (movcaja.Estado==false)
+            {
+                rpta.Error = true;
+                rpta.Mensaje = "El movimiento se encuentra Anulado!";
+                return Json(new { rpta = rpta }, JsonRequestBehavior.AllowGet);
+            }
+            if (movcaja.CajaDiario.IndCierre == true)
+            {
+                rpta.Error = true;
+                rpta.Mensaje = "Caja Diario Cerrado, no se puede anular!";
+                return Json(new { rpta = rpta }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            rpta.Valor = movcaja.FechaReg.ToShortDateString();
+            rpta.Valor1 = UsuarioBL.ObtenerNombre(movcaja.CajaDiario.UsuarioAsignadoId);
+            movcaja.CajaDiario = null;
+            return Json(new { rpta = rpta, val = movcaja }, JsonRequestBehavior.AllowGet);
+        }
     }
 
 }

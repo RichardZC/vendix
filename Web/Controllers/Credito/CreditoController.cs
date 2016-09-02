@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ITB.VENDIX.BL;
 using ITB.VENDIX.BE;
-
+using System.Transactions;
 
 namespace VendixWeb.Controllers
 {
@@ -300,6 +300,20 @@ namespace VendixWeb.Controllers
 
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ObtenerCreditoPendiente(int pCreditoId) {
+            var lstGrd = CreditoBL.ListarEstadoPlanPago(pCreditoId);
+            var lstGrdPen = lstGrd.Where(x => x.Estado == "PEN").ToList();
+
+            var pendiente = new usp_EstadoPlanPago_Result()
+            {
+                Amortizacion = lstGrdPen.Sum(x => x.Amortizacion),
+                Interes = lstGrdPen.Sum(x => x.Interes) + lstGrdPen.Sum(x => x.GastosAdm),
+                ImporteMora = lstGrdPen.Sum(x => x.ImporteMora) + lstGrdPen.Sum(x => x.InteresMora),
+                Cargo = lstGrdPen.Sum(x => x.Cargo)
+            };
+
+            return Json(pendiente, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ListarPlanPagoActGrd(GridDataRequest request)
         {
             var lstGrd = CreditoBL.ListarEstadoPlanPago(int.Parse(request.DataFilters()["pCreditoId"]));
@@ -374,7 +388,44 @@ namespace VendixWeb.Controllers
 
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public ActionResult CondonarCredito(int pCreditoId, decimal pMontocxc, string pObs) {
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    var cxc = CuentaxCobrarBL.Obtener(x => x.CreditoId == pCreditoId);
+                    if (cxc == null)
+                    {
+                        CuentaxCobrarBL.Crear(new CuentaxCobrar
+                        {
+                            Operacion = "CDN",
+                            Monto = pMontocxc,
+                            Estado = "PEN",
+                            CreditoId = pCreditoId
+                        });
+                    }
+                    else {
+                        cxc.CreditoId = pCreditoId;
+                        cxc.Operacion = "CDN";
+                        cxc.Monto = pMontocxc;
+                        cxc.Estado = "PEN";
+                        CuentaxCobrarBL.Actualizar(cxc);
+                    }
+                    
+                    var c = CreditoBL.Obtener(pCreditoId);
+                    c.Observacion = DateTime.Now.ToString() + " " + pObs;
+                    CreditoBL.Actualizar(c);
+                    scope.Complete();
+                    return Json(true);
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    return Json(ex.InnerException.Message);
+                }
+            }
+        }
 
         #region Cajadiario
         public ActionResult CajaDiario()
@@ -388,10 +439,7 @@ namespace VendixWeb.Controllers
             if (cajadiario != null)
                 VendixGlobal<int>.Crear("CajadiarioId", cajadiario.CajaDiarioId);
 
-            ViewBag.cboTipoOperacion = new SelectList(TipoOperacionBL.Listar(x => x.IndCajaDiario)
-                .Select(
-                    x =>
-                    new { x.TipoOperacionId, Denominacion = (x.IndEntrada ? "ENTRADA - " : "SALIDA - ") + x.Denominacion }), "TipoOperacionId", "Denominacion");
+            ViewBag.cboTipoOperacion = new SelectList(TipoOperacionBL.Listar(x => x.IndCajaDiario), "TipoOperacionId", "Denominacion");
 
             return View(cajadiario);
 
@@ -533,9 +581,9 @@ namespace VendixWeb.Controllers
             var cajadiarioid = VendixGlobal<int>.Obtener("CajadiarioId");
             return Json(CajaDiarioBL.Obtener(cajadiarioid), JsonRequestBehavior.AllowGet);
         }
-        public ActionResult RealizarEntradaSalidaCajaDiario(int pPersonaId, int pTipoOperacionId, string pDescripcion, decimal pImporte)
+        public ActionResult RealizarEntradaSalidaCajaDiario(int pPersonaId,int pIndEntrada, int pTipoOperacionId, string pDescripcion, decimal pImporte)
         {
-            return Json(CajaDiarioBL.EntradaSalida(pPersonaId, pTipoOperacionId, pDescripcion, pImporte)
+            return Json(CajaDiarioBL.EntradaSalida(pPersonaId, pIndEntrada==1?true:false, pTipoOperacionId, pDescripcion, pImporte)
                     , JsonRequestBehavior.AllowGet);
         }
         public ActionResult RealizarDesembolso(int pCreditoId)
@@ -547,6 +595,10 @@ namespace VendixWeb.Controllers
         {
             if (CuentaxCobrarBL.Contar(x=>x.CreditoId== pCreditoId && x.Estado=="PEN")>0)
                 return Json(new { error = true, mensaje = "Tiene Cuentas por cobrar Pendientes!" }, JsonRequestBehavior.AllowGet);
+
+            var pImporte = CreditoBL.Obtener(pCreditoId).MontoDesembolso;
+            if (pImporte >CajaDiarioBL.Obtener(VendixGlobal.GetCajaDiarioId()).SaldoFinal)
+                return Json(new { error = true, mensaje = "Saldo Insuficiente!" }, JsonRequestBehavior.AllowGet);
 
             return Json(new { error = false }, JsonRequestBehavior.AllowGet);
         }

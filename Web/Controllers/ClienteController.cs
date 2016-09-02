@@ -156,7 +156,7 @@ namespace Web.Controllers
         {
             return Json(ClienteBL.BuscarCliente(term), JsonRequestBehavior.AllowGet);
         }
-
+       
 
         //public JsonResult BuscarDemo(string term)
         //{

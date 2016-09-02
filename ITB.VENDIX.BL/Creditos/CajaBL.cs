@@ -59,21 +59,22 @@ namespace ITB.VENDIX.BL
                 return db.usp_UsuariosNoAsignadosCaja(VendixGlobal.GetOficinaId()).ToList();
             }
         }
-        
-       //public static List<ItemCombo> ListaCajas()
-       // {
-       //     using (var db = new VENDIXEntities())
-       //     {
-       //         var query = from c in db.Caja
-       //                     where c.Estado && c.IndAbierto == false
-       //                     select new ItemCombo
-       //                     {
-       //                         id = c.CajaId,
-       //                         value = c.Denominacion
-       //                     };
-       //         return query.ToList();
-       //     }
-       // }
+
+        public static List<ItemCombo> ListarCajasAbiertas()
+        {
+            var oficinaId = VendixGlobal.GetOficinaId();
+            using (var db = new VENDIXEntities())
+            {
+                var query = from c in db.CajaDiario
+                            where c.Caja.OficinaId == oficinaId && c.IndCierre == false
+                            select new ItemCombo
+                            {
+                                id = c.CajaId,
+                                value = c.Caja.Denominacion + " - " + c.Usuario.Persona.NombreCompleto
+                            };
+                return query.ToList();
+            }
+        }
 
     }
 

@@ -20,6 +20,8 @@ namespace ITB.VENDIX.BE
             this.CuentaxCobrar = new HashSet<CuentaxCobrar>();
             this.PlanPago = new HashSet<PlanPago>();
             this.MovimientoCaja = new HashSet<MovimientoCaja>();
+            this.Aprobacion = new HashSet<Aprobacion>();
+            this.CentralRiesgo = new HashSet<CentralRiesgo>();
         }
     
         public int CreditoId { get; set; }
@@ -59,5 +61,7 @@ namespace ITB.VENDIX.BE
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
         public virtual ICollection<MovimientoCaja> MovimientoCaja { get; set; }
+        public virtual ICollection<Aprobacion> Aprobacion { get; set; }
+        public virtual ICollection<CentralRiesgo> CentralRiesgo { get; set; }
     }
 }

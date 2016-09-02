@@ -47,7 +47,7 @@
                 <ul>
                     <li><a href="#t1-c1">COBRANZAS</a></li>
                     <li><a href="#t1-cd">DESEMBOLSOS</a></li>
-                    <li><a href="#t1-c2">OPERACIONES</a></li>
+                    <li><a href="#t1-c2">EGRESO-INGRESO</a></li>
                     <li><a href="#t1-c3">ARQUEO</a></li>
                 </ul>
             </div>
@@ -87,7 +87,7 @@
                         <div class="header">
                             <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/receipt-invoice.png" />CREDITO  [ <label id="lblCreditoActual"></label> ]</h2>
                         </div>
-                        <div class=" msjCreditoEncontrado" style="display: none; background: #f0f1f4">
+                        <div class="msjCreditoEncontrado" style='display: none; background: #f0f1f4'>
                             <br />
                             <div class="grid_6 center-elements" id="divbtncreditos"></div>
                             <div class="grid_6">
@@ -160,6 +160,13 @@
                         <input id="txtPersonaES" type="search" placeholder="BUSCAR PERSONA POR DNI Y NOMBRES" />
                     </p>
                     <p class="_25 small">
+                        <label>Tipo:</label>
+                        <select id="cboEgresoIngreso">
+                            <option value="0">EGRESO</option>
+                            <option value="1">INGRESO</option>
+                        </select>
+                    </p>
+                    <p class="_25 small">
                         <label>Operación:</label>
                         @Html.DropDownList("cboTipoOperacion", (IEnumerable<SelectListItem>)ViewBag.cboTipoOperacion)
                     </p>
@@ -171,8 +178,9 @@
                         <label>Importe:</label>
                         <input id="txtImporteSalida" type="text" style="text-align: center" />
                     </p>
-                    <p class="_25 small" style="float: right">
-                        <a id="btnPagarSalida" class="button red" style="float: right">Realizar Operación</a>
+                    <p class="_25 small" style="margin-top:20px">
+                        
+                        <a id="btnPagarSalida" class="button red center" >Realizar Operación</a>
                     </p>
                 </div>
 
@@ -397,7 +405,7 @@
 						{ name: 'Descripcion', index: 'Descripcion', width: 260 },
 						{ name: 'ImportePago', index: 'ImportePago', align: 'right', width: 60 },
 						{ name: 'Estado', index: 'Estado', align: 'center', width: 80 },
-						{ name: 'Anular', index: 'Anular', align: 'center', width: 40, formatter: anularEntradaFormatter }
+						{ name: 'Anular', index: 'Anular', align: 'center',hidden:true, width: 40, formatter: anularEntradaFormatter }
 					],
                 caption: "ENTRADAS",
                 pager: $('#grdpEntradas'),
@@ -447,7 +455,7 @@
 						{ name: 'Descripcion', index: 'Descripcion', width: 260 },
 						{ name: 'ImportePago', index: 'ImportePago', align: 'right', width: 60 },
 						{ name: 'Estado', index: 'Estado', align: 'center', width: 80 },
-						{ name: 'Anular', index: 'Anular', align: 'center', width: 40, formatter: anularSalidaFormatter }
+						{ name: 'Anular', index: 'Anular', align: 'center',hidden:true ,width: 40, formatter: anularSalidaFormatter }
 					],
                 caption: "SALIDAS",
                 pager: jQuery('#grdpSalidas'),
@@ -510,6 +518,7 @@
                         url: "@Url.Action("RealizarEntradaSalidaCajaDiario", "Credito")",
                         data: {
                             pPersonaId: $.data(document.body, 'PersonaESid'),
+                            pIndEntrada: $("#cboEgresoIngreso").val(),
                             pTipoOperacionId: $("#cboTipoOperacion").val(),
                             pDescripcion: $("#txtDescripcionSalida").val(),
                             pImporte: $("#txtImporteSalida").val()

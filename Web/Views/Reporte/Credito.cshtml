@@ -1,14 +1,14 @@
 ﻿<div class="grid_4">
-    <form method="post" action="#" class="box validate" >
+    <form method="post" action="#" class="box validate">
         <div class="header">
-           <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Creditos</h2>
+            <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Creditos</h2>
         </div>
-					
+
         <div class="content">
-					
+
             <p class="_100 small" style="padding-top: 10px;">
-                @Html.DropDownList("cboOficina","TODOS")
-            </p>n
+                @Html.DropDownList("cboOficina", "TODOS")
+            </p>
             <p class="_100 small">
                 <select id="cboEstadoCredito">
                     <option value="CRE">SOLICITUD CREDITO</option>
@@ -18,19 +18,19 @@
                     <option value="REP">REPROGRAMADO</option>
                     <option value="ANU">ANULADO</option>
                 </select>
-            </p>			
+            </p>
             <p class="_100 small">
                 <label for="txtFechaIni" class="inline">Fecha Inicial:</label>
                 <input data-error-type="inline" type="date" class="required maskDate" name="txtFechaIni" id="txtFechaIni" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day + 1).ToShortDateString()" />
             </p>
-            
+
             <p class="_100 small">
                 <label for="txtFechaFin" class="inline">Fecha Final:</label>
                 <input data-error-type="inline" type="date" class="required maskDate" name="txtFechaFin" id="txtFechaFin" placeholder="DD/MM/YYYY" value="@DateTime.Now.AddDays(- DateTime.Now.Day +1).AddMonths(1).AddDays(-1).ToShortDateString()" />
             </p>
-            
+
         </div>
-        <br/>
+        <br />
         <div class="actions">
             <div class="right">
                 <input type="submit" value="Reporte Créditos" id="btnRptCredito" />
@@ -38,7 +38,7 @@
         </div>
         <div class="actions">
             <div class="right">
-                <input type="checkbox" name="chkTodo" id="chkTodo" /><label for="chkTodo">TODOS </label>  
+                <input type="checkbox" name="chkTodo" id="chkTodo" /><label for="chkTodo">TODOS </label>
                 <input type="submit" value="Reporte Rentabilidad" id="btnRptRentabilidad" />
             </div>
         </div>
@@ -46,22 +46,22 @@
 </div>
 
 <div class="grid_4">
-    <form method="post" action="#" class="box validate" >
+    <form method="post" action="#" class="box validate">
         <div class="header">
-           <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Morosidad</h2>
+            <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Morosidad</h2>
         </div>
-					
+
         <div class="content">
-					
+
             <p class="_100 small" style="padding-top: 10px;">
-                @Html.DropDownList("cboOficina1","TODOS")
+                @Html.DropDownList("cboOficina1", "TODOS")
             </p>
-			
+
             <p class="_100 small">
                 <label for="txtHastaFecha" class="inline">Hasta la fecha:</label>
                 <input data-error-type="inline" type="date" class="required maskDate" name="txtHastaFecha" id="txtHastaFecha" placeholder="DD/MM/YYYY" value="@DateTime.Now.ToShortDateString()" />
             </p>
-            
+
             <p class="_100 small">
                 <label for="txtDiasAtrazoIni" class="inline">Dias de Atrazo INICIO:</label>
                 <input data-error-type="inline" type="number" class="required" name="txtDiasAtrazoIni" id="txtDiasAtrazoIni" value="1" />
@@ -70,9 +70,9 @@
                 <label for="txtDiasAtrazoFin" class="inline">Dias de Atrazo FINAL:</label>
                 <input data-error-type="inline" type="number" class="required" name="txtDiasAtrazoFin" id="txtDiasAtrazoFin" value="9999" />
             </p>
-            
+
         </div>
-        <br/>
+        <br />
         <div class="actions">
             <div class="right">
                 <input type="submit" value="Créditos con morosidad" id="btnRptCreditoMora" />
@@ -80,10 +80,79 @@
         </div>
     </form>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
 
-        $("#btnRptCredito").click(function() {
+<div class="grid_4">
+    <form method="post" action="#" class="box validate">
+        <div class="header">
+            <h2><img class="icon" src="~/img/icons/packs/fugue/16x16/sticky-note.png">Reporte Central de Riesgos</h2>
+        </div>
+
+        <div class="content">
+
+            <p class="_100 small" style="padding-top: 10px;">
+                @Html.DropDownList("cboOficina2", "TODOS")
+            </p>
+
+            <p class="_100 small">
+                <select id="cboAnio">
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </p>
+            <p class="_100 small">
+                <select id="cboMes">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </p>
+
+        </div>
+        <br />
+        <div class="actions">
+            <div class="right">
+                <input type="submit" value="Reporte Central de Riesgo" id="btnCentralRiesgo" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cboAnio").val(@DateTime.Now.Year).trigger("liszt:updated");
+        $("#cboMes").val(@DateTime.Now.AddMonths(-1).Month).trigger("liszt:updated");
+
+        $('#btnCentralRiesgo').click(function () {
+            var oficina = $('#cboOficina2').val();
+            if (oficina.length == 0) oficina = null;
+
+            window.location.href = '@Url.Action("ReporteCentrarRiegoTXT", "Reporte")'
+                + '?pOficinaid=' + oficina
+                + '&pAnio=' + $("#cboAnio").val()
+                + '&pMes=' + $("#cboMes").val();
+            return false;
+        });
+
+        $("#btnRptCredito").click(function () {
             event.preventDefault();
             var oficina = $('#cboOficina').val();
             if (oficina.length == 0) oficina = null;
@@ -93,7 +162,7 @@
                 + '&pEstadoCredito=' + $("#cboEstadoCredito").val()
                 + '&pFechaIni=' + $('#txtFechaIni').val()
                 + '&pFechaFin=' + $('#txtFechaFin').val();
-                
+
             //alert(ruta );
             window.open(ruta);
             return false;
@@ -108,7 +177,7 @@
                 + '&pFechaFin=' + $('#txtFechaFin').val()
                 + '&indTodos=' + $("#chkTodo").prop('checked')
                 + '&pOficinaid=' + oficina;
-             //alert(ruta );
+            //alert(ruta );
             window.open(ruta);
             return false;
         });

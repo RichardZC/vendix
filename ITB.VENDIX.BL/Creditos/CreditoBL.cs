@@ -65,7 +65,7 @@ namespace ITB.VENDIX.BL
                           };
                 var data = qry.First();
                 data.Desembolso = data.FechaDesembolso.HasValue ? data.FechaDesembolso.Value.ToShortDateString() : string.Empty;
-                data.Aprobacion = data.FechaAprobacion.HasValue ? data.FechaAprobacion.Value.ToShortDateString() : string.Empty;
+                data.FAprobacion = data.FechaAprobacion.HasValue ? data.FechaAprobacion.Value.ToShortDateString() : string.Empty;
                 data.Vencimiento = data.FechaVencimiento.ToShortDateString();
                 if (data.Estado == "DES")
                     data.SaldoCancelacion = ObtenerSaldoCancelacion(pCreditoId);
@@ -302,7 +302,7 @@ namespace ITB.VENDIX.BL
     public class DatoCredito : Credito
     {
         public string ProductoCre { get; set; }
-        public string Aprobacion { get; set; }
+        public string FAprobacion { get; set; }
         public string Desembolso { get; set; }
         public string Vencimiento { get; set; }
         public string Analista { get; set; }

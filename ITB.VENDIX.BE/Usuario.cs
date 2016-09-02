@@ -29,6 +29,7 @@ namespace ITB.VENDIX.BE
             this.UsuarioRol = new HashSet<UsuarioRol>();
             this.OrdenVenta = new HashSet<OrdenVenta>();
             this.OrdenVenta1 = new HashSet<OrdenVenta>();
+            this.Aprobacion = new HashSet<Aprobacion>();
         }
     
         public int UsuarioId { get; set; }
@@ -51,5 +52,6 @@ namespace ITB.VENDIX.BE
         public virtual ICollection<UsuarioRol> UsuarioRol { get; set; }
         public virtual ICollection<OrdenVenta> OrdenVenta { get; set; }
         public virtual ICollection<OrdenVenta> OrdenVenta1 { get; set; }
+        public virtual ICollection<Aprobacion> Aprobacion { get; set; }
     }
 }

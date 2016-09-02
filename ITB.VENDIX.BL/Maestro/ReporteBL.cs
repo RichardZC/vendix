@@ -77,6 +77,14 @@ namespace ITB.VENDIX.BL
                 return db.usp_RptRentabilidadVenta(pFechaIni, pFechaFin, indContado, indCredito, pOficinaId).ToList();
             }
         }
+        public static List<usp_CentralRiesgoGenerar_Result> ListarReporteCentralRiesgo(int? pOficinaId, int pAnio, int pMes )
+        {
+            using (var db = new VENDIXEntities())
+            {
+                return db.usp_CentralRiesgoGenerar(pOficinaId, pAnio, pMes).ToList();
+            }
+        }
+
     }
 
     public class ReporteStockAnulado{

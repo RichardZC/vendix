@@ -71,6 +71,11 @@ namespace ITB.VENDIX.BE
         public DbSet<TarjetaPunto> TarjetaPunto { get; set; }
         public DbSet<TarjetaPuntoDet> TarjetaPuntoDet { get; set; }
         public DbSet<PlanPagoLibre> PlanPagoLibre { get; set; }
+        public DbSet<Aprobacion> Aprobacion { get; set; }
+        public DbSet<CentralRiesgo> CentralRiesgo { get; set; }
+        public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Distrito> Distrito { get; set; }
+        public DbSet<Provincia> Provincia { get; set; }
     
         public virtual int usp_CrearMovimientoDet(Nullable<int> movimientoId, Nullable<int> movimientoDetId, Nullable<int> articuloId, Nullable<bool> indAutogenerar, string listaSerie, Nullable<int> cantidad, Nullable<bool> indCorrelativo, Nullable<decimal> precioUnitario, Nullable<decimal> descuento, Nullable<int> medida)
         {
@@ -318,35 +323,6 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("IndCancelacion", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CuotasPendientes_Result>("usp_CuotasPendientes", creditoIdParameter, fechaCalculoParameter, indCancelacionParameter);
-        }
-    
-        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
-        {
-            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
-                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
-                new ObjectParameter("CajaDiarioId", typeof(int));
-    
-            var personaIdParameter = personaId.HasValue ?
-                new ObjectParameter("PersonaId", personaId) :
-                new ObjectParameter("PersonaId", typeof(int));
-    
-            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
-                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
-                new ObjectParameter("TipoOperacionId", typeof(int));
-    
-            var importeParameter = importe.HasValue ?
-                new ObjectParameter("Importe", importe) :
-                new ObjectParameter("Importe", typeof(decimal));
-    
-            var decripcionParameter = decripcion != null ?
-                new ObjectParameter("Decripcion", decripcion) :
-                new ObjectParameter("Decripcion", typeof(string));
-    
-            var usuarioIdParameter = usuarioId.HasValue ?
-                new ObjectParameter("UsuarioId", usuarioId) :
-                new ObjectParameter("UsuarioId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
         }
     
         public virtual ObjectResult<usp_EstadoPlanPago_Result> usp_EstadoPlanPago(Nullable<int> creditoId)
@@ -729,6 +705,56 @@ namespace ITB.VENDIX.BE
                 new ObjectParameter("FechaDesFin", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptCredito_Result>("usp_RptCredito", oficinaIdParameter, estadoParameter, fechaDesIniParameter, fechaDesFinParameter);
+        }
+    
+        public virtual ObjectResult<usp_CentralRiesgoGenerar_Result> usp_CentralRiesgoGenerar(Nullable<int> oficinaId, Nullable<int> anio, Nullable<int> mes)
+        {
+            var oficinaIdParameter = oficinaId.HasValue ?
+                new ObjectParameter("OficinaId", oficinaId) :
+                new ObjectParameter("OficinaId", typeof(int));
+    
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var mesParameter = mes.HasValue ?
+                new ObjectParameter("Mes", mes) :
+                new ObjectParameter("Mes", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_CentralRiesgoGenerar_Result>("usp_CentralRiesgoGenerar", oficinaIdParameter, anioParameter, mesParameter);
+        }
+    
+        public virtual int usp_EntradaSalidaCajaDiario(Nullable<int> cajaDiarioId, Nullable<int> personaId, Nullable<bool> indEntrada, Nullable<int> tipoOperacionId, Nullable<decimal> importe, string decripcion, Nullable<int> usuarioId)
+        {
+            var cajaDiarioIdParameter = cajaDiarioId.HasValue ?
+                new ObjectParameter("CajaDiarioId", cajaDiarioId) :
+                new ObjectParameter("CajaDiarioId", typeof(int));
+    
+            var personaIdParameter = personaId.HasValue ?
+                new ObjectParameter("PersonaId", personaId) :
+                new ObjectParameter("PersonaId", typeof(int));
+    
+            var indEntradaParameter = indEntrada.HasValue ?
+                new ObjectParameter("IndEntrada", indEntrada) :
+                new ObjectParameter("IndEntrada", typeof(bool));
+    
+            var tipoOperacionIdParameter = tipoOperacionId.HasValue ?
+                new ObjectParameter("TipoOperacionId", tipoOperacionId) :
+                new ObjectParameter("TipoOperacionId", typeof(int));
+    
+            var importeParameter = importe.HasValue ?
+                new ObjectParameter("Importe", importe) :
+                new ObjectParameter("Importe", typeof(decimal));
+    
+            var decripcionParameter = decripcion != null ?
+                new ObjectParameter("Decripcion", decripcion) :
+                new ObjectParameter("Decripcion", typeof(string));
+    
+            var usuarioIdParameter = usuarioId.HasValue ?
+                new ObjectParameter("UsuarioId", usuarioId) :
+                new ObjectParameter("UsuarioId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_EntradaSalidaCajaDiario", cajaDiarioIdParameter, personaIdParameter, indEntradaParameter, tipoOperacionIdParameter, importeParameter, decripcionParameter, usuarioIdParameter);
         }
     }
 }
