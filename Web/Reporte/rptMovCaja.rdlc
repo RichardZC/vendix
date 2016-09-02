@@ -12,38 +12,14 @@
                 <Value>Usuario: </Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>=Parameters!User.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>REGRESE PRONTO!!!</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -54,9 +30,10 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>--------------------------------------</Value>
+                <Value>REGRESE PRONTO!!!</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -66,10 +43,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>User</rd:DefaultName>
-        <Top>8.90384cm</Top>
-        <Left>0.00002cm</Left>
-        <Height>1.79063cm</Height>
-        <Width>8.02977cm</Width>
+        <Top>8.58634cm</Top>
+        <Left>1.90502cm</Left>
+        <Height>0.71113cm</Height>
+        <Width>6.01895cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -90,19 +67,21 @@
                 <Value>=Parameters!MovimientoCajaId.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>-AYAC-</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>=Parameters!FechaReg.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -112,10 +91,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>1.58806cm</Top>
-        <Left>0.00001cm</Left>
+        <Top>3.81056cm</Top>
+        <Left>1.90501cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.02978cm</Width>
+        <Width>6.01895cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -137,12 +116,14 @@
                 <Value>=Parameters!PersonaId.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>-</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                   <Format>00000000</Format>
                 </Style>
               </TextRun>
@@ -150,6 +131,7 @@
                 <Value>=Parameters!Cliente.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -161,6 +143,7 @@
                 <Value EvaluationMode="Constant">=======================================</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -168,10 +151,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>PersonaId</rd:DefaultName>
-        <Top>2.36444cm</Top>
-        <Left>0.00001cm</Left>
-        <Height>1.21736cm</Height>
-        <Width>8.02979cm</Width>
+        <Top>4.58694cm</Top>
+        <Left>1.90501cm</Left>
+        <Height>0.73053cm</Height>
+        <Width>6.01896cm</Width>
         <ZIndex>2</ZIndex>
         <Visibility>
           <Hidden>=Parameters!PersonaId.Value=0</Hidden>
@@ -196,6 +179,7 @@
                 <Value>=Parameters!Producto.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -203,10 +187,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Producto</rd:DefaultName>
-        <Top>3.84183cm</Top>
-        <Left>0.00001cm</Left>
+        <Top>5.42933cm</Top>
+        <Left>1.90501cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.02978cm</Width>
+        <Width>6.01895cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -225,28 +209,17 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value EvaluationMode="Constant">=======================================</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Left</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
                 <Value>Total: S/.     </Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>=Parameters!ImportePago.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                   <Format>#,0.00;(#,0.00)</Format>
                 </Style>
               </TextRun>
@@ -257,15 +230,25 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ImportePago</rd:DefaultName>
-        <Top>7.61738cm</Top>
-        <Left>0.00002cm</Left>
-        <Height>0.96856cm</Height>
-        <Width>8.02977cm</Width>
+        <Top>7.93488cm</Top>
+        <Left>1.90502cm</Left>
+        <Height>0.50289cm</Height>
+        <Width>6.01895cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
+          <TopBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </TopBorder>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -282,6 +265,7 @@
                 <Value>=Parameters!ImportePago.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                   <Format>#,0.00;(#,0.00)</Format>
                 </Style>
               </TextRun>
@@ -292,10 +276,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ImportePago1</rd:DefaultName>
-        <Top>6.84099cm</Top>
-        <Left>5.21229cm</Left>
+        <Top>7.15849cm</Top>
+        <Left>5.79085cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.8175cm</Width>
+        <Width>2.13312cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -317,6 +301,7 @@
                 <Value>=Parameters!Articulo.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -324,10 +309,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Articulo</rd:DefaultName>
-        <Top>4.82989cm</Top>
-        <Left>0.00002cm</Left>
-        <Height>1.83471cm</Height>
-        <Width>8.02977cm</Width>
+        <Top>6.09989cm</Top>
+        <Left>1.90502cm</Left>
+        <Height>1.03038cm</Height>
+        <Width>6.01894cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -349,6 +334,7 @@
                 <Value>=Parameters!Concepto.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -358,10 +344,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Concepto</rd:DefaultName>
-        <Top>6.84099cm</Top>
-        <Left>0.00002cm</Left>
+        <Top>7.15849cm</Top>
+        <Left>1.90502cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.14172cm</Width>
+        <Width>3.85055cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -383,38 +369,14 @@
                 <Value>Usuario: </Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>=Parameters!User.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>REGRESE PRONTO!!!</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -425,9 +387,10 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>--------------------------------------</Value>
+                <Value>REGRESE PRONTO!!!</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -437,134 +400,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>User</rd:DefaultName>
-        <Top>8.90384cm</Top>
-        <Left>13.50181cm</Left>
-        <Height>1.79063cm</Height>
-        <Width>8.02977cm</Width>
+        <Top>8.58634cm</Top>
+        <Left>12.84434cm</Left>
+        <Height>0.71113cm</Height>
+        <Width>6.01895cm</Width>
         <ZIndex>8</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="ImportePago2">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value EvaluationMode="Constant">=======================================</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Left</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Total: S/.     </Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Value>=Parameters!ImportePago.Value</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <Format>#,0.00;(#,0.00)</Format>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>ImportePago</rd:DefaultName>
-        <Top>7.61738cm</Top>
-        <Left>13.50181cm</Left>
-        <Height>0.96856cm</Height>
-        <Width>8.02977cm</Width>
-        <ZIndex>9</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="ImportePago3">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Parameters!ImportePago.Value</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                  <Format>#,0.00;(#,0.00)</Format>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>ImportePago1</rd:DefaultName>
-        <Top>6.84099cm</Top>
-        <Left>18.71408cm</Left>
-        <Height>0.6cm</Height>
-        <Width>2.8175cm</Width>
-        <ZIndex>10</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Concepto2">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Parameters!Concepto.Value</Value>
-                <Style>
-                  <FontFamily>consolas</FontFamily>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Concepto</rd:DefaultName>
-        <Top>6.84099cm</Top>
-        <Left>13.50181cm</Left>
-        <Height>0.6cm</Height>
-        <Width>5.14172cm</Width>
-        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -585,19 +425,21 @@
                 <Value>=Parameters!MovimientoCajaId.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>-AYAC-</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>=Parameters!FechaReg.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
-                  <FontSize>9pt</FontSize>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -607,11 +449,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>1.58806cm</Top>
-        <Left>13.50179cm</Left>
+        <Top>3.81056cm</Top>
+        <Left>12.84433cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.02978cm</Width>
-        <ZIndex>12</ZIndex>
+        <Width>6.01895cm</Width>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -632,12 +474,14 @@
                 <Value>=Parameters!PersonaId.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
               <TextRun>
                 <Value>-</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                   <Format>00000000</Format>
                 </Style>
               </TextRun>
@@ -645,6 +489,7 @@
                 <Value>=Parameters!Cliente.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -656,6 +501,7 @@
                 <Value EvaluationMode="Constant">=======================================</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -663,11 +509,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>PersonaId</rd:DefaultName>
-        <Top>2.36444cm</Top>
-        <Left>13.50179cm</Left>
-        <Height>1.21736cm</Height>
-        <Width>8.02979cm</Width>
-        <ZIndex>13</ZIndex>
+        <Top>4.58694cm</Top>
+        <Left>12.84433cm</Left>
+        <Height>0.73053cm</Height>
+        <Width>6.01896cm</Width>
+        <ZIndex>10</ZIndex>
         <Visibility>
           <Hidden>=Parameters!PersonaId.Value = 0</Hidden>
         </Visibility>
@@ -691,6 +537,7 @@
                 <Value>=Parameters!Producto.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -698,11 +545,100 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Producto</rd:DefaultName>
-        <Top>3.84183cm</Top>
-        <Left>13.50179cm</Left>
+        <Top>5.42933cm</Top>
+        <Left>12.84433cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.02978cm</Width>
-        <ZIndex>14</ZIndex>
+        <Width>6.01895cm</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="ImportePago2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Total: S/.     </Value>
+                <Style>
+                  <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Parameters!ImportePago.Value</Value>
+                <Style>
+                  <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>ImportePago</rd:DefaultName>
+        <Top>7.93488cm</Top>
+        <Left>12.84434cm</Left>
+        <Height>0.50289cm</Height>
+        <Width>6.01895cm</Width>
+        <ZIndex>12</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <TopBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </TopBorder>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="ImportePago3">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!ImportePago.Value</Value>
+                <Style>
+                  <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>ImportePago1</rd:DefaultName>
+        <Top>7.15849cm</Top>
+        <Left>16.73017cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.13312cm</Width>
+        <ZIndex>13</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -723,6 +659,7 @@
                 <Value>=Parameters!Articulo.Value</Value>
                 <Style>
                   <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -730,10 +667,45 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Articulo</rd:DefaultName>
-        <Top>4.82989cm</Top>
-        <Left>13.5018cm</Left>
-        <Height>1.83471cm</Height>
-        <Width>8.02977cm</Width>
+        <Top>6.09989cm</Top>
+        <Left>12.84434cm</Left>
+        <Height>1.03038cm</Height>
+        <Width>6.01894cm</Width>
+        <ZIndex>14</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Concepto2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Concepto.Value</Value>
+                <Style>
+                  <FontFamily>consolas</FontFamily>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Concepto</rd:DefaultName>
+        <Top>7.15849cm</Top>
+        <Left>12.84434cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.85055cm</Width>
         <ZIndex>15</ZIndex>
         <Style>
           <Border>
@@ -746,10 +718,10 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>4.21042in</Height>
+    <Height>3.71875in</Height>
     <Style />
   </Body>
-  <Width>8.477in</Width>
+  <Width>8.5in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>

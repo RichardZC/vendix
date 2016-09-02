@@ -541,7 +541,7 @@ namespace VendixWeb.Controllers
                     return "<DeviceInfo>" +
                            "  <OutputFormat>[TipoReporte]</OutputFormat>" +
                            "  <PageWidth>8.5in</PageWidth>" +
-                           "  <PageHeight>5.0in</PageHeight>" +
+                           "  <PageHeight>11in</PageHeight>" +
                            "  <MarginTop>0in</MarginTop>" +
                            "  <MarginLeft>0in</MarginLeft>" +
                            "  <MarginRight>0in</MarginRight>" +
