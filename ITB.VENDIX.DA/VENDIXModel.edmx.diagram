@@ -5,52 +5,60 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4c1a0e73ecb349ae803f2c2faf96ac6e" Name="Diagram1">
-        <EntityTypeShape EntityType="VENDIXModel.Almacen" Width="1.5" PointX="7.5" PointY="18.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Articulo" Width="1.5" PointX="7.5" PointY="4.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Marca" Width="1.5" PointX="3" PointY="5" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Modelo" Width="1.5" PointX="5.25" PointY="5" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Movimiento" Width="1.5" PointX="9.75" PointY="18.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.MovimientoDet" Width="1.5" PointX="12" PointY="18.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.MovimientoDoc" Width="1.5" PointX="3" PointY="9.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.SerieArticulo" Width="1.5" PointX="14.25" PointY="18.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TipoArticulo" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TipoMovimiento" Width="1.5" PointX="7.5" PointY="20.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Boveda" Width="1.5" PointX="7.5" PointY="16.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.BovedaMov" Width="1.5" PointX="9.75" PointY="16" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.BovedaMovTemp" Width="1.5" PointX="9.75" PointY="17.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Caja" Width="1.5" PointX="7.5" PointY="13.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.CajaDiario" Width="1.5" PointX="9.75" PointY="14.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Cargo" Width="1.5" PointX="9.75" PointY="12" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.CuentaxCobrar" Width="1.5" PointX="12" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.GastosAdm" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.MovimientoCaja" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.MovimientoCajaAnu" Width="1.5" PointX="12" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.PlanPago" Width="1.5" PointX="13" PointY="12.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Producto" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Cliente" Width="1.5" PointX="3" PointY="7.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Menu" Width="1.5" PointX="8.25" PointY="6.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Ocupacion" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Oficina" Width="1.5" PointX="5.25" PointY="13.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Persona" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Rol" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.RolMenu" Width="1.5" PointX="10.5" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TipoDocumento" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TipoOperacion" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Usuario" Width="1.5" PointX="3" PointY="12.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.UsuarioOficina" Width="1.5" PointX="7.5" PointY="15.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.UsuarioRol" Width="1.5" PointX="10.5" PointY="13.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.ValorTabla" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.ListaPrecio" Width="1.5" PointX="9.75" PointY="4.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.OrdenVenta" Width="1.5" PointX="7.5" PointY="9.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.OrdenVentaDet" Width="1.5" PointX="9.75" PointY="9.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.OrdenVentaDetSerie" Width="1.5" PointX="16.5" PointY="13.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TarjetaPunto" Width="1.5" PointX="3" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.TarjetaPuntoDet" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.PlanPagoLibre" Width="1.5" PointX="15.25" PointY="11.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="VENDIXModel.Almacen" Width="1.5" PointX="7.5" PointY="73.75" />
+        <EntityTypeShape EntityType="VENDIXModel.Articulo" Width="1.5" PointX="15.5" PointY="37.5" />
+        <EntityTypeShape EntityType="VENDIXModel.Marca" Width="1.5" PointX="11" PointY="40.25" />
+        <EntityTypeShape EntityType="VENDIXModel.Modelo" Width="1.5" PointX="13.25" PointY="40.125" />
+        <EntityTypeShape EntityType="VENDIXModel.Movimiento" Width="1.5" PointX="9.75" PointY="74.5" />
+        <EntityTypeShape EntityType="VENDIXModel.MovimientoDet" Width="1.5" PointX="12" PointY="74.75" />
+        <EntityTypeShape EntityType="VENDIXModel.MovimientoDoc" Width="1.5" PointX="3" PointY="37" />
+        <EntityTypeShape EntityType="VENDIXModel.SerieArticulo" Width="1.5" PointX="14.25" PointY="74.375" />
+        <EntityTypeShape EntityType="VENDIXModel.TipoArticulo" Width="1.5" PointX="13.25" PointY="37" />
+        <EntityTypeShape EntityType="VENDIXModel.TipoMovimiento" Width="1.5" PointX="7.5" PointY="78.25" />
+        <EntityTypeShape EntityType="VENDIXModel.Transferencia" Width="1.5" PointX="12.75" PointY="63.375" />
+        <EntityTypeShape EntityType="VENDIXModel.Aprobacion" Width="1.5" PointX="12.75" PointY="51" />
+        <EntityTypeShape EntityType="VENDIXModel.Boveda" Width="1.5" PointX="7.5" PointY="67.625" />
+        <EntityTypeShape EntityType="VENDIXModel.BovedaMov" Width="1.5" PointX="9.75" PointY="69.875" />
+        <EntityTypeShape EntityType="VENDIXModel.BovedaMovTemp" Width="1.5" PointX="9.75" PointY="65.625" />
+        <EntityTypeShape EntityType="VENDIXModel.Caja" Width="1.5" PointX="7.5" PointY="55.125" />
+        <EntityTypeShape EntityType="VENDIXModel.CajaDiario" Width="1.5" PointX="12.75" PointY="58.75" />
+        <EntityTypeShape EntityType="VENDIXModel.Cargo" Width="1.5" PointX="12.75" PointY="54.5" />
+        <EntityTypeShape EntityType="VENDIXModel.CentralRiesgo" Width="1.5" PointX="9.75" PointY="44.375" />
+        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="7.5" PointY="44.5" />
+        <EntityTypeShape EntityType="VENDIXModel.CuentaxCobrar" Width="1.5" PointX="15" PointY="47.125" />
+        <EntityTypeShape EntityType="VENDIXModel.GastosAdm" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="VENDIXModel.MovimientoCaja" Width="1.5" PointX="12.75" PointY="44" />
+        <EntityTypeShape EntityType="VENDIXModel.MovimientoCajaAnu" Width="1.5" PointX="15" PointY="43.625" />
+        <EntityTypeShape EntityType="VENDIXModel.PlanPago" Width="1.5" PointX="15" PointY="51" />
+        <EntityTypeShape EntityType="VENDIXModel.Producto" Width="1.5" PointX="5.25" PointY="47.375" />
+        <EntityTypeShape EntityType="VENDIXModel.Cliente" Width="1.5" PointX="3" PointY="29.625" />
+        <EntityTypeShape EntityType="VENDIXModel.Departamento" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="VENDIXModel.Distrito" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="VENDIXModel.Menu" Width="1.5" PointX="8.25" PointY="81.625" />
+        <EntityTypeShape EntityType="VENDIXModel.Ocupacion" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="VENDIXModel.Oficina" Width="1.5" PointX="5.25" PointY="57.375" />
+        <EntityTypeShape EntityType="VENDIXModel.Persona" Width="1.5" PointX="0.75" PointY="35.875" />
+        <EntityTypeShape EntityType="VENDIXModel.Provincia" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="VENDIXModel.Rol" Width="1.5" PointX="8.25" PointY="60" />
+        <EntityTypeShape EntityType="VENDIXModel.RolMenu" Width="1.5" PointX="10.5" PointY="62" />
+        <EntityTypeShape EntityType="VENDIXModel.TipoDocumento" Width="1.5" PointX="0.75" PointY="31.75" />
+        <EntityTypeShape EntityType="VENDIXModel.TipoOperacion" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="VENDIXModel.Usuario" Width="1.5" PointX="3" PointY="52.625" />
+        <EntityTypeShape EntityType="VENDIXModel.UsuarioOficina" Width="1.5" PointX="10.5" PointY="55.875" />
+        <EntityTypeShape EntityType="VENDIXModel.UsuarioRol" Width="1.5" PointX="10.5" PointY="58.75" />
+        <EntityTypeShape EntityType="VENDIXModel.ValorTabla" Width="1.5" PointX="2.75" PointY="6.75" />
+        <EntityTypeShape EntityType="VENDIXModel.ListaPrecio" Width="1.5" PointX="17.75" PointY="38.375" />
+        <EntityTypeShape EntityType="VENDIXModel.OrdenVenta" Width="1.5" PointX="10.5" PointY="48" />
+        <EntityTypeShape EntityType="VENDIXModel.OrdenVentaDet" Width="1.5" PointX="17.75" PointY="49" />
+        <EntityTypeShape EntityType="VENDIXModel.OrdenVentaDetSerie" Width="1.5" PointX="20" PointY="62.375" />
+        <EntityTypeShape EntityType="VENDIXModel.TarjetaPunto" Width="1.5" PointX="3" PointY="33.25" />
+        <EntityTypeShape EntityType="VENDIXModel.TarjetaPuntoDet" Width="1.5" PointX="5.25" PointY="33.25" />
+        <EntityTypeShape EntityType="VENDIXModel.PlanPagoLibre" Width="1.5" PointX="20.25" PointY="49.375" />
         <AssociationConnector Association="VENDIXModel.FK_ALMACEN_OficinaId" />
         <AssociationConnector Association="VENDIXModel.FK_ENTRADASALIDA_AlmacenId" />
         <AssociationConnector Association="VENDIXModel.FK_SERIEARTICULO_AlmacenId" />
+        <AssociationConnector Association="VENDIXModel.FK_Transferencia_ALMACEN" />
+        <AssociationConnector Association="VENDIXModel.FK_Transferencia_ALMACEN1" />
         <AssociationConnector Association="VENDIXModel.FK_ARTICULO_ModeloId" />
         <AssociationConnector Association="VENDIXModel.FK_ARTICULO_TipoArticuloId" />
         <AssociationConnector Association="VENDIXModel.FK_DETENTRADASALIDA_ArticuloId" />
@@ -66,6 +74,9 @@
         <AssociationConnector Association="VENDIXModel.FK_DOCENTRADASALIDA_RemitenteId" />
         <AssociationConnector Association="VENDIXModel.FK_DOCENTRADASALIDA_TipoDocumentoId" />
         <AssociationConnector Association="VENDIXModel.FK__OrdenVent__Serie__09952E60" />
+        <AssociationConnector Association="VENDIXModel.FK_Transferencia_Usuario" />
+        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" />
+        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" />
         <AssociationConnector Association="VENDIXModel.FK__Boveda__OficinaI__046664EF" />
         <AssociationConnector Association="VENDIXModel.FK_BovedaMovTemp_Boveda" />
         <AssociationConnector Association="VENDIXModel.FK_BovedaMovTemp_Boveda1" />
@@ -78,6 +89,7 @@
         <AssociationConnector Association="VENDIXModel.FK__Movimient__CajaD__149CCCB8" />
         <AssociationConnector Association="VENDIXModel.FK__Cargo__CreditoId__109731AA" />
         <AssociationConnector Association="VENDIXModel.FK_Cargo_Usuario" />
+        <AssociationConnector Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" />
         <AssociationConnector Association="VENDIXModel.FK__Credito__OrdenVe__3E5DFC5A" />
         <AssociationConnector Association="VENDIXModel.FK__CuentaxCo__Credi__3D69D821" />
         <AssociationConnector Association="VENDIXModel.FK__PlanPago__Credit__75592B89" />
@@ -97,6 +109,8 @@
         <AssociationConnector Association="VENDIXModel.FK__PlanPagoL__PlanP__74EF1735" />
         <AssociationConnector Association="VENDIXModel.FK_PlanPago_Usuario" />
         <AssociationConnector Association="VENDIXModel.FK_Cliente_Persona" />
+        <AssociationConnector Association="VENDIXModel.FK__Provincia__idDep__002BBFB7" />
+        <AssociationConnector Association="VENDIXModel.FK__Distrito__idProv__05E4990D" />
         <AssociationConnector Association="VENDIXModel.FK__RolMenu__MenuId__6BCFC14F" />
         <AssociationConnector Association="VENDIXModel.FK__UsuarioOf__Ofici__768259EC" />
         <AssociationConnector Association="VENDIXModel.FK__UsuarioRo__Ofici__764D4FC2" />
@@ -115,16 +129,7 @@
         <AssociationConnector Association="VENDIXModel.FK_DETORDENVENTA_OrdenVentaId" />
         <AssociationConnector Association="VENDIXModel.FK__OrdenVent__Orden__08A10A27" />
         <AssociationConnector Association="VENDIXModel.FK__TarjetaPu__Tarje__16500B00" />
-        <EntityTypeShape EntityType="VENDIXModel.Aprobacion" Width="1.5" PointX="12.75" PointY="14" />
-        <EntityTypeShape EntityType="VENDIXModel.CentralRiesgo" Width="1.5" PointX="9.75" PointY="20.375" />
-        <EntityTypeShape EntityType="VENDIXModel.Departamento" Width="1.5" PointX="7.375" PointY="1.125" />
-        <EntityTypeShape EntityType="VENDIXModel.Distrito" Width="1.5" PointX="11.875" PointY="1" />
-        <EntityTypeShape EntityType="VENDIXModel.Provincia" Width="1.5" PointX="9.625" PointY="0.875" />
-        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" />
-        <AssociationConnector Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" />
-        <AssociationConnector Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" />
-        <AssociationConnector Association="VENDIXModel.FK__Provincia__idDep__002BBFB7" />
-        <AssociationConnector Association="VENDIXModel.FK__Distrito__idProv__05E4990D" />
+        <AssociationConnector Association="VENDIXModel.TransferenciaSerie" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

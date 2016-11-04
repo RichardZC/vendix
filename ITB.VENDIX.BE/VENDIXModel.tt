@@ -2,7 +2,7 @@
 <#@ include file="EF.Utility.CS.ttinclude"#><#@ 
  output extension=".cs"#><#
       	 		 	
-							 	 
+				 	 
 		 
 
 const string inputFile = @"..\ITB.VENDIX.DA\VENDIXModel.edmx";

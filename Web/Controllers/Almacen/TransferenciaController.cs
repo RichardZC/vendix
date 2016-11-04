@@ -17,7 +17,7 @@ namespace VendixWeb.Controllers.Almacen
             var lstalmacen = AlmacenBL.Listar(x => x.Estado && x.OficinaId == oficinaId);
             var lstTipoMov = TipoMovimientoBL.Listar(x => x.Estado && x.IndEntrada);
 
-            ViewBag.cboAlmacen = new SelectList(AlmacenBL.Listar(x => x.Estado && x.OficinaId != oficinaId), "AlmacenId", "Denominacion");
+            ViewBag.cboAlmacen = new SelectList(lstalmacen, "AlmacenId", "Denominacion");
             ViewBag.cboAlmacen2 = new SelectList(lstalmacen, "AlmacenId", "Denominacion");
             ViewBag.cboDestino = new SelectList(AlmacenBL.Listar(x => x.Estado && x.OficinaId != oficinaId), "AlmacenId", "Denominacion");
             ViewBag.cboTipoMovimiento2 = new SelectList(lstTipoMov, "TipoMovimientoId", "Denominacion");
@@ -56,7 +56,8 @@ namespace VendixWeb.Controllers.Almacen
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CrearTransferencia(int pAlmacenId) {
+        public ActionResult CrearTransferencia(int pAlmacenId)
+        {
             var item = new Movimiento
             {
                 //MovimientoId = pMovimientoId,
@@ -102,9 +103,16 @@ namespace VendixWeb.Controllers.Almacen
             return Json(pMovimientoId, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult AgregarOrdenDetalle(string pNumeroSerie, int pMovimientoId)
+        {
+            
+            
+            return Json(MovimientoDetBL.AgregarDetalleTranferencia(pNumeroSerie, pMovimientoId), JsonRequestBehavior.AllowGet);
+        }
+
+
+
     }
-
-
 
 
 

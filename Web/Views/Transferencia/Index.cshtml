@@ -58,8 +58,8 @@
                 <form id="frm1" method="post" action="#" class="full validate">
                     <h2 style="padding-top:8px"><a id="lnkagregar" href="javascript:void(0);"><span class="badge icon icon-check" style="cursor: pointer"> Agregar</span></a></h2>
                     <p class="_50 small">
-                        <label for="txtNombre" class="inline">Ingrese Serie de Artículo:</label>
-                        <input data-error-type="inline" type="text" class="required" id="txtNombre" />
+                        <label for="txtBuscarSerie" class="inline">Ingrese Serie de Artículo:</label>
+                        <input data-error-type="inline" type="text" class="required" id="txtBuscarSerie" />
 
                     </p>
                 </form>
@@ -529,5 +529,148 @@
                 $(".grdEliminar").trigger("reloadGrid");
             }
         });
+    }
+
+    $("#txtBuscarSerie").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $.ajax({
+                url: "@Url.Action("AgregarOrdenDetalle", "OrdenVenta")",
+                data: { pNumeroSerie: $.trim(this.value), pMovimientoid: $.data(document.body, 'Movimientoid') },
+            success: function (ret) {
+                $("#divAgregar").show('fast');
+                if (ret.length > 15) {
+                    $("#mensaje").removeClass('success').addClass('error');
+                    $("#lblmensaje").text(ret);
+                } else {
+                    $("#mensaje").addClass('success');
+                    $("#lblmensaje").text("Articulo Agregado");
+                    $.removeData(document.body, 'Movimientoid');
+                    $.data(document.body, 'Movimientoid', ret);
+                    ListarDetalleOrdenVenta(ret);
+                }
+                $("#txtBuscarSerie").val('');
+            }
+        });
+    }
+    else {
+                $("#divAgregar").hide();
+    }
+    });
+
+    $("#dialogo_buscar_cliente").dialog("open");
+
+  //  });
+
+    $("#txtDescuento").keypress(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $("#btnSubmit").trigger('click');
+        }
+    });
+
+    $("#dlgAgregarDesc").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        width: 240,
+        open: function () {
+            $(this).parent().css('overflow', 'visible');
+            $$.utils.forms.resize();
+        }
+    }).find('button.submit').click(function () {
+        var $el = $(this).parents('.ui-dialog-content');
+        if ($("#txtDescuento").val() <= $.data(document.body, 'PrecioVenta')) {
+            if ($el.validate().form()) {
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Action("ActualizarDetalleOrdenVenta", "OrdenVenta")",
+                    data: {
+                    pOrdenVentaDetId: $.data(document.body, 'pOrdenVentaDetid'),
+                    pDescuento: $("#txtDescuento").val(),
+                    },
+                success: function (data) {
+                    var obj = $.data(document.body, 'Movimientoid');
+                    ListarDetalleOrdenVenta(obj);
+                    $el.dialog('close');
+                    Vendix.Notificar("Modificar");
+                }
+            });
+        }
+    } else {
+            $("#lblValidarDescuento").text("Descuento Mayor al Precio");
+    }
+    }).end().find('button.cancel').click(function () {
+        var $el = $(this).parents('.ui-dialog-content');
+        $el.find('form')[0].reset();
+        $el.dialog('close');
+    });
+
+
+    function ListarDetalleOrdenVenta(ret) {
+
+        $.ajax({
+            url: "@Url.Action("BuscarOrdenVentaDet", "OrdenVenta")",
+            data: { pMovimientoid: ret },
+        success: function (data) {
+            var html = "";
+            if (data != null) {
+                var totalneto = parseFloat(data.OrdenVenta.TotalNeto).toFixed(2);
+                $("#lblTotalNeto").text(totalneto);
+                $("#lblTotalDescuento").text(parseFloat(data.OrdenVenta.TotalDescuento).toFixed(2));
+                $.data(document.body, 'Items', data.OrdenVentaDet.length);
+                    
+                $.each(data.OrdenVentaDet, function (i, valor) {
+                    html = html +
+                        "<tr>" +
+                        "<td class='center'  style='width: 40px'>" + valor.Cantidad + "</td>" +
+                        "<td>" + valor.Descripcion + "</td>" +
+                        "<td class='center' style='width: 70px'>" + parseFloat(valor.ValorVenta).toFixed(2) + "</td>" +
+                        "<td class='center' style='width: 50px'><a href='#' onclick='EditarDescuento(" + valor.OrdenVentaDetId + ");return false;'><b><u> " + parseFloat(valor.Descuento).toFixed(2) + "</u></b></a></td>" +
+                        "<td class='center' style='width: 80px'>S/. " + parseFloat(valor.Subtotal).toFixed(2) + "</td>" +
+                        "<td class='center' style='width: 50px'><a href='#' onclick='EliminarArticulo(" + valor.OrdenVentaDetId + ");return false;'  class='eliminar button small grey tooltip' data-gravity='s' title='Eliminar'   ><i class='icon-remove'></i></a></td>" +
+                        "</tr>";
+                });
+                html = html +
+                        "<tr>" +
+                        "<td class='center'  style='width: 40px'>" + data.Cantidadov + "</td>" +
+                        "<td style='text-align:right; font-weight:bolder'>TOTAL:</td>" +
+                        "<td class='center' style='width: 70px'></td>" +
+                        "<td class='center' style='width: 50px'></td>" +
+                        "<td class='center' style='width: 80px; font-weight:bolder'>S/. " + totalneto + "</td>" +
+                        "<td class='center' style='width: 50px'></td>" +
+                        "</tr>";
+            }
+            $("#tablaDetalleOrden tbody").html(html);
+        },
+        });
+
+    }
+
+    function EditarDescuento(pOrdenVentaDetId) {
+        $.data(document.body, "pOrdenVentaDetid", pOrdenVentaDetId);
+        $.ajax({
+            url: "@Url.Action("ObtenerDetalleOrdenVenta", "OrdenVenta")",
+            data: { pOrdenVentaDetId: pOrdenVentaDetId },
+        success: function (data) {
+            $("#lblValidarDescuento").text("");
+            $('#txtDescuento').val(parseFloat(data.Descuento).toFixed(2));
+            $.data(document.body, 'PrecioVenta', data.Subtotal);
+            $("#dlgAgregarDesc").dialog("open");
+            $('#txtDescuento').select();
+        },
+            });
+    }
+
+    function EliminarArticulo(pOrdenVentaDetId) {
+        $.ajax({
+            url: "@Url.Action("EliminarDetalleOrdenVenta", "OrdenVenta")",
+            data: { pOrdenVentaDetId: pOrdenVentaDetId },
+        success: function(data) {
+            var obj = $.data(document.body, 'Movimientoid');
+            ListarDetalleOrdenVenta(obj);
+            Vendix.Notificar("Eliminar");
+        }
+    });
     }
 </script>

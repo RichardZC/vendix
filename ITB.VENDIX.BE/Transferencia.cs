@@ -15,22 +15,38 @@ namespace ITB.VENDIX.BE
 using System;
     using System.Collections.Generic;
     
-public partial class Aprobacion
+public partial class Transferencia
 {
 
-    public int CreditoId { get; set; }
+    public Transferencia()
+    {
 
-    public int Nivel { get; set; }
+        this.SerieArticulo = new HashSet<SerieArticulo>();
 
-    public Nullable<int> UsuarioId { get; set; }
-
-    public Nullable<System.DateTime> Fecha { get; set; }
-
+    }
 
 
-    public virtual Credito Credito { get; set; }
+    public int TransferenciaId { get; set; }
+
+    public int AlmacenOrigenId { get; set; }
+
+    public int AlmacenDestinoId { get; set; }
+
+    public int UsuarioId { get; set; }
+
+    public System.DateTime Fecha { get; set; }
+
+    public string Estado { get; set; }
+
+
+
+    public virtual Almacen Almacen { get; set; }
+
+    public virtual Almacen Almacen1 { get; set; }
 
     public virtual Usuario Usuario { get; set; }
+
+    public virtual ICollection<SerieArticulo> SerieArticulo { get; set; }
 
 }
 
