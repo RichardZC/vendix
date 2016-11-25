@@ -29,7 +29,7 @@ namespace VendixWeb.Controllers.Almacen
         public ActionResult Listar(GridDataRequest request)
         {
             int totalRecords = 0;
-            var lstGrd = MovimientoBL.LstTransferenciaJGrid(request, ref totalRecords);
+            var lstGrd = TransferenciaBL.LstTransferenciaJGrid(request, ref totalRecords);
 
             var productsData = new
             {
@@ -39,16 +39,12 @@ namespace VendixWeb.Controllers.Almacen
                 rows = (from item in lstGrd
                         select new
                         {
-                            id = item.MovimientoId,
+                            id = item.TansferenciaId,
                             cell = new string[] {
-                                                    item.MovimientoId.ToString(),
-                                                    item.Tipo,
-                                                    item.TipoMovimientoId.ToString(),
-                                                    item.TipoMovimiento,
+                                                    item.TansferenciaId.ToString(),
+                                                    item.AlmacenDestino,
                                                     item.Fecha.ToString(),
-                                                    item.Documento,
-                                                    item.Estado,
-                                                    item.Observacion
+                                                    item.Estado
                                                 }
                         }
                        ).ToArray()
@@ -110,6 +106,47 @@ namespace VendixWeb.Controllers.Almacen
         }
 
 
+
+
+        public ActionResult ListarDetalle(GridDataRequest request)
+        {
+            int movimientoid = request.DataFilters().Count > 0 ? int.Parse(request.DataFilters()["MovimientoId"]) : 0;
+            if (movimientoid == 0)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+            const int totalRecords = 10;
+            var productsData = new
+            {
+                total = 1,
+                page = 1,
+                records = totalRecords,
+                rows = (from item in MovimientoBL.ObtenerEntradaDetalle(movimientoid)
+                        select new
+                        {
+                            id = item.MovimientoDetId,
+                            cell = new string[] {
+                                                    item.MovimientoDetId.ToString(),
+                                                    item.ArticuloId.ToString(),
+                                                    item.UnidadMedidaT10.ToString(),
+                                                    item.Cantidad.ToString(),
+                                                    item.UnidadMedida,
+                                                    item.Descripcion,
+                                                    item.PrecioUnitario.ToString(),
+                                                    item.Descuento.ToString(),
+                                                    item.Importe.ToString(),
+                                                    item.IndCorrelativo.ToString(),
+                                                    item.Elimina?item.MovimientoDetId.ToString():string.Empty
+                                                }
+                        }
+                       ).ToArray()
+            };
+            return Json(productsData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ObtenerMovimiento(int pTranferenciaId)
+        {
+            return Json(TransferenciaBL.Obtener(pTranferenciaId), JsonRequestBehavior.AllowGet);
+        }
 
     }
 
