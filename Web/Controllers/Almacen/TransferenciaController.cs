@@ -39,9 +39,9 @@ namespace VendixWeb.Controllers.Almacen
                 rows = (from item in lstGrd
                         select new
                         {
-                            id = item.TansferenciaId,
+                            id = item.TransferenciaId,
                             cell = new string[] {
-                                                    item.TansferenciaId.ToString(),
+                                                    item.TransferenciaId.ToString(),
                                                     item.AlmacenDestino,
                                                     item.Fecha.ToString(),
                                                     item.Estado

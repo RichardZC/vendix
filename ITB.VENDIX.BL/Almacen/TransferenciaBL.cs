@@ -54,7 +54,7 @@ namespace ITB.VENDIX.BL
 
         public class EntradaSalida
         {
-            public int TansferenciaId { get; set; }
+            public int TransferenciaId { get; set; }
             public string AlmacenDestino { get; set; }         
             public DateTime Fecha { get; set; }
             public string Estado { get; set; }
@@ -83,7 +83,7 @@ namespace ITB.VENDIX.BL
                           where tra.AlmacenDestinoId == almacenId || tra.AlmacenOrigenId == almacenId // mejorar qry
                           select new EntradaSalida
                           {
-                              TansferenciaId= tra.TransferenciaId,
+                              TransferenciaId = tra.TransferenciaId,
                               AlmacenDestino = tra.Almacen1.Denominacion,
                               Fecha = tra.Fecha,
                               Estado = tra.Estado
