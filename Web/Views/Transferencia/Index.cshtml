@@ -322,22 +322,19 @@
                     ]);
                 }
             },
-            colNames: ['Nro. Entrada', 'Tipo', 'TipoMovimientoId', 'TipoMovimiento', 'Fecha', 'Documento', 'Estado', 'Observacion'],
+            colNames: ['Nro. Entrada','Al. Destino','Fecha', 'Estado'],
             colModel: [
-                { name: 'MovimientoId', index: 'MovimientoId', align: 'center', width: 60 },
-                { name: 'Tipo', index: 'Tipo' },
-                { name: 'TipoMovimientoId', index: 'TipoMovimientoId', hidden: true },
-                { name: 'TipoMovimiento', index: 'TipoMovimiento' },
+                { name: 'TransferenciaId', index: 'TransferenciaId', align: 'center', width: 60 },
+                { name: 'AlmacenDestinoId', index: 'AlmacenDestinoId' },
                 { name: 'Fecha', index: 'Fecha' },
-                { name: 'Documento', index: 'Documento' },
                 { name: 'Estado', index: 'Estado', align: 'center' },
-                { name: 'Observacion', index: 'Observacion' }
+      
             ],
             caption: "Transferencias de Almacen",
             pager: $('#grdpBuscar'),
             rowNum: 10,
             rowList: [10, 20, 30],
-            sortname: 'MovimientoId',
+            sortname: 'TransferenciaId',
             sortorder: 'desc',
             gridview: true,
             viewrecords: true,
@@ -458,7 +455,7 @@
         var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
         if (id) {
             var ret = $("#grdBuscar").jqGrid('getRowData', id);
-            $.data(document.body, 'MovimientoId', ret.MovimientoId);
+            $.data(document.body, 'TransferenciaId', ret.TransferenciaId);
             VerDetalle();
 
         }
@@ -467,9 +464,9 @@
     function VerDetalle() {
         $.ajax({
             url: "@Url.Action("ObtenerMovimiento", "Entrada")",
-            data: { pMovimientoId: $.data(document.body, 'MovimientoId') },
+            data: { pTransferenciaId: $.data(document.body, 'TransferenciaId') },
             success: function (mov) {
-                $("#lblNroEntrada").text(mov.MovimientoId);
+                $("#lblNroEntrada").text(mov.TransferenciaId);
                 $("#cboTipoMovimiento").val(mov.TipoMovimientoId).trigger("liszt:updated");
                 $("#txtObs").val(mov.Observacion);
                 $("#cboDestino").trigger("liszt:updated");
