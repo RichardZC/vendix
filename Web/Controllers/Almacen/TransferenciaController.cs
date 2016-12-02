@@ -52,24 +52,23 @@ namespace VendixWeb.Controllers.Almacen
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CrearTransferencia(int pAlmacenId)
+        public ActionResult CrearTransferencia(int pAlmacenDestinoId)
         {
-            var item = new Movimiento
-            {
-                //MovimientoId = pMovimientoId,
-                AlmacenId = pAlmacenId,
-                TipoMovimientoId = 3,
-                Fecha = DateTime.Now,
-                EstadoId = 1,
-                Observacion = string.Empty,
-                IGV = 0,
-                TotalImporte = 0,
-                SubTotal = 0,
-                AjusteRedondeo = 0
-            };
-            MovimientoBL.Crear(item);
+            var oficinaid = VendixGlobal.GetOficinaId();
+            var usuarioid = VendixGlobal.GetUsuarioId();
 
-            return Json(item.MovimientoId, JsonRequestBehavior.AllowGet);
+            var item = new Transferencia
+            {
+                AlmacenOrigenId = AlmacenBL.Obtener(x => x.OficinaId == oficinaid).AlmacenId,
+                AlmacenDestinoId = pAlmacenDestinoId,
+                UsuarioId = usuarioid,
+                Fecha = DateTime.Now,
+                Estado = "P"
+                
+            };
+            TransferenciaBL.Crear(item);
+
+            return Json(item.TransferenciaId, JsonRequestBehavior.AllowGet);
 
         }
         public ActionResult Guardar(int pMovimientoId, int pAlmacenId, int pTipoMovimientoId, string pFecha, string pObservacion)

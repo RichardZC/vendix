@@ -219,11 +219,11 @@
                     type: 'POST',
                     url: "@Url.Action("CrearTransferencia", "Transferencia")",
                     data: {                      
-                        pAlmacenId: $("#cboDestino").val()
+                        pAlmacenDestinoId: $("#cboDestino").val()
                     },
                     success: function (movid) {
                         Vendix.Notificar("Modificar");
-                        $.data(document.body, 'MovimientoId', movid);
+                        $.data(document.body, 'TransferenciaId', movid);
                         VerDetalle();
                         $el.find('form')[0].reset();
                         $el.dialog('close');
