@@ -43,7 +43,7 @@
                     <tr>
                         <td>@Html.DropDownList("cboAlmacen")</td>
                         <td style="width: 100%; ">
-                            <input id="txtBuscar" type="search" placeholder="Buscar por Nro. Mov, Documento o Fecha (dd/mm/yyyy)" style="width: 40%" autofocus />
+                            <input id="txtBuscar" type="search" placeholder="Buscar por Nro. TRA o Fecha (dd/mm/yyyy)" style="width: 40%" autofocus />
                             <input id="txtBuscarxArt" type="search" placeholder="Buscar por Articulo" style="width: 40%" />
                         </td>
                     </tr>
@@ -322,10 +322,11 @@
                     ]);
                 }
             },
-            colNames: ['Nro. Entrada','Al. Destino','Fecha', 'Estado'],
+            colNames: ['TRANS.', 'ORIGEN', 'DESTINO', 'Fecha', 'Estado'],
             colModel: [
                 { name: 'TransferenciaId', index: 'TransferenciaId', align: 'center', width: 60 },
-                { name: 'AlmacenDestinoId', index: 'AlmacenDestinoId' },
+                { name: 'AlmacenOrigen', index: 'AlmacenOrigen' },
+                { name: 'AlmacenDestino', index: 'AlmacenDestino' },
                 { name: 'Fecha', index: 'Fecha' },
                 { name: 'Estado', index: 'Estado', align: 'center' },
       

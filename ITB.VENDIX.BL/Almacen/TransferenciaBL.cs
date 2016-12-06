@@ -55,6 +55,7 @@ namespace ITB.VENDIX.BL
         public class EntradaSalida
         {
             public int TransferenciaId { get; set; }
+            public string AlmacenOrigen { get; set; }
             public string AlmacenDestino { get; set; }         
             public DateTime Fecha { get; set; }
             public string Estado { get; set; }
@@ -71,6 +72,7 @@ namespace ITB.VENDIX.BL
             string clave = request.DataFilters().Count > 0 ? request.DataFilters()["Buscar"] : string.Empty;
             int almacenId = int.Parse(request.DataFilters()["Almacen"]);
             int articuloId = int.Parse(request.DataFilters()["BuscarxArticuloId"]);
+            int ofinaId = VendixGlobal.GetOficinaId();
 
             using (var db = new VENDIXEntities())
             {
@@ -80,10 +82,11 @@ namespace ITB.VENDIX.BL
                 IQueryable<EntradaSalida> qry;
                
                     qry = from tra in db.Transferencia
-                          where tra.AlmacenDestinoId == almacenId || tra.AlmacenOrigenId == almacenId // mejorar qry
+                          where tra.Almacen.OficinaId == ofinaId || tra.Almacen1.OficinaId == ofinaId 
                           select new EntradaSalida
                           {
                               TransferenciaId = tra.TransferenciaId,
+                              AlmacenOrigen = tra.Almacen.Denominacion,
                               AlmacenDestino = tra.Almacen1.Denominacion,
                               Fecha = tra.Fecha,
                               Estado = tra.Estado
@@ -93,7 +96,7 @@ namespace ITB.VENDIX.BL
                         DateTime fecha;
                         qry = DateTime.TryParse(clave, out fecha)
                             ? qry.Where(x => EntityFunctions.TruncateTime(x.Fecha) == fecha.Date)
-                            : qry.Where("Tags.Contains(\"" + clave + "\")");
+                            : qry.Where("TransferenciaId=" + clave );
                     }
             
                 

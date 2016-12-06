@@ -42,6 +42,7 @@ namespace VendixWeb.Controllers.Almacen
                             id = item.TransferenciaId,
                             cell = new string[] {
                                                     item.TransferenciaId.ToString(),
+                                                    item.AlmacenOrigen,
                                                     item.AlmacenDestino,
                                                     item.Fecha.ToString(),
                                                     item.Estado
