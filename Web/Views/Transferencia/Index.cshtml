@@ -173,7 +173,7 @@
 <script>
     $(function () {
         $("#tabs").tabs().tabs("option", "disabled", [1]);
-        $.data(document.body, 'MovimientoId', 0);
+        $.data(document.body, 'TransferenciaId', 0);
         $.data(document.body, 'ArticuloBuscarId', 0);
         $("#cboMedida").width('100px');
 
@@ -188,7 +188,7 @@
                 type: 'POST',
                 url: "@Url.Action("Desconfirmar", "Entrada")",
                 data: {
-                    pMovimientoId: $.data(document.body, 'MovimientoId')
+                    pTransferenciaId: $.data(document.body, 'TransferenciaId')
                 },
                 success: function (res) {
                     if (res == "UPD") {
@@ -312,7 +312,7 @@
         $('#grdBuscar').jqGrid({
             url: "@Url.Action("Listar", "Transferencia")",
             datatype: 'json',
-            mtype: 'POST',
+           // mtype: 'POST',
             postData: {
                 filters: function () {
                     return $.toJSON([
@@ -349,28 +349,21 @@
 
 
         jQuery("#grdDetalle").jqGrid({
-            url: "@Url.Action("ListarDetalle", "Entrada")",
+            url: "@Url.Action("ListarDetalle", "Transferencia")",
             datatype: 'json',
             postData: {
                 filters: function () {
-                    return $.toJSON([{ Key: "MovimientoId", Value: $.data(document.body, 'MovimientoId') }]);
+                    return $.toJSON([{ Key: "TransferenciaId", Value: $.data(document.body, 'TransferenciaId') }]);
                 }
             },
-            colNames: ['MovimientoDetId', 'ArticuloId', 'UnidadId', 'Cantidad', 'Medida', 'Descripcion', 'PrecioUnitario', 'Descuento', 'Importe', 'IndCorretativo', 'Eliminar'],
+            colNames: ['TransferenciaId', 'SerieArticuloId', 'NumeroSerie', 'Articulo'],
             colModel: [
-                { name: 'MovimientoDetId', index: 'MovimientoDetId', hidden: true },
-                { name: 'ArticuloId', index: 'ArticuloId', hidden: true },
-                { name: 'UnidadId', index: 'UnidadId', hidden: true },
-                { name: 'Cantidad', index: 'Cantidad', width: 40, align: 'center', sortable: false },
-                { name: 'Medida', index: 'Medida', width: 40, sortable: false },
-                { name: 'Descripcion', index: 'Descripcion', width: 300, sortable: false },
-                { name: 'PrecioUnitario', index: 'PrecioUnitario', align: 'right', width: 50, sortable: false },
-                { name: 'Descuento', index: 'Descuento', align: 'right', width: 50, sortable: false },
-                { name: 'Importe', index: 'Importe', align: 'right', width: 50, sortable: false },
-                { name: 'IndCorrelativo', index: 'IndCorrelativo', hidden: true },
-                { name: 'Eliminar', index: 'Eliminar', align: 'center', width: 20, formatter: ElimianrMovDetFormatter, sortable: false }
+                { name: 'TransferenciaId', index: 'TransferenciaId', align: 'center', width: 60 },
+                { name: 'SerieArticuloId', index: 'SerieArticuloId', hidden: true },
+                { name: 'NumeroSerie', index: 'NumeroSerie', width: 60 },
+                { name: 'Articulo', index: 'Articulo' }
             ],
-            sortname: 'MovimientoDetId',
+            sortname: 'TransferenciaId',
             gridview: true,
             rowNum: 50,
             height: 'auto',
@@ -380,9 +373,12 @@
             ondblClickRow: function () {
                 var id = jQuery("#grdDetalle").jqGrid('getGridParam', 'selrow');
                 if (id) {
+                    
                     var ret = $("#grdDetalle").jqGrid('getRowData', id);
-                    $.data(document.body, 'MovimientoDetId', ret.MovimientoDetId);
+                    $.data(document.body, 'TransferenciaId', ret.TransferenciaId);
                     $.data(document.body, 'ArticuloId', ret.ArticuloId);
+
+                    
 
                     $("#txtArticulo").val(ret.Descripcion).attr("disabled", "disabled");
                     $("#lblDenominacionArt").text(ret.Descripcion);
@@ -393,9 +389,9 @@
                     $("#cboMedida").val(ret.UnidadId).trigger("liszt:updated");
                     $("#chkCorrelativo").prop("checked", ret.IndCorrelativo == "True" ? true : false);
 
-                    $.ajax({
+                    @*$.ajax({
                         url: "@Url.Action("ObtenerSeriesMovimientoDetalle", "Entrada")",
-                        data: { pMovimientoDetId: ret.MovimientoDetId },
+                        data: { pTransferenciaId: ret.TransferenciaId },
                         success: function (series) {
                             $('#txtListaSerie').html('');
                             if ($("#chkCorrelativo").prop('checked')) {
@@ -411,7 +407,7 @@
                             $('#txtListaSerie').trigger("liszt:updated");
                             $("#txtSerie").val('');
                         }
-                    });
+                    });*@
                 }
             }
         });
@@ -457,6 +453,8 @@
         if (id) {
             var ret = $("#grdBuscar").jqGrid('getRowData', id);
             $.data(document.body, 'TransferenciaId', ret.TransferenciaId);
+           
+           
             VerDetalle();
 
         }
@@ -464,17 +462,18 @@
 
     function VerDetalle() {
         $.ajax({
-            url: "@Url.Action("ObtenerMovimiento", "Entrada")",
+            url: "@Url.Action("ObtenerMovimiento", "Transferencia")",
             data: { pTransferenciaId: $.data(document.body, 'TransferenciaId') },
-            success: function (mov) {
+            success: function (mov) {                
+
                 $("#lblNroEntrada").text(mov.TransferenciaId);
-                $("#cboTipoMovimiento").val(mov.TipoMovimientoId).trigger("liszt:updated");
+                $("#cboTipoMovimiento").val(mov.TipoTransferenciaId).trigger("liszt:updated");
                 $("#txtObs").val(mov.Observacion);
                 $("#cboDestino").trigger("liszt:updated");
 
-                $.ajax({
-                    url: "@Url.Action("ObtenerMovimientoExt", "Entrada")",
-                    data: { pMovimientoId: $.data(document.body, 'MovimientoId') },
+                @*$.ajax({
+                    url: "@Url.Action("ObtenerMovimientoExt", "Transferencia")",
+                    data: { pTransferenciaId: $.data(document.body, 'TransferenciaId') },
                     success: function (movext) {
                         $("#lblAlmacenHeader").text(movext.Almacen);
                         $("#lblAlmacen").text(movext.Almacen);
@@ -482,7 +481,7 @@
                         $("#txtfecha").text(movext.Fecha);
                         
                     }
-                });
+                });*@
 
                 $("#grdDetalle").trigger("reloadGrid");
                 $("#tabs").tabs({ disabled: [2] });
@@ -534,7 +533,7 @@
             event.preventDefault();
             $.ajax({
                 url: "@Url.Action("AgregarOrdenDetalle", "OrdenVenta")",
-                data: { pNumeroSerie: $.trim(this.value), pMovimientoid: $.data(document.body, 'Movimientoid') },
+                data: { pNumeroSerie: $.trim(this.value), pTransferenciaId: $.data(document.body, 'TransferenciaId') },
             success: function (ret) {
                 $("#divAgregar").show('fast');
                 if (ret.length > 15) {
@@ -543,8 +542,8 @@
                 } else {
                     $("#mensaje").addClass('success');
                     $("#lblmensaje").text("Articulo Agregado");
-                    $.removeData(document.body, 'Movimientoid');
-                    $.data(document.body, 'Movimientoid', ret);
+                    $.removeData(document.body, 'TransferenciaId');
+                    $.data(document.body, 'TransferenciaId', ret);
                     ListarDetalleOrdenVenta(ret);
                 }
                 $("#txtBuscarSerie").val('');
@@ -588,7 +587,7 @@
                     pDescuento: $("#txtDescuento").val(),
                     },
                 success: function (data) {
-                    var obj = $.data(document.body, 'Movimientoid');
+                    var obj = $.data(document.body, 'TransferenciaId');
                     ListarDetalleOrdenVenta(obj);
                     $el.dialog('close');
                     Vendix.Notificar("Modificar");
@@ -609,7 +608,7 @@
 
         $.ajax({
             url: "@Url.Action("BuscarOrdenVentaDet", "OrdenVenta")",
-            data: { pMovimientoid: ret },
+            data: { pTransferenciaId: ret },
         success: function (data) {
             var html = "";
             if (data != null) {
@@ -665,7 +664,7 @@
             url: "@Url.Action("EliminarDetalleOrdenVenta", "OrdenVenta")",
             data: { pOrdenVentaDetId: pOrdenVentaDetId },
         success: function(data) {
-            var obj = $.data(document.body, 'Movimientoid');
+            var obj = $.data(document.body, 'TransferenciaId');
             ListarDetalleOrdenVenta(obj);
             Vendix.Notificar("Eliminar");
         }

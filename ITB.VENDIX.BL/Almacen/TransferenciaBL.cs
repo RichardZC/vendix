@@ -56,7 +56,8 @@ namespace ITB.VENDIX.BL
         {
             public int TransferenciaId { get; set; }
             public string AlmacenOrigen { get; set; }
-            public string AlmacenDestino { get; set; }         
+            public string AlmacenDestino { get; set; }
+            public string UsuarioId { get; set; }
             public DateTime Fecha { get; set; }
             public string Estado { get; set; }
 
@@ -107,5 +108,58 @@ namespace ITB.VENDIX.BL
             }
         }
 
+        public static List<EntradaDetalle> ObtenerEntradaDetalle(int pTransferenciaId)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                db.Configuration.ProxyCreationEnabled = false;
+                db.Configuration.LazyLoadingEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                var qry2 = (from s in db.SerieArticulo
+                          // where s.Transferencia..Contains(pTransferenciaId)
+                           select new EntradaDetalle
+                           {
+                               TransferenciaId = pTransferenciaId,
+                               SerieArticuloId = s.SerieArticuloId,
+                               NumeroSerie = s.NumeroSerie,
+                               Articulo = s.Articulo.Denominacion                               
+                           }).Take(3);
+                return qry2.ToList();
+            }
+
+        }
+        public static EntradaSalida ObtenerEntradaSalida(int pTransferenciaId)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                var qry2 = from tra in db.Transferencia
+                           join al in db.Almacen on tra.AlmacenOrigenId equals al.AlmacenId
+                           join us in db.Usuario on tra.UsuarioId equals us.UsuarioId
+                           where tra.TransferenciaId == pTransferenciaId
+                           select new EntradaSalida
+                           {
+                               TransferenciaId= tra.TransferenciaId,
+                               AlmacenOrigen = al.Denominacion,
+                               AlmacenDestino = al.Denominacion,
+                               UsuarioId = us.NombreUsuario,
+                               Fecha = tra.Fecha,
+                               Estado = tra.Estado
+                               
+                           };
+                return qry2.FirstOrDefault();
+            }
+
+        }
+
+    }
+
+    public class EntradaDetalle
+    {
+        public int TransferenciaId { get; set; }
+        public int SerieArticuloId { get; set; }
+        public string NumeroSerie { get; set; }
+        public string Articulo { get; set; }
+        
     }
 }

@@ -72,47 +72,22 @@ namespace VendixWeb.Controllers.Almacen
             return Json(item.TransferenciaId, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult Guardar(int pMovimientoId, int pAlmacenId, int pTipoMovimientoId, string pFecha, string pObservacion)
-        {
-            if (pMovimientoId == 0)
-            {
-                var item = new Movimiento
-                {
-                    MovimientoId = pMovimientoId,
-                    AlmacenId = pAlmacenId,
-                    TipoMovimientoId = 3,
-                    Fecha = DateTime.Now,
-                    EstadoId = 1,
-                    Observacion = string.Empty,
-                    IGV = 0,
-                    TotalImporte = 0,
-                    SubTotal = 0,
-                    AjusteRedondeo = 0
-                };
-                MovimientoBL.Crear(item);
-                pMovimientoId = item.MovimientoId;
-            }
-            else
-            {
-                MovimientoBL.ActualizarMov(pMovimientoId, pTipoMovimientoId, DateTime.Parse(pFecha), pObservacion);
-            }
-            return Json(pMovimientoId, JsonRequestBehavior.AllowGet);
-        }
+        
 
-        public ActionResult AgregarOrdenDetalle(string pNumeroSerie, int pMovimientoId)
-        {
+        //public ActionResult AgregarOrdenDetalle(string pNumeroSerie, int pTransferenciaId)
+        //{
             
             
-            return Json(MovimientoDetBL.AgregarDetalleTranferencia(pNumeroSerie, pMovimientoId), JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(TransferenciaBL.AgregarDetalleTranferencia(pNumeroSerie, pTransferenciaId), JsonRequestBehavior.AllowGet);
+        //}
 
 
 
 
         public ActionResult ListarDetalle(GridDataRequest request)
         {
-            int movimientoid = request.DataFilters().Count > 0 ? int.Parse(request.DataFilters()["MovimientoId"]) : 0;
-            if (movimientoid == 0)
+            int transferenciaid = request.DataFilters().Count > 0 ? int.Parse(request.DataFilters()["TransferenciaId"]) : 0;
+            if (transferenciaid == 0)
                 return Json(null, JsonRequestBehavior.AllowGet);
 
             const int totalRecords = 10;
@@ -121,22 +96,15 @@ namespace VendixWeb.Controllers.Almacen
                 total = 1,
                 page = 1,
                 records = totalRecords,
-                rows = (from item in MovimientoBL.ObtenerEntradaDetalle(movimientoid)
+                rows = (from item in TransferenciaBL.ObtenerEntradaDetalle(transferenciaid)
                         select new
                         {
-                            id = item.MovimientoDetId,
+                            id = item.TransferenciaId,
                             cell = new string[] {
-                                                    item.MovimientoDetId.ToString(),
-                                                    item.ArticuloId.ToString(),
-                                                    item.UnidadMedidaT10.ToString(),
-                                                    item.Cantidad.ToString(),
-                                                    item.UnidadMedida,
-                                                    item.Descripcion,
-                                                    item.PrecioUnitario.ToString(),
-                                                    item.Descuento.ToString(),
-                                                    item.Importe.ToString(),
-                                                    item.IndCorrelativo.ToString(),
-                                                    item.Elimina?item.MovimientoDetId.ToString():string.Empty
+                                                    item.TransferenciaId.ToString(),
+                                                    item.SerieArticuloId.ToString(),
+                                                    item.NumeroSerie.ToString(),
+                                                    item.Articulo.ToString()                                                    
                                                 }
                         }
                        ).ToArray()
@@ -144,11 +112,16 @@ namespace VendixWeb.Controllers.Almacen
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ObtenerMovimiento(int pTranferenciaId)
+        public ActionResult ObtenerMovimiento(int pTransferenciaId)
         {
-            return Json(TransferenciaBL.Obtener(pTranferenciaId), JsonRequestBehavior.AllowGet);
+            return Json(TransferenciaBL.Obtener(pTransferenciaId), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ObtenerMovimientoExt(int pTransferenciaId)
+        {
+            var tra = TransferenciaBL.ObtenerEntradaSalida(pTransferenciaId);
+            return Json(new { Fecha = tra.Fecha.ToString(), tra.Estado, tra.AlmacenDestino }, JsonRequestBehavior.AllowGet);
+        }
     }
 
 
