@@ -536,7 +536,7 @@
         if (event.which == 13) {
             event.preventDefault();
             $.ajax({
-                url: "@Url.Action("AgregarOrdenDetalle", "OrdenVenta")",
+                url: "@Url.Action("AgregarTransferenciaSerie", "Transferencia")",
                 data: { pNumeroSerie: $.trim(this.value), pTransferenciaId: $.data(document.body, 'TransferenciaId') },
             success: function (ret) {
                 $("#divAgregar").show('fast');
@@ -548,7 +548,7 @@
                     $("#lblmensaje").text("Articulo Agregado");
                     $.removeData(document.body, 'TransferenciaId');
                     $.data(document.body, 'TransferenciaId', ret);
-                    ListarDetalleOrdenVenta(ret);
+                    //ListarDetalleOrdenVenta(ret);
                 }
                 $("#txtBuscarSerie").val('');
             }

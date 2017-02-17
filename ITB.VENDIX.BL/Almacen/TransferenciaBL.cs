@@ -13,41 +13,41 @@ namespace ITB.VENDIX.BL
     public class TransferenciaBL : Repositorio<Transferencia>
     {
 
-        public static bool AgregarTransferenciaSerie(Transferencia t , List<int> series) {
+        //public static bool AgregarTransferenciaSerie(Transferencia t , List<int> series) {
 
-            foreach (var c in series)
-                t.SerieArticulo.Add(new SerieArticulo { SerieArticuloId = c });
+        //    foreach (var c in series)
+        //        t.SerieArticulo.Add(new SerieArticulo { SerieArticuloId = c });
 
-            using ( var db= new VENDIXEntities()) {
+        //    using ( var db= new VENDIXEntities()) {
 
-                if (t.TransferenciaId == 0)
-                {
-                    db.Entry(t).State = EntityState.Added;
-                }
-                else
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "DELETE FROM TransferenciaSerie WHERE TransferenciaId = @id",
-                        new SqlParameter("id", t.TransferenciaId)
-                    );
+        //        if (t.TransferenciaId == 0)
+        //        {
+        //            db.Entry(t).State = EntityState.Added;
+        //        }
+        //        else
+        //        {
+        //            db.Database.ExecuteSqlCommand(
+        //                "DELETE FROM TransferenciaSerie WHERE TransferenciaId = @id",
+        //                new SqlParameter("id", t.TransferenciaId)
+        //            );
 
-                    var serieBK = t.SerieArticulo;
+        //            var serieBK = t.SerieArticulo;
 
-                    t.SerieArticulo = null;
-                    db.Entry(t).State = EntityState.Modified;
-                    t.SerieArticulo = serieBK;
-                }
+        //            t.SerieArticulo = null;
+        //            db.Entry(t).State = EntityState.Modified;
+        //            t.SerieArticulo = serieBK;
+        //        }
 
-                foreach (var c in t.SerieArticulo)
-                    db.Entry(c).State = EntityState.Unchanged;
+        //        foreach (var c in t.SerieArticulo)
+        //            db.Entry(c).State = EntityState.Unchanged;
 
-                db.SaveChanges();
+        //        db.SaveChanges();
 
-            }
+        //    }
 
 
-            return true;
-        }
+        //    return true;
+        //}
                 
         public class EntradaSalida
         {

@@ -191,6 +191,9 @@
     <Compile Include="Transferencia.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TransferenciaSerie.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_CentralRiesgoGenerar_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>

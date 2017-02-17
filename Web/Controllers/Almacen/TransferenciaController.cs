@@ -72,14 +72,20 @@ namespace VendixWeb.Controllers.Almacen
             return Json(item.TransferenciaId, JsonRequestBehavior.AllowGet);
 
         }
-        
 
-        //public ActionResult AgregarOrdenDetalle(string pNumeroSerie, int pTransferenciaId)
-        //{
+
+        public ActionResult AgregarTransferenciaSerie(string pNumeroSerie, int pTransferenciaId)
+        {
+
+            var serieid = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie).SerieArticuloId;
             
-            
-        //    return Json(TransferenciaBL.AgregarDetalleTranferencia(pNumeroSerie, pTransferenciaId), JsonRequestBehavior.AllowGet);
-        //}
+            TransferenciaSerieBL.Crear( new TransferenciaSerie {
+                TransferenciaId= pTransferenciaId,
+                SerieArticuloId = serieid
+            });
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
 
 
 

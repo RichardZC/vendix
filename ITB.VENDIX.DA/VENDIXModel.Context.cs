@@ -39,6 +39,7 @@ namespace ITB.VENDIX.BE
         public DbSet<TipoArticulo> TipoArticulo { get; set; }
         public DbSet<TipoMovimiento> TipoMovimiento { get; set; }
         public DbSet<Transferencia> Transferencia { get; set; }
+        public DbSet<TransferenciaSerie> TransferenciaSerie { get; set; }
         public DbSet<Aprobacion> Aprobacion { get; set; }
         public DbSet<Boveda> Boveda { get; set; }
         public DbSet<BovedaMov> BovedaMov { get; set; }

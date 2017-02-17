@@ -23,7 +23,7 @@ public partial class SerieArticulo
 
         this.OrdenVentaDetSerie = new HashSet<OrdenVentaDetSerie>();
 
-        this.Transferencia = new HashSet<Transferencia>();
+        this.TransferenciaSerie = new HashSet<TransferenciaSerie>();
 
     }
 
@@ -52,7 +52,7 @@ public partial class SerieArticulo
 
     public virtual ICollection<OrdenVentaDetSerie> OrdenVentaDetSerie { get; set; }
 
-    public virtual ICollection<Transferencia> Transferencia { get; set; }
+    public virtual ICollection<TransferenciaSerie> TransferenciaSerie { get; set; }
 
 }
 

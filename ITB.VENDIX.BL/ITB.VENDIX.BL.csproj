@@ -63,6 +63,7 @@
     <Compile Include="Almacen\AlmacenBL.cs" />
     <Compile Include="Almacen\ArticuloBL.cs" />
     <Compile Include="Almacen\TransferenciaBL.cs" />
+    <Compile Include="Almacen\TransferenciaSerieBL.cs" />
     <Compile Include="Clases.cs" />
     <Compile Include="Creditos\BovedaBL.cs" />
     <Compile Include="Creditos\BovedaMovTempBL.cs" />
