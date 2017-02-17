@@ -757,5 +757,14 @@ namespace ITB.VENDIX.BE
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_RptRentabilidadVenta_Result>("usp_RptRentabilidadVenta", fechaIniParameter, fechaFinParameter, indContadoParameter, indCreditoParameter, oficinaIdParameter);
         }
+    
+        public virtual ObjectResult<usp_ListarDetalleTransferencia_Result> usp_ListarDetalleTransferencia(Nullable<int> transferenciaId)
+        {
+            var transferenciaIdParameter = transferenciaId.HasValue ?
+                new ObjectParameter("TransferenciaId", transferenciaId) :
+                new ObjectParameter("TransferenciaId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_ListarDetalleTransferencia_Result>("usp_ListarDetalleTransferencia", transferenciaIdParameter);
+        }
     }
 }

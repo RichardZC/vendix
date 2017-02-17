@@ -48,10 +48,7 @@ namespace ITB.VENDIX.BL
 
             return true;
         }
-
-
-
-
+                
         public class EntradaSalida
         {
             public int TransferenciaId { get; set; }
@@ -62,12 +59,7 @@ namespace ITB.VENDIX.BL
             public string Estado { get; set; }
 
         }
-
-
-
-
-
-
+                        
         public static List<EntradaSalida> LstTransferenciaJGrid(GridDataRequest request, ref int pTotalItems)
         {
             string clave = request.DataFilters().Count > 0 ? request.DataFilters()["Buscar"] : string.Empty;
@@ -108,27 +100,27 @@ namespace ITB.VENDIX.BL
             }
         }
 
-        public static List<EntradaDetalle> ObtenerEntradaDetalle(int pTransferenciaId)
-        {
-            using (var db = new VENDIXEntities())
-            {
-                db.Configuration.ProxyCreationEnabled = false;
-                db.Configuration.LazyLoadingEnabled = false;
-                db.Configuration.ValidateOnSaveEnabled = false;
+        //public static List<EntradaDetalle> ObtenerEntradaDetalle(int pTransferenciaId)
+        //{
+        //    using (var db = new VENDIXEntities())
+        //    {
+        //        db.Configuration.ProxyCreationEnabled = false;
+        //        db.Configuration.LazyLoadingEnabled = false;
+        //        db.Configuration.ValidateOnSaveEnabled = false;
 
-                var qry2 = (from s in db.SerieArticulo
-                          // where s.Transferencia..Contains(pTransferenciaId)
-                           select new EntradaDetalle
-                           {
-                               TransferenciaId = pTransferenciaId,
-                               SerieArticuloId = s.SerieArticuloId,
-                               NumeroSerie = s.NumeroSerie,
-                               Articulo = s.Articulo.Denominacion                               
-                           }).Take(3);
-                return qry2.ToList();
-            }
+        //        var qry2 = (from s in db.SerieArticulo
+        //                  // where s.Transferencia..Contains(pTransferenciaId)
+        //                   select new EntradaDetalle
+        //                   {
+        //                       TransferenciaId = pTransferenciaId,
+        //                       SerieArticuloId = s.SerieArticuloId,
+        //                       NumeroSerie = s.NumeroSerie,
+        //                       Articulo = s.Articulo.Denominacion                               
+        //                   }).Take(3);
+        //        return qry2.ToList();
+        //    }
 
-        }
+        //}
         public static EntradaSalida ObtenerEntradaSalida(int pTransferenciaId)
         {
             using (var db = new VENDIXEntities())
@@ -152,14 +144,21 @@ namespace ITB.VENDIX.BL
 
         }
 
+        public static List<usp_ListarDetalleTransferencia_Result> ListarDetalleTransferencia(int pTransferenciaId)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                return db.usp_ListarDetalleTransferencia(pTransferenciaId).ToList();
+            }
+        }
     }
 
-    public class EntradaDetalle
-    {
-        public int TransferenciaId { get; set; }
-        public int SerieArticuloId { get; set; }
-        public string NumeroSerie { get; set; }
-        public string Articulo { get; set; }
+    //public class EntradaDetalle
+    //{
+    //    public int TransferenciaId { get; set; }
+    //    public int SerieArticuloId { get; set; }
+    //    public string NumeroSerie { get; set; }
+    //    public string Articulo { get; set; }
         
-    }
+    //}
 }

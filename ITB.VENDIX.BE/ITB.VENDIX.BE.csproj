@@ -206,6 +206,9 @@
     <Compile Include="usp_GenerarKardex_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="usp_ListarDetalleTransferencia_Result.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_MenuLst_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>

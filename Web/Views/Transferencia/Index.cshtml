@@ -63,7 +63,8 @@
 
                     </p>
                 </form>
-                <a id="lnkDesconfirmar" href="javascript:void(0);"><span class="icon icon-magic"></span>Desconfirmar</a>
+                @*<a id="lnkDesconfirmar" href="javascript:void(0);"><span class="icon icon-magic"></span>Desconfirmar</a>*@
+                <h1>Detalle transferencia</h1>
                 <table id="grdDetalle" class="grdDelete"></table>
             </div>
             <div class="clearfix"></div>    
@@ -356,14 +357,15 @@
                     return $.toJSON([{ Key: "TransferenciaId", Value: $.data(document.body, 'TransferenciaId') }]);
                 }
             },
-            colNames: ['TransferenciaId', 'SerieArticuloId', 'NumeroSerie', 'Articulo'],
+            colNames: ['ID', 'ArticuloId', 'Articulo', 'Cantidad', 'Series'],
             colModel: [
-                { name: 'TransferenciaId', index: 'TransferenciaId', align: 'center', width: 60 },
-                { name: 'SerieArticuloId', index: 'SerieArticuloId', hidden: true },
-                { name: 'NumeroSerie', index: 'NumeroSerie', width: 60 },
-                { name: 'Articulo', index: 'Articulo' }
+                { name: 'TransferenciaId', index: 'TransferenciaId', width: 10 },
+                { name: 'ArticuloId', index: 'ArticuloId', hidden: true },
+                { name: 'Articulo', index: 'Articulo' },
+                { name: 'Cantidad', index: 'Cantidad', align: 'center', width: 10 },
+                { name: 'Series', index: 'Series', width: 60}
             ],
-            sortname: 'TransferenciaId',
+            sortname: 'ArticuloId',
             gridview: true,
             rowNum: 50,
             height: 'auto',
@@ -425,6 +427,7 @@
 
         $(window).resize(function () {
             jQuery("#grdDetalle").jqGrid('setGridWidth', parseInt($("#content").width()) - 62);
+            jQuery("#grdDocumentosAdjuntos").jqGrid('setGridWidth', parseInt($("#content").width()) / 2 - 45);
             ;
         });
 
@@ -468,6 +471,7 @@
 
                 $("#lblNroEntrada").text(mov.TransferenciaId);
                 $("#cboTipoMovimiento").val(mov.TipoTransferenciaId).trigger("liszt:updated");
+                //$("#txtfecha").text(mov.fecha);
                 $("#txtObs").val(mov.Observacion);
                 $("#cboDestino").trigger("liszt:updated");
 

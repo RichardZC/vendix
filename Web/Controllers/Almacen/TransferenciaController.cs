@@ -96,15 +96,16 @@ namespace VendixWeb.Controllers.Almacen
                 total = 1,
                 page = 1,
                 records = totalRecords,
-                rows = (from item in TransferenciaBL.ObtenerEntradaDetalle(transferenciaid)
+                rows = (from item in TransferenciaBL.ListarDetalleTransferencia(transferenciaid)
                         select new
                         {
-                            id = item.TransferenciaId,
+                            id = item.ArticuloId,
                             cell = new string[] {
                                                     item.TransferenciaId.ToString(),
-                                                    item.SerieArticuloId.ToString(),
-                                                    item.NumeroSerie.ToString(),
-                                                    item.Articulo.ToString()                                                    
+                                                    item.ArticuloId.ToString(),
+                                                    item.Articulo,
+                                                    item.Cantidad.ToString(),
+                                                    item.Series                                                    
                                                 }
                         }
                        ).ToArray()

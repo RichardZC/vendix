@@ -1576,6 +1576,9 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <Parameter Name="ArticuloId" Type="int" Mode="In" />
           <Parameter Name="AlmacenId" Type="int" Mode="In" />
         </Function>
+        <Function Name="usp_ListarDetalleTransferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
+          <Parameter Name="TransferenciaId" Type="int" Mode="In" />
+        </Function>
         <Function Name="usp_ListarSerieKardex" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="MovimientoDetalleId" Type="int" Mode="In" />
           <Parameter Name="IndStock" Type="bit" Mode="In" />
@@ -2486,7 +2489,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="Medida" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_EliminarMovimientoDet">
-            <Parameter Name="MovimientoDetId" Mode="In" Type="Int32" />
+          <Parameter Name="MovimientoDetId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_ExisteSerieArticulo" ReturnType="Collection(String)">
             <Parameter Name="ListaSerie" Mode="In" Type="String" />
@@ -2509,10 +2512,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="Observacion" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_ReporteStock" ReturnType="Collection(VENDIXModel.usp_ReporteStock_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_ActualizarSaldosBoveda">
-            <Parameter Name="BovedaId" Mode="In" Type="Int32" />
+          <Parameter Name="BovedaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_CalcularTEM" ReturnType="Collection(Decimal)">
             <Parameter Name="TEA" Mode="In" Type="Decimal" />
@@ -2563,7 +2566,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
-            <Parameter Name="CreditoId" Mode="In" Type="Int32" />
+          <Parameter Name="CreditoId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_MovimientoCaja_Del">
             <Parameter Name="MovimientoCajaId" Mode="In" Type="Int32" />
@@ -2612,7 +2615,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="usp_RptSaldosCaja" ReturnType="Collection(VENDIXModel.usp_RptSaldosCaja_Result)">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+          <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_SimuladorCredito" ReturnType="Collection(VENDIXModel.usp_SimuladorCredito_Result)">
             <Parameter Name="Tipo" Mode="In" Type="String" />
@@ -2633,7 +2636,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="BovedaMovTempId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_UsuariosNoAsignadosCaja" ReturnType="Collection(VENDIXModel.usp_UsuariosNoAsignadosCaja_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+          <Parameter Name="OficinaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_AgregarPuntos">
             <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
@@ -2648,7 +2651,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_CodigoBarras_Lst" ReturnType="Collection(VENDIXModel.usp_CodigoBarras_Lst_Result)">
-            <Parameter Name="pMovimientoId" Mode="In" Type="Int32" />
+          <Parameter Name="pMovimientoId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_OrdenVenta_Del">
             <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
@@ -2669,6 +2672,9 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="IndContado" Mode="In" Type="Boolean" />
             <Parameter Name="IndCredito" Mode="In" Type="Boolean" />
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ListarDetalleTransferencia" ReturnType="Collection(VENDIXModel.usp_ListarDetalleTransferencia_Result)">
+            <Parameter Name="TransferenciaId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Almacen">
@@ -4529,6 +4535,13 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="Rentabilidad" Nullable="true" Precision="17" Scale="2" />
           <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
         </ComplexType>
+        <ComplexType Name="usp_ListarDetalleTransferencia_Result">
+          <Property Type="Int32" Name="TransferenciaId" Nullable="false" />
+          <Property Type="Int32" Name="ArticuloId" Nullable="false" />
+          <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+          <Property Type="String" Name="Series" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5465,6 +5478,17 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="Modalidad" ColumnName="Modalidad" />
                 <ScalarProperty Name="Rentabilidad" ColumnName="Rentabilidad" />
                 <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ListarDetalleTransferencia" FunctionName="VENDIXModel.Store.usp_ListarDetalleTransferencia">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_ListarDetalleTransferencia_Result">
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+                <ScalarProperty Name="ArticuloId" ColumnName="ArticuloId" />
+                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
