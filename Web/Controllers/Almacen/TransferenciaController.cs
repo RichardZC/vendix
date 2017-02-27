@@ -65,7 +65,7 @@ namespace VendixWeb.Controllers.Almacen
                 UsuarioId = usuarioid,
                 Fecha = DateTime.Now,
                 Estado = "P"
-                
+
             };
             TransferenciaBL.Crear(item);
 
@@ -76,15 +76,22 @@ namespace VendixWeb.Controllers.Almacen
 
         public ActionResult AgregarTransferenciaSerie(string pNumeroSerie, int pTransferenciaId)
         {
-
-            var serieid = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie).SerieArticuloId;
-            
-            TransferenciaSerieBL.Crear( new TransferenciaSerie {
-                TransferenciaId= pTransferenciaId,
-                SerieArticuloId = serieid
-            });
-
-            return Json(true, JsonRequestBehavior.AllowGet);
+            string mensaje = string.Empty;
+            var serie = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie);
+            if (serie == null)
+            {
+                mensaje = "La serie no existe, ingrese otro.";
+            }
+            else
+            {
+                
+                TransferenciaSerieBL.Crear(new TransferenciaSerie
+                {
+                    TransferenciaId = pTransferenciaId,
+                    SerieArticuloId = serie.SerieArticuloId
+                });
+            }
+            return Json(mensaje, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -111,7 +118,7 @@ namespace VendixWeb.Controllers.Almacen
                                                     item.ArticuloId.ToString(),
                                                     item.Articulo,
                                                     item.Cantidad.ToString(),
-                                                    item.Series                                                    
+                                                    item.Series
                                                 }
                         }
                        ).ToArray()

@@ -60,8 +60,13 @@
                     <p class="_50 small">
                         <label for="txtBuscarSerie" class="inline">Ingrese Serie de Artículo:</label>
                         <input data-error-type="inline" type="text" class="required" id="txtBuscarSerie" />
-
                     </p>
+                    <div id="divAgregar" style="display: none">
+                        <div id="mensaje" class="alert error sticky">
+                            <span class="icon"></span>
+                            <strong id="lblmensaje"></strong>
+                        </div>
+                    </div>
                 </form>
                 @*<a id="lnkDesconfirmar" href="javascript:void(0);"><span class="icon icon-magic"></span>Desconfirmar</a>*@
                 <h1>Detalle transferencia</h1>
@@ -540,17 +545,21 @@
                 data: { pNumeroSerie: $.trim(this.value), pTransferenciaId: $.data(document.body, 'TransferenciaId') },
             success: function (ret) {
                 $("#divAgregar").show('fast');
-                if (ret.length > 15) {
+
+                if (ret.length > 0) {
                     $("#mensaje").removeClass('success').addClass('error');
                     $("#lblmensaje").text(ret);
                 } else {
                     $("#mensaje").addClass('success');
                     $("#lblmensaje").text("Articulo Agregado");
-                    $.removeData(document.body, 'TransferenciaId');
-                    $.data(document.body, 'TransferenciaId', ret);
+                    $("#grdDetalle").trigger("reloadGrid");
+                    //$.removeData(document.body, 'TransferenciaId');
+                    //$.data(document.body, 'TransferenciaId', ret);
                     //ListarDetalleOrdenVenta(ret);
                 }
-                $("#txtBuscarSerie").val('');
+                
+                $("#txtBuscarSerie").val('');                
+
             }
         });
     }
