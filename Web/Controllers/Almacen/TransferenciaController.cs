@@ -118,7 +118,8 @@ namespace VendixWeb.Controllers.Almacen
                                                     item.ArticuloId.ToString(),
                                                     item.Articulo,
                                                     item.Cantidad.ToString(),
-                                                    item.Series
+                                                    item.Series,
+                                                    item.TransferenciaId.ToString() + "," + item.ArticuloId.ToString()
                                                 }
                         }
                        ).ToArray()
@@ -135,6 +136,17 @@ namespace VendixWeb.Controllers.Almacen
         {
             var tra = TransferenciaBL.ObtenerEntradaSalida(pTransferenciaId);
             return Json(new { Fecha = tra.Fecha.ToString(), tra.Estado, tra.AlmacenDestino }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult EliminarTransferenciaSerie(int pTransferenciaId, int pArticuloId)
+        {
+            string qry = "DELETE ts " +
+            "FROM ALMACEN.TransferenciaSerie ts " +
+            "INNER JOIN ALMACEN.SerieArticulo sa ON ts.SerieArticuloId = sa.SerieArticuloId " +
+            "WHERE ts.TransferenciaId = "+ pTransferenciaId .ToString() + " and sa.ArticuloId = " + pArticuloId.ToString();
+            TransferenciaSerieBL.EjecutarSql(qry);
+            
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 

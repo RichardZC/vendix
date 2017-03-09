@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace ITB.VENDIX.BL
 {
- public   class TransferenciaSerieBL: Repositorio<TransferenciaSerie>
+    public class TransferenciaSerieBL : Repositorio<TransferenciaSerie>
     {
+        public static void Eliminar(TransferenciaSerie transferenciaSerie)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

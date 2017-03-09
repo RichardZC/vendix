@@ -362,13 +362,14 @@
                     return $.toJSON([{ Key: "TransferenciaId", Value: $.data(document.body, 'TransferenciaId') }]);
                 }
             },
-            colNames: ['ID', 'ArticuloId', 'Articulo', 'Cantidad', 'Series'],
+            colNames: ['ID', 'ArticuloId', 'Articulo', 'Cantidad', 'Series', 'Eliminar'],
             colModel: [
                 { name: 'TransferenciaId', index: 'TransferenciaId', width: 10 },
                 { name: 'ArticuloId', index: 'ArticuloId', hidden: true },
                 { name: 'Articulo', index: 'Articulo' },
                 { name: 'Cantidad', index: 'Cantidad', align: 'center', width: 10 },
-                { name: 'Series', index: 'Series', width: 60}
+                { name: 'Series', index: 'Series', width: 60 },
+                { name: 'Eliminar', index: 'Eliminar', align: 'center', width: 20, formatter: AccionFormatter }
             ],
             sortname: 'ArticuloId',
             gridview: true,
@@ -440,22 +441,29 @@
 
 
 
-    function ElimianrMovDetFormatter(cellvalue, options, rowObject) {
-        if (cellvalue.length == 0) return "";
-        return "<a href='#' onclick='DeleteMovDet(" + cellvalue + ");return false;' class='button small grey tooltip' data-gravity='s' title='Eliminar'><i class='icon-remove'></i></a>";
+    function AccionFormatter(cellvalue, options, rowObject) {
+        
+
+        if (cellvalue.length > 0) {
+            var arr = cellvalue.split(',');
+            return "<a href='#' onclick='EliminarTx(" + arr[0] + "," + arr[1] + ");return false;' class='button small grey tooltip' data-gravity='s' title='Eliminar'><i class='icon-remove'></i></a>";
+        }
+        return "";
     }
-    function DeleteMovDet(id) {
+
+    function EliminarTx(transferenciaId,articuloId) {
         $.ajax({
-            url: "@Url.Action("Delete", "Entrada")",
+            url: "@Url.Action("EliminarTransferenciaSerie", "Transferencia")",
             type: 'POST',
-            data: { pid: id },
+            data: { pTransferenciaId: transferenciaId, pArticuloId: articuloId },
             success: function (rpt) {
                 Vendix.Notificar('Eliminar');
-                $(".grdDelete").trigger("reloadGrid");
-                mostrarTotal();
+                $("#grdDetalle").trigger("reloadGrid");
+                //mostrarTotal();
             }
         });
     }
+
     function mostrardetalle() {
         var id = jQuery("#grdBuscar").jqGrid('getGridParam', 'selrow');
         if (id) {
@@ -521,13 +529,13 @@
         return str;
     }
 
-    function EliminarFormatter(cellvalue, options, rowObject) {
+    @*function EliminarFormatter(cellvalue, options, rowObject) {
         if (cellvalue.length == 0) return "";
         return "<a href='#' onclick='Eliminar(" + cellvalue + ");return false;' class='button small grey tooltip' data-gravity='s' title='Eliminar'><i class='icon-remove'></i></a>";
     }
     function Eliminar(id) {
         $.ajax({
-            url: "@Url.Action("Eliminar","Entrada")",
+            url: "@Url.Action("EliminarTransferenciaSerie", "Transferencia")",
             type: 'POST',
             data: { pid: id },
             success: function (rpt) {
@@ -535,7 +543,7 @@
                 $(".grdEliminar").trigger("reloadGrid");
             }
         });
-    }
+    }*@
 
     $("#txtBuscarSerie").keypress(function (event) {
         if (event.which == 13) {
