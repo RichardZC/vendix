@@ -78,22 +78,47 @@ namespace VendixWeb.Controllers.Almacen
         {
             string mensaje = string.Empty;
             var serie = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie);
-            if (serie == null)
+
+            TransferenciaSerieBL.Crear(new TransferenciaSerie
             {
-                mensaje = "La serie no existe, ingrese otro.";
-            }
-            else
-            {
-                
-                TransferenciaSerieBL.Crear(new TransferenciaSerie
-                {
-                    TransferenciaId = pTransferenciaId,
-                    SerieArticuloId = serie.SerieArticuloId
-                });
-            }
+                TransferenciaId = pTransferenciaId,
+                SerieArticuloId = serie.SerieArticuloId
+            });
+
             return Json(mensaje, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult ValidarSerie(string pNumeroSerie, int pTransferenciaId)
+        {
+            string mensaje = string.Empty;
+            int pserie2 = int.Parse(pNumeroSerie);
+
+            var serieA = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie);
+
+            // valida serie disponible
+            if (serieA == null || serieA.EstadoId != 2)
+            {
+                mensaje = "La serie no esta disponible, ingrese otro.";
+                return Json(mensaje, JsonRequestBehavior.AllowGet);
+            }
+
+            // valida series duplicadas
+            var existe = TransferenciaSerieBL.Contar(x => x.TransferenciaId == pTransferenciaId && x.SerieArticuloId == serieA.SerieArticuloId);
+            if (existe > 0)
+            {
+                mensaje = "La serie ya esta registrada, ingrese otro";
+                return Json(mensaje, JsonRequestBehavior.AllowGet);
+            }
+            
+            TransferenciaSerieBL.Crear(new TransferenciaSerie
+            {
+                TransferenciaId = pTransferenciaId,
+                SerieArticuloId = serieA.SerieArticuloId
+            });
+
+            return Json(mensaje, JsonRequestBehavior.AllowGet);
+        }
 
 
 
@@ -135,7 +160,16 @@ namespace VendixWeb.Controllers.Almacen
         public ActionResult ObtenerMovimientoExt(int pTransferenciaId)
         {
             var tra = TransferenciaBL.ObtenerEntradaSalida(pTransferenciaId);
-            return Json(new { Fecha = tra.Fecha.ToString(), tra.Estado, tra.AlmacenDestino }, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                Fecha = tra.Fecha.ToString(),
+                tra.Estado,
+                tra.AlmacenDestino,
+                tra.AlmacenOrigen
+            },
+                JsonRequestBehavior.AllowGet);
+
+
         }
 
         public ActionResult EliminarTransferenciaSerie(int pTransferenciaId, int pArticuloId)
@@ -143,12 +177,28 @@ namespace VendixWeb.Controllers.Almacen
             string qry = "DELETE ts " +
             "FROM ALMACEN.TransferenciaSerie ts " +
             "INNER JOIN ALMACEN.SerieArticulo sa ON ts.SerieArticuloId = sa.SerieArticuloId " +
-            "WHERE ts.TransferenciaId = "+ pTransferenciaId .ToString() + " and sa.ArticuloId = " + pArticuloId.ToString();
+            "WHERE ts.TransferenciaId = " + pTransferenciaId.ToString() + " and sa.ArticuloId = " + pArticuloId.ToString();
             TransferenciaSerieBL.EjecutarSql(qry);
-            
+
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult Desconfirmar(int pTransferenciaId)
+        {
+            return Json(TransferenciaBL.Desconfirmar(pTransferenciaId), JsonRequestBehavior.AllowGet);
+        }
+
+        
+        [HttpPost]
+        public ActionResult Confirmar(int pTransferenciaId)
+        {
+            return Json(TransferenciaBL.TransferirSeries(pTransferenciaId), JsonRequestBehavior.AllowGet);
+        }
+
     }
+
+
 
 
 

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ITB.VENDIX.BL
 {
@@ -127,13 +128,14 @@ namespace ITB.VENDIX.BL
             {
                 var qry2 = from tra in db.Transferencia
                            join al in db.Almacen on tra.AlmacenOrigenId equals al.AlmacenId
+                           join al2 in db.Almacen on tra.AlmacenDestinoId equals al2.AlmacenId
                            join us in db.Usuario on tra.UsuarioId equals us.UsuarioId
                            where tra.TransferenciaId == pTransferenciaId
                            select new EntradaSalida
                            {
                                TransferenciaId= tra.TransferenciaId,
                                AlmacenOrigen = al.Denominacion,
-                               AlmacenDestino = al.Denominacion,
+                               AlmacenDestino = al2.Denominacion,
                                UsuarioId = us.NombreUsuario,
                                Fecha = tra.Fecha,
                                Estado = tra.Estado
@@ -151,6 +153,68 @@ namespace ITB.VENDIX.BL
                 return db.usp_ListarDetalleTransferencia(pTransferenciaId).ToList();
             }
         }
+
+
+        public static bool Desconfirmar(int pTransferenciaId)
+        {
+            //using (var db = new VENDIXEntities())
+            //{
+            //    return db.usp_Movimiento_Upd(1, pMovimientoId, null, null, null).ToList()[0];
+            //}
+
+            string qry = "UPDATE ALMACEN.Transferencia"+
+                "  SET Estado = 'P' WHERE TransferenciaId ="+pTransferenciaId ;
+            return EjecutarSql(qry);
+
+        }
+
+        public static string TransferirSeries(int pTransferenciaId)
+        {
+
+            
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    using (var db = new VENDIXEntities())
+                    {
+                        var t = db.Transferencia.Find(pTransferenciaId);
+                        t.Estado = "C";
+                        Actualizar(db,t);
+
+                        var series = TransferenciaSerieBL.Listar(x=>x.TransferenciaId== pTransferenciaId,null,"SerieArticulo");
+
+                        foreach (var item in series)
+                        {
+                            item.SerieArticulo.EstadoId = 6; // estado trsnsfrido
+                            SerieArticuloBL.Actualizar(item.SerieArticulo);
+                        }
+                    }
+                    scope.Complete();
+                    return string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    return ex.Message;
+                }
+            }
+
+            //string qry = "UPDATE ALMACEN.Transferencia" +
+            //   "  SET Estado = 'C' WHERE TransferenciaId =" + pTransferenciaId;
+
+            //String qry2 = " UPDATE ALMACEN.SerieArticulo SET EstadoId = '4'" +
+            //    " FROM ALMACEN.TransferenciaSerie INNER JOIN ALMACEN.SerieArticulo" +
+            //    " ON ALMACEN.TransferenciaSerie.SerieArticuloId = ALMACEN.SerieArticulo.SerieArticuloId" +
+            //    " WHERE TransferenciaId = " + pTransferenciaId;
+
+            //return EjecutarSql(qry);
+        }
+
+
+
+
+
     }
 
     //public class EntradaDetalle
@@ -161,4 +225,6 @@ namespace ITB.VENDIX.BL
     //    public string Articulo { get; set; }
         
     //}
+
+
 }

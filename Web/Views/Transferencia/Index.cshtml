@@ -76,30 +76,34 @@
             <br>
             <br>
             <div class="details grid_6"></div>
-            <div class="details grid_6" style="float:right">
+            <div class="details grid_6" style="float:left">
                 <section>
                     <table>
                         <tr>
-                            <th>Estado:</th>
-                            <td>
-                                <span id="lblNroEntrada"></span>&nbsp;
-                                <span id="lblEstado"></span>&nbsp;
-                            </td>lblAlmacen
+                            <th>Transferencia:</th>
+                            <td><span id="lblNroEntrada"></span>&nbsp;</td>
+                            
+                            Datos de transferencia
                         </tr>
                         <tr>
                             <th>Fecha Op:</th>
                             <td>
-                                <span id="txtfecha" />
+                                @*<span id="txtfecha" />*@
+                            <span id="txtfecha"></span>&nbsp;
                             </td>
                         </tr>
                         <tr>
                             <th>Origen:</th>
-                            <td><span id="lblAlmacen"></span></td>
+                            <td><span id="lblAlmacen"></span>&nbsp;</td>
                         </tr>
                         <tr>
                             <th>Destino:</th>
-                            <td><span id="lblDestino"></span></td>
-                            @*<td>@Html.DropDownList("cboDestino")</td>*@
+                            <td><span id="lblDestino"></span>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <th>Estado:</th>
+                            <td><span id="lblEstado"></span>&nbsp;</td>
                         </tr>
 
                         <tr>
@@ -111,7 +115,9 @@
                         <tr>
                             <th></th>
                             <td style="float:right">
-                                <a id="lnkEnviar" href="javascript:void(0);"><span class="badge icon icon-check" style="cursor: pointer"> Enviar</span></a>
+                                @*<a id="lnkDesconfirmar" href="javascript:void(0);"><span class="icon icon-magic"></span>Desconfirmar</a>*@
+                                @*<a id="lnkConfirmar" href="javascript:void(0);"><span class="badge icon icon-check" style="cursor: pointer"> Enviar</span></a>*@
+                                <a id="lnkConfirmar" href="javascript:void(0);"><span class="badge green icon icon-check" style="cursor: pointer"> Confirmar</span></a>
                             </td>
                         </tr>
                     </table>
@@ -188,6 +194,30 @@
             return false;
         });
 
+
+        $("#lnkConfirmar").click(function () {
+            
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("Confirmar", "Transferencia")",
+                data: { pTransferenciaId: $.data(document.body, 'TransferenciaId') },
+            success: function (ret) {
+                if (ret.length==0) {
+                    Vendix.Notificar("Modificar");
+                    VerDetalle();
+                }
+                else {
+                    Vendix.Dialogo(ret, "Aceptar");
+                }
+            }
+        });
+    });
+
+
+
+
+
+    //********************************************* DESCONFIRMAR ********************************
         $("#lnkDesconfirmar").click(function () {
             event.preventDefault();
             $.ajax({
@@ -198,7 +228,7 @@
                 },
                 success: function (res) {
                     if (res == "UPD") {
-                        Vendix.Notificar("Modificar");
+                        Vendix.Notificar("Modificar"); 
                         VerDetalle();
                     }
                     else Vendix.Mensaje("No se puede DESCONFIRMAR, existe un árticulo vendido");
@@ -488,17 +518,18 @@
                 $("#txtObs").val(mov.Observacion);
                 $("#cboDestino").trigger("liszt:updated");
 
-                @*$.ajax({
+                $.ajax({
                     url: "@Url.Action("ObtenerMovimientoExt", "Transferencia")",
                     data: { pTransferenciaId: $.data(document.body, 'TransferenciaId') },
                     success: function (movext) {
-                        $("#lblAlmacenHeader").text(movext.Almacen);
-                        $("#lblAlmacen").text(movext.Almacen);
-                        $("#lblEstado").text(movext.Estado);
-                        $("#txtfecha").text(movext.Fecha);
                         
+                        $("#lblAlmacen").text(movext.AlmacenOrigen);
+                        $("#lblDestino").text(movext.AlmacenDestino);
+                        $("#txtfecha").text(movext.Fecha);
+                        $("#lblEstado").text(movext.Estado);
+                                              
                     }
-                });*@
+                });
 
                 $("#grdDetalle").trigger("reloadGrid");
                 $("#tabs").tabs({ disabled: [2] });
@@ -545,11 +576,32 @@
         });
     }*@
 
+
+    $("#lnkDesconfirmar").click(function () {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("Desconfirmar", "Transferencia")",
+            data: {
+            pMovimientoId: $.data(document.body, 'TransferenciaId')
+            },
+        success: function (res) {
+            if (res=="UPD") {
+                Vendix.Notificar("Modificar");
+                VerDetalle();
+            }
+            else Vendix.Mensaje("No se puede DESCONFIRMAR, existe un árticulo vendido");
+        }
+    });
+    });
+
+
+
     $("#txtBuscarSerie").keypress(function (event) {
         if (event.which == 13) {
             event.preventDefault();
             $.ajax({
-                url: "@Url.Action("AgregarTransferenciaSerie", "Transferencia")",
+                url: "@Url.Action("ValidarSerie", "Transferencia")",
                 data: { pNumeroSerie: $.trim(this.value), pTransferenciaId: $.data(document.body, 'TransferenciaId') },
             success: function (ret) {
                 $("#divAgregar").show('fast');

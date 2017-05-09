@@ -13,5 +13,14 @@ namespace ITB.VENDIX.BL
         {
             throw new NotImplementedException();
         }
+
+
+        public class EntradaSalida
+        {
+            public int TransferenciaSerieId { get; set; }
+            public int TransferenciaId { get; set; }
+            public string SerieArticuloId { get; set; }
+
+        }
     }
 }
