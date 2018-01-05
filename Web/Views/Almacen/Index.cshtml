@@ -69,7 +69,7 @@
     $$.ready(function () {
         
         $("#btnNuevo").click(function () {
-            $.data(document.body, 'Almacenid', 0);
+            $.data(document.body, 'AlmacenId', 0);
             $("#txtAlmacen").val("").removeAttr('disabled');
             $("#chkActivo").prop("checked", true);
             $("#dlgNuevo").dialog("open");
@@ -96,7 +96,7 @@
                     cache: false,
                     url: "@Url.Action("GuardarAlmacen", "Almacen")",
                     data: {
-                        'pAlmacenId': $.data(document.body, 'Almacenid'),
+                        'pAlmacenId': $.data(document.body, 'AlmacenId'),
                         'pOficinaId': $("#cboOficina").val(),
                         'pDenominacion': $("#txtAlmacen").val(),
                         'pDescripcion': $("#txtDescripcion").val(),
@@ -135,13 +135,13 @@
                     return $.toJSON([{ Key: "Buscar", Value: $("#txtBuscar").val() }]);
                 }
             },
-            colNames: ['INV NRO', 'DENOMINACION', 'DESCRIPCION', 'OFICINAID', 'OFICINA', 'ESTADO', 'ESTADO'],
+            colNames: ['INV NRO', 'DENOMINACION', 'DESCRIPCION', 'OficinaId', 'OFICINA', 'ESTADO', 'ESTADO'],
             colModel:
                 [
-                    { name: 'Almacenid', index: 'Almacenid', width: 75 },
+                    { name: 'AlmacenId', index: 'AlmacenId', width: 75 },
                     { name: 'Denominacion', index: 'Denominacion', width: 150, align: "left" },
                     { name: 'Descripcion', index: 'Descripcion', width: 150, align: "left" },
-                    { name: 'Oficinaid', index: 'Oficinaid', hidden: true },
+                    { name: 'OficinaId', index: 'OficinaId', hidden: true },
                     { name: 'Oficina', index: 'Oficina', width: 150, align: "left" },
                     { name: 'Estado', index: 'Estado', hidden: true },
                     { name: 'Activo', index: 'Activo', align: 'center', width: 80, formatter: ActivoFormatter }
@@ -150,7 +150,7 @@
             pager: jQuery('#grdpBuscar'),
             rowNum: 15,
             rowList: [15, 30, 45],
-            sortname: 'Almacenid',
+            sortname: 'AlmacenId',
             sortorder: "asc",
             viewrecords: true,
             rownumbers: true,
@@ -166,7 +166,7 @@
                     $("#cboOficina").val(ret.OficinaId).trigger("liszt:updated");
                     $("#txtDescripcion").val(ret.Descripcion);
                     $("#chkActivo").prop("checked", ret.Estado == "True" ? true : false);
-                    $.data(document.body, 'Almacenid', ret.AlmacenId);
+                    $.data(document.body, 'AlmacenId', ret.AlmacenId);
                     $("#dlgNuevo").dialog("open");
                 }
             }

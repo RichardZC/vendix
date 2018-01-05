@@ -56,10 +56,12 @@ namespace VendixWeb.Controllers
             item.Descripcion = pDescripcion;
             item.Estado = pActivo;
 
-            if (pAlmacenId == 0)
-                AlmacenBL.Crear(item);
-            else
-                AlmacenBL.Actualizar(item);
+            //if (pAlmacenId == 0)
+            //    AlmacenBL.Crear(item);
+            //else
+            //    AlmacenBL.Actualizar(item);
+
+            AlmacenBL.Guardar(item);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -69,7 +71,8 @@ namespace VendixWeb.Controllers
         {
             var item = AlmacenBL.Obtener(pid);
             item.Estado = !item.Estado;
-            AlmacenBL.Actualizar(item);
+            //AlmacenBL.Actualizar(item);
+            AlmacenBL.ActualizarParcial(item, x=>x.Estado);
             return Json(true);
         }
 

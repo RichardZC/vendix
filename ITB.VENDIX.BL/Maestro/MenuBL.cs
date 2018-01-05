@@ -15,6 +15,7 @@ namespace ITB.VENDIX.BL
             var usuarioId = VendixGlobal<int>.Obtener("UsuarioId");
             using (var db = new VENDIXEntities())
             {
+                
                 return db.usp_MenuLst(oficinaId, usuarioId).ToList();
             }
         }

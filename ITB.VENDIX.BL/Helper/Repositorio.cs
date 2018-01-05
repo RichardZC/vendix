@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ITB.VENDIX.BE;
+using System.Data.Entity.Migrations;
 
 namespace ITB.VENDIX.BL
 {
@@ -121,6 +122,7 @@ namespace ITB.VENDIX.BL
             {
                 dbContext.Set<T1>().Add(entity);
             }
+            
         }
 
         public static T1 Crear(T1 entity)
@@ -137,7 +139,26 @@ namespace ITB.VENDIX.BL
             }
             return null;
         }
-        
+        public static T1 Guardar(T1 entity)
+        {
+            using (var db = new VENDIXEntities())
+            {                
+                db.Set<T1>().AddOrUpdate(entity);
+                if (db.SaveChanges() > 0)
+                    return entity;
+            }
+            return null;
+        }
+        public static void Guardar(List<T1> entities)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                foreach (var e in entities)
+                    db.Set<T1>().AddOrUpdate(e);
+                db.SaveChanges() ;
+            }        
+        }
+
         public static void Actualizar(DbContext dbContext, T1 entity)
         {
             DbEntityEntry dbEntityEntry = dbContext.Entry(entity);
@@ -162,6 +183,23 @@ namespace ITB.VENDIX.BL
             }
             return false;
         }
+        public static void ActualizarParcial(T1 entity, params Expression<Func<T1, object>>[] properties)
+        {
+            using (var db = new VENDIXEntities())
+            {
+                var entry = db.Entry(entity);
+                if (entry.State == EntityState.Detached)
+                    db.Set<T1>().Attach(entity);
+
+                if (properties == null)
+                    foreach (var p in properties) entry.Property(p).IsModified = true;
+                else
+                    entry.State = EntityState.Modified;
+                
+               db.SaveChanges();
+            }            
+        }
+
 
         public static void Eliminar(DbContext dbContext, T1 entity)
         {
