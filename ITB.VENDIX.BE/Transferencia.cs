@@ -15,44 +15,38 @@ namespace ITB.VENDIX.BE
 using System;
     using System.Collections.Generic;
     
-public partial class SerieArticulo
+public partial class Transferencia
 {
 
-    public SerieArticulo()
+    public Transferencia()
     {
-
-        this.OrdenVentaDetSerie = new HashSet<OrdenVentaDetSerie>();
 
         this.TransferenciaSerie = new HashSet<TransferenciaSerie>();
 
     }
 
 
-    public int SerieArticuloId { get; set; }
+    public int TransferenciaId { get; set; }
 
-    public string NumeroSerie { get; set; }
+    public int AlmacenOrigenId { get; set; }
 
-    public int AlmacenId { get; set; }
+    public int AlmacenDestinoId { get; set; }
 
-    public int ArticuloId { get; set; }
+    public int UsuarioId { get; set; }
 
-    public int EstadoId { get; set; }
+    public System.DateTime Fecha { get; set; }
 
-    public Nullable<int> MovimientoDetEntId { get; set; }
-
-    public Nullable<int> MovimientoDetSalId { get; set; }
+    public string Estado { get; set; }
 
 
 
     public virtual Almacen Almacen { get; set; }
 
-    public virtual Articulo Articulo { get; set; }
-
-    public virtual MovimientoDet MovimientoDet { get; set; }
-
-    public virtual ICollection<OrdenVentaDetSerie> OrdenVentaDetSerie { get; set; }
+    public virtual Almacen Almacen1 { get; set; }
 
     public virtual ICollection<TransferenciaSerie> TransferenciaSerie { get; set; }
+
+    public virtual Usuario Usuario { get; set; }
 
 }
 

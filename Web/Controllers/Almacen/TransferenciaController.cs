@@ -29,7 +29,7 @@ namespace VendixWeb.Controllers.Almacen
         public ActionResult Listar(GridDataRequest request)
         {
             int totalRecords = 0;
-            var lstGrd = MovimientoBL.LstTransferenciaJGrid(request, ref totalRecords);
+            var lstGrd = TransferenciaBL.LstTransferenciaJGrid(request, ref totalRecords);
 
             var productsData = new
             {
@@ -39,16 +39,13 @@ namespace VendixWeb.Controllers.Almacen
                 rows = (from item in lstGrd
                         select new
                         {
-                            id = item.MovimientoId,
+                            id = item.TransferenciaId,
                             cell = new string[] {
-                                                    item.MovimientoId.ToString(),
-                                                    item.Tipo,
-                                                    item.TipoMovimientoId.ToString(),
-                                                    item.TipoMovimiento,
+                                                    item.TransferenciaId.ToString(),
+                                                    item.AlmacenOrigen,
+                                                    item.AlmacenDestino,
                                                     item.Fecha.ToString(),
-                                                    item.Documento,
-                                                    item.Estado,
-                                                    item.Observacion
+                                                    item.Estado
                                                 }
                         }
                        ).ToArray()
@@ -56,50 +53,147 @@ namespace VendixWeb.Controllers.Almacen
             return Json(productsData, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CrearTransferencia(int pAlmacenId) {
-            var item = new Movimiento
-            {
-                //MovimientoId = pMovimientoId,
-                AlmacenId = pAlmacenId,
-                TipoMovimientoId = 3,
-                Fecha = DateTime.Now,
-                EstadoId = 1,
-                Observacion = string.Empty,
-                IGV = 0,
-                TotalImporte = 0,
-                SubTotal = 0,
-                AjusteRedondeo = 0
-            };
-            MovimientoBL.Crear(item);
+        public ActionResult CrearTransferencia(int pAlmacenDestinoId)
+        {
+            var oficinaid = VendixGlobal.GetOficinaId();
+            var usuarioid = VendixGlobal.GetUsuarioId();
 
-            return Json(item.MovimientoId, JsonRequestBehavior.AllowGet);
+            var item = new Transferencia
+            {
+                AlmacenOrigenId = AlmacenBL.Obtener(x => x.OficinaId == oficinaid).AlmacenId,
+                AlmacenDestinoId = pAlmacenDestinoId,
+                UsuarioId = usuarioid,
+                Fecha = DateTime.Now,
+                Estado = "P"
+
+            };
+            TransferenciaBL.Crear(item);
+
+            return Json(item.TransferenciaId, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult Guardar(int pMovimientoId, int pAlmacenId, int pTipoMovimientoId, string pFecha, string pObservacion)
+
+
+        public ActionResult AgregarTransferenciaSerie(string pNumeroSerie, int pTransferenciaId)
         {
-            if (pMovimientoId == 0)
+            string mensaje = string.Empty;
+            var serie = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie);
+
+            TransferenciaSerieBL.Crear(new TransferenciaSerie
             {
-                var item = new Movimiento
-                {
-                    MovimientoId = pMovimientoId,
-                    AlmacenId = pAlmacenId,
-                    TipoMovimientoId = 3,
-                    Fecha = DateTime.Now,
-                    EstadoId = 1,
-                    Observacion = string.Empty,
-                    IGV = 0,
-                    TotalImporte = 0,
-                    SubTotal = 0,
-                    AjusteRedondeo = 0
-                };
-                MovimientoBL.Crear(item);
-                pMovimientoId = item.MovimientoId;
-            }
-            else
+                TransferenciaId = pTransferenciaId,
+                SerieArticuloId = serie.SerieArticuloId
+            });
+
+            return Json(mensaje, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult ValidarSerie(string pNumeroSerie, int pTransferenciaId)
+        {
+            string mensaje = string.Empty;
+            int pserie2 = int.Parse(pNumeroSerie);
+
+            var serieA = SerieArticuloBL.Obtener(x => x.NumeroSerie == pNumeroSerie);
+
+            // valida serie disponible
+            if (serieA == null || serieA.EstadoId != 2)
             {
-                MovimientoBL.ActualizarMov(pMovimientoId, pTipoMovimientoId, DateTime.Parse(pFecha), pObservacion);
+                mensaje = "La serie no esta disponible, ingrese otro.";
+                return Json(mensaje, JsonRequestBehavior.AllowGet);
             }
-            return Json(pMovimientoId, JsonRequestBehavior.AllowGet);
+
+            // valida series duplicadas
+            var existe = TransferenciaSerieBL.Contar(x => x.TransferenciaId == pTransferenciaId && x.SerieArticuloId == serieA.SerieArticuloId);
+            if (existe > 0)
+            {
+                mensaje = "La serie ya esta registrada, ingrese otro";
+                return Json(mensaje, JsonRequestBehavior.AllowGet);
+            }
+            
+            TransferenciaSerieBL.Crear(new TransferenciaSerie
+            {
+                TransferenciaId = pTransferenciaId,
+                SerieArticuloId = serieA.SerieArticuloId
+            });
+
+            return Json(mensaje, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public ActionResult ListarDetalle(GridDataRequest request)
+        {
+            int transferenciaid = request.DataFilters().Count > 0 ? int.Parse(request.DataFilters()["TransferenciaId"]) : 0;
+            if (transferenciaid == 0)
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+            const int totalRecords = 10;
+            var productsData = new
+            {
+                total = 1,
+                page = 1,
+                records = totalRecords,
+                rows = (from item in TransferenciaBL.ListarDetalleTransferencia(transferenciaid)
+                        select new
+                        {
+                            id = item.ArticuloId,
+                            cell = new string[] {
+                                                    item.TransferenciaId.ToString(),
+                                                    item.ArticuloId.ToString(),
+                                                    item.Articulo,
+                                                    item.Cantidad.ToString(),
+                                                    item.Series,
+                                                    item.TransferenciaId.ToString() + "," + item.ArticuloId.ToString()
+                                                }
+                        }
+                       ).ToArray()
+            };
+            return Json(productsData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ObtenerMovimiento(int pTransferenciaId)
+        {
+            return Json(TransferenciaBL.Obtener(pTransferenciaId), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ObtenerMovimientoExt(int pTransferenciaId)
+        {
+            var tra = TransferenciaBL.ObtenerEntradaSalida(pTransferenciaId);
+            return Json(new
+            {
+                Fecha = tra.Fecha.ToString(),
+                tra.Estado,
+                tra.AlmacenDestino,
+                tra.AlmacenOrigen
+            },
+                JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        public ActionResult EliminarTransferenciaSerie(int pTransferenciaId, int pArticuloId)
+        {
+            string qry = "DELETE ts " +
+            "FROM ALMACEN.TransferenciaSerie ts " +
+            "INNER JOIN ALMACEN.SerieArticulo sa ON ts.SerieArticuloId = sa.SerieArticuloId " +
+            "WHERE ts.TransferenciaId = " + pTransferenciaId.ToString() + " and sa.ArticuloId = " + pArticuloId.ToString();
+            TransferenciaSerieBL.EjecutarSql(qry);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Desconfirmar(int pTransferenciaId)
+        {
+            return Json(TransferenciaBL.Desconfirmar(pTransferenciaId), JsonRequestBehavior.AllowGet);
+        }
+
+        
+        [HttpPost]
+        public ActionResult Confirmar(int pTransferenciaId)
+        {
+            return Json(TransferenciaBL.TransferirSeries(pTransferenciaId), JsonRequestBehavior.AllowGet);
         }
 
     }

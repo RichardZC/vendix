@@ -13,28 +13,19 @@ namespace ITB.VENDIX.BE
 {
 
 using System;
-    using System.Collections.Generic;
     
-public partial class CuentaxCobrar
+public partial class usp_ListarDetalleTransferencia_Result
 {
 
-    public int CuentaxCobrarId { get; set; }
+    public int TransferenciaId { get; set; }
 
-    public string Operacion { get; set; }
+    public int ArticuloId { get; set; }
 
-    public decimal Monto { get; set; }
+    public string Articulo { get; set; }
 
-    public string Estado { get; set; }
+    public Nullable<int> Cantidad { get; set; }
 
-    public Nullable<int> MovimientoCajaId { get; set; }
-
-    public Nullable<int> CreditoId { get; set; }
-
-
-
-    public virtual Credito Credito { get; set; }
-
-    public virtual MovimientoCaja MovimientoCaja { get; set; }
+    public string Series { get; set; }
 
 }
 

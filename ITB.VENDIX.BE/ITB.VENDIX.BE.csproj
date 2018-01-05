@@ -188,6 +188,12 @@
     <Compile Include="TipoOperacion.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Transferencia.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransferenciaSerie.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_CentralRiesgoGenerar_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
@@ -201,6 +207,9 @@
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="usp_GenerarKardex_Result.cs">
+      <DependentUpon>VENDIXModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_ListarDetalleTransferencia_Result.cs">
       <DependentUpon>VENDIXModel.tt</DependentUpon>
     </Compile>
     <Compile Include="usp_MenuLst_Result.cs">
@@ -250,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="VENDIXModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

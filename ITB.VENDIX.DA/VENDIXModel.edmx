@@ -129,6 +129,25 @@
           <Property Name="IndDevolucion" Type="bit" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Transferencia">
+          <Key>
+            <PropertyRef Name="TransferenciaId" />
+          </Key>
+          <Property Name="TransferenciaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AlmacenOrigenId" Type="int" Nullable="false" />
+          <Property Name="AlmacenDestinoId" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Estado" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransferenciaSerie">
+          <Key>
+            <PropertyRef Name="TransferenciaSerieId" />
+          </Key>
+          <Property Name="TransferenciaSerieId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransferenciaId" Type="int" Nullable="false" />
+          <Property Name="SerieArticuloId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Aprobacion">
           <Key>
             <PropertyRef Name="CreditoId" />
@@ -921,6 +940,30 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Transfere__Serie__75AE3144">
+          <End Role="SerieArticulo" Type="Self.SerieArticulo" Multiplicity="1" />
+          <End Role="TransferenciaSerie" Type="Self.TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SerieArticulo">
+              <PropertyRef Name="SerieArticuloId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="SerieArticuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Trans__74BA0D0B">
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="1" />
+          <End Role="TransferenciaSerie" Type="Self.TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transferencia">
+              <PropertyRef Name="TransferenciaId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="TransferenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Usuario__Persona__33C07256">
           <End Role="Persona" Type="Self.Persona" Multiplicity="1" />
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
@@ -1473,6 +1516,42 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Transferencia_ALMACEN">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenOrigenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transferencia_ALMACEN1">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenDestinoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transferencia_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="usp_CrearMovimientoDet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="MovimientoId" Type="int" Mode="In" />
           <Parameter Name="MovimientoDetId" Type="int" Mode="In" />
@@ -1496,6 +1575,9 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         <Function Name="usp_GenerarKardex" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="ArticuloId" Type="int" Mode="In" />
           <Parameter Name="AlmacenId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ListarDetalleTransferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
+          <Parameter Name="TransferenciaId" Type="int" Mode="In" />
         </Function>
         <Function Name="usp_ListarSerieKardex" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="MovimientoDetalleId" Type="int" Mode="In" />
@@ -1681,6 +1763,8 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
           <EntitySet Name="SerieArticulo" EntityType="Self.SerieArticulo" Schema="ALMACEN" store:Type="Tables" />
           <EntitySet Name="TipoArticulo" EntityType="Self.TipoArticulo" Schema="ALMACEN" store:Type="Tables" />
           <EntitySet Name="TipoMovimiento" EntityType="Self.TipoMovimiento" Schema="ALMACEN" store:Type="Tables" />
+          <EntitySet Name="Transferencia" EntityType="Self.Transferencia" Schema="ALMACEN" store:Type="Tables" />
+          <EntitySet Name="TransferenciaSerie" EntityType="Self.TransferenciaSerie" Schema="ALMACEN" store:Type="Tables" />
           <EntitySet Name="Aprobacion" EntityType="Self.Aprobacion" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="Boveda" EntityType="Self.Boveda" Schema="CREDITO" store:Type="Tables" />
           <EntitySet Name="BovedaMov" EntityType="Self.BovedaMov" Schema="CREDITO" store:Type="Tables" />
@@ -1828,6 +1912,14 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK__TarjetaPu__Tarje__16500B00" Association="Self.FK__TarjetaPu__Tarje__16500B00">
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Serie__75AE3144" Association="Self.FK__Transfere__Serie__75AE3144">
+            <End Role="SerieArticulo" EntitySet="SerieArticulo" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Trans__74BA0D0B" Association="Self.FK__Transfere__Trans__74BA0D0B">
+            <End Role="Transferencia" EntitySet="Transferencia" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
           </AssociationSet>
           <AssociationSet Name="FK__Usuario__Persona__33C07256" Association="Self.FK__Usuario__Persona__33C07256">
             <End Role="Persona" EntitySet="Persona" />
@@ -2013,6 +2105,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="MovimientoDet" EntitySet="MovimientoDet" />
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
           </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_ALMACEN" Association="Self.FK_Transferencia_ALMACEN">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_ALMACEN1" Association="Self.FK_Transferencia_ALMACEN1">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_Usuario" Association="Self.FK_Transferencia_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2060,6 +2164,15 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <FunctionImport Name="usp_ActualizarSaldosBoveda">
           <Parameter Name="BovedaId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="usp_CalcularTEM" ReturnType="Collection(Decimal)">
+            <Parameter Name="TEA" Mode="In" Type="Decimal" />
+            <Parameter Name="FormaPago" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_CentralRiesgoGenerar" ReturnType="Collection(VENDIXModel.usp_CentralRiesgoGenerar_Result)">
+            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+            <Parameter Name="Anio" Mode="In" Type="Int32" />
+            <Parameter Name="Mes" Mode="In" Type="Int32" />
+          </FunctionImport>
           <FunctionImport Name="usp_Credito_Del">
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
             <Parameter Name="Observacion" Mode="In" Type="String" />
@@ -2089,6 +2202,15 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
             <Parameter Name="FechaCalculo" Mode="In" Type="DateTime" />
             <Parameter Name="IndCancelacion" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
+            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
+            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
+            <Parameter Name="IndEntrada" Mode="In" Type="Boolean" />
+            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
+            <Parameter Name="Importe" Mode="In" Type="Decimal" />
+            <Parameter Name="Decripcion" Mode="In" Type="String" />
+            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_EstadoPlanPago" ReturnType="Collection(VENDIXModel.usp_EstadoPlanPago_Result)">
           <Parameter Name="CreditoId" Mode="In" Type="Int32" />
@@ -2122,11 +2244,22 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="CreditoId" Mode="In" Type="Int32" />
             <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="usp_RptCredito" ReturnType="Collection(VENDIXModel.usp_RptCredito_Result)">
+            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+            <Parameter Name="Estado" Mode="In" Type="String" />
+            <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
+          </FunctionImport>
           <FunctionImport Name="usp_RptCreditoMorosidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoMorosidad_Result)">
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
             <Parameter Name="HastaFecha" Mode="In" Type="DateTime" />
             <Parameter Name="DiasAtrazoIni" Mode="In" Type="Int32" />
             <Parameter Name="DiasAtrazoFin" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_RptCreditoRentabilidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoRentabilidad_Result)">
+            <Parameter Name="OficnaId" Mode="In" Type="Int32" />
+            <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="usp_RptSaldosCaja" ReturnType="Collection(VENDIXModel.usp_RptSaldosCaja_Result)">
           <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
@@ -2151,6 +2284,14 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           </FunctionImport>
           <FunctionImport Name="usp_UsuariosNoAsignadosCaja" ReturnType="Collection(VENDIXModel.usp_UsuariosNoAsignadosCaja_Result)">
           <Parameter Name="OficinaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_AgregarPuntos">
+            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
+            <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_CanjearPuntos" ReturnType="Collection(String)">
+            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
+            <Parameter Name="NumeroSerie" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_MenuLst" ReturnType="Collection(VENDIXModel.usp_MenuLst_Result)">
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
@@ -2179,18 +2320,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <Parameter Name="IndCredito" Mode="In" Type="Boolean" />
             <Parameter Name="OficinaId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="usp_AgregarPuntos">
-            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
-            <Parameter Name="OrdenVentaId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_CanjearPuntos" ReturnType="Collection(String)">
-            <Parameter Name="CodCliente" Mode="In" Type="Decimal" />
-            <Parameter Name="NumeroSerie" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="usp_RptCreditoRentabilidad" ReturnType="Collection(VENDIXModel.usp_RptCreditoRentabilidad_Result)">
-            <Parameter Name="OficnaId" Mode="In" Type="Int32" />
-            <Parameter Name="FechaIni" Mode="In" Type="DateTime" />
-            <Parameter Name="FechaFin" Mode="In" Type="DateTime" />
+          <FunctionImport Name="usp_ListarDetalleTransferencia" ReturnType="Collection(VENDIXModel.usp_ListarDetalleTransferencia_Result)">
+          <Parameter Name="TransferenciaId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Almacen" EntityType="VENDIXModel.Almacen" />
           <EntitySet Name="Articulo" EntityType="VENDIXModel.Articulo" />
@@ -2202,12 +2333,16 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <EntitySet Name="SerieArticulo" EntityType="VENDIXModel.SerieArticulo" />
           <EntitySet Name="TipoArticulo" EntityType="VENDIXModel.TipoArticulo" />
           <EntitySet Name="TipoMovimiento" EntityType="VENDIXModel.TipoMovimiento" />
+          <EntitySet Name="Transferencia" EntityType="VENDIXModel.Transferencia" />
+          <EntitySet Name="TransferenciaSerie" EntityType="VENDIXModel.TransferenciaSerie" />
+          <EntitySet Name="Aprobacion" EntityType="VENDIXModel.Aprobacion" />
           <EntitySet Name="Boveda" EntityType="VENDIXModel.Boveda" />
           <EntitySet Name="BovedaMov" EntityType="VENDIXModel.BovedaMov" />
           <EntitySet Name="BovedaMovTemp" EntityType="VENDIXModel.BovedaMovTemp" />
           <EntitySet Name="Caja" EntityType="VENDIXModel.Caja" />
           <EntitySet Name="CajaDiario" EntityType="VENDIXModel.CajaDiario" />
           <EntitySet Name="Cargo" EntityType="VENDIXModel.Cargo" />
+          <EntitySet Name="CentralRiesgo" EntityType="VENDIXModel.CentralRiesgo" />
           <EntitySet Name="Credito" EntityType="VENDIXModel.Credito" />
           <EntitySet Name="CuentaxCobrar" EntityType="VENDIXModel.CuentaxCobrar" />
           <EntitySet Name="GastosAdm" EntityType="VENDIXModel.GastosAdm" />
@@ -2216,10 +2351,13 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <EntitySet Name="PlanPago" EntityType="VENDIXModel.PlanPago" />
           <EntitySet Name="Producto" EntityType="VENDIXModel.Producto" />
           <EntitySet Name="Cliente" EntityType="VENDIXModel.Cliente" />
+          <EntitySet Name="Departamento" EntityType="VENDIXModel.Departamento" />
+          <EntitySet Name="Distrito" EntityType="VENDIXModel.Distrito" />
           <EntitySet Name="Menu" EntityType="VENDIXModel.Menu" />
           <EntitySet Name="Ocupacion" EntityType="VENDIXModel.Ocupacion" />
           <EntitySet Name="Oficina" EntityType="VENDIXModel.Oficina" />
           <EntitySet Name="Persona" EntityType="VENDIXModel.Persona" />
+          <EntitySet Name="Provincia" EntityType="VENDIXModel.Provincia" />
           <EntitySet Name="Rol" EntityType="VENDIXModel.Rol" />
           <EntitySet Name="RolMenu" EntityType="VENDIXModel.RolMenu" />
           <EntitySet Name="TipoDocumento" EntityType="VENDIXModel.TipoDocumento" />
@@ -2246,6 +2384,14 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK_SERIEARTICULO_AlmacenId" Association="VENDIXModel.FK_SERIEARTICULO_AlmacenId">
             <End Role="Almacen" EntitySet="Almacen" />
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_ALMACEN" Association="VENDIXModel.FK_Transferencia_ALMACEN">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_ALMACEN1" Association="VENDIXModel.FK_Transferencia_ALMACEN1">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
           </AssociationSet>
           <AssociationSet Name="FK_ARTICULO_ModeloId" Association="VENDIXModel.FK_ARTICULO_ModeloId">
             <End Role="Modelo" EntitySet="Modelo" />
@@ -2307,6 +2453,26 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
             <End Role="OrdenVentaDetSerie" EntitySet="OrdenVentaDetSerie" />
           </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Serie__75AE3144" Association="VENDIXModel.FK__Transfere__Serie__75AE3144">
+            <End Role="SerieArticulo" EntitySet="SerieArticulo" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Trans__74BA0D0B" Association="VENDIXModel.FK__Transfere__Trans__74BA0D0B">
+            <End Role="Transferencia" EntitySet="Transferencia" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transferencia_Usuario" Association="VENDIXModel.FK_Transferencia_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CreditoEx__Credi__5AFA3B08" Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CreditoEx__Usuar__5BEE5F41" Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Aprobacion" EntitySet="Aprobacion" />
+          </AssociationSet>
           <AssociationSet Name="FK__Boveda__OficinaI__046664EF" Association="VENDIXModel.FK__Boveda__OficinaI__046664EF">
             <End Role="Oficina" EntitySet="Oficina" />
             <End Role="Boveda" EntitySet="Boveda" />
@@ -2354,6 +2520,10 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK_Cargo_Usuario" Association="VENDIXModel.FK_Cargo_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Cargo" EntitySet="Cargo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CentralRi__Credi__6E0D0F7C" Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C">
+            <End Role="Credito" EntitySet="Credito" />
+            <End Role="CentralRiesgo" EntitySet="CentralRiesgo" />
           </AssociationSet>
           <AssociationSet Name="FK__Credito__OrdenVe__3E5DFC5A" Association="VENDIXModel.FK__Credito__OrdenVe__3E5DFC5A">
             <End Role="OrdenVenta" EntitySet="OrdenVenta" />
@@ -2431,6 +2601,14 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Persona" EntitySet="Persona" />
             <End Role="Cliente" EntitySet="Cliente" />
           </AssociationSet>
+          <AssociationSet Name="FK__Provincia__idDep__002BBFB7" Association="VENDIXModel.FK__Provincia__idDep__002BBFB7">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Provincia" EntitySet="Provincia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Distrito__idProv__05E4990D" Association="VENDIXModel.FK__Distrito__idProv__05E4990D">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Distrito" EntitySet="Distrito" />
+          </AssociationSet>
           <AssociationSet Name="FK__RolMenu__MenuId__6BCFC14F" Association="VENDIXModel.FK__RolMenu__MenuId__6BCFC14F">
             <End Role="Menu" EntitySet="Menu" />
             <End Role="RolMenu" EntitySet="RolMenu" />
@@ -2503,55 +2681,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
           </AssociationSet>
-          <FunctionImport Name="usp_CalcularTEM" ReturnType="Collection(Decimal)">
-            <Parameter Name="TEA" Mode="In" Type="Decimal" />
-            <Parameter Name="FormaPago" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="usp_RptCredito" ReturnType="Collection(VENDIXModel.usp_RptCredito_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-            <Parameter Name="Estado" Mode="In" Type="String" />
-            <Parameter Name="FechaDesIni" Mode="In" Type="DateTime" />
-            <Parameter Name="FechaDesFin" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <EntitySet Name="Aprobacion" EntityType="VENDIXModel.Aprobacion" />
-          <EntitySet Name="CentralRiesgo" EntityType="VENDIXModel.CentralRiesgo" />
-          <EntitySet Name="Departamento" EntityType="VENDIXModel.Departamento" />
-          <EntitySet Name="Distrito" EntityType="VENDIXModel.Distrito" />
-          <EntitySet Name="Provincia" EntityType="VENDIXModel.Provincia" />
-          <AssociationSet Name="FK__CreditoEx__Credi__5AFA3B08" Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08">
-            <End Role="Credito" EntitySet="Credito" />
-            <End Role="Aprobacion" EntitySet="Aprobacion" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CreditoEx__Usuar__5BEE5F41" Association="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Aprobacion" EntitySet="Aprobacion" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CentralRi__Credi__6E0D0F7C" Association="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C">
-            <End Role="Credito" EntitySet="Credito" />
-            <End Role="CentralRiesgo" EntitySet="CentralRiesgo" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Provincia__idDep__002BBFB7" Association="VENDIXModel.FK__Provincia__idDep__002BBFB7">
-            <End Role="Departamento" EntitySet="Departamento" />
-            <End Role="Provincia" EntitySet="Provincia" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Distrito__idProv__05E4990D" Association="VENDIXModel.FK__Distrito__idProv__05E4990D">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Distrito" EntitySet="Distrito" />
-          </AssociationSet>
-          <FunctionImport Name="usp_CentralRiesgoGenerar" ReturnType="Collection(VENDIXModel.usp_CentralRiesgoGenerar_Result)">
-            <Parameter Name="OficinaId" Mode="In" Type="Int32" />
-            <Parameter Name="Anio" Mode="In" Type="Int32" />
-            <Parameter Name="Mes" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="usp_EntradaSalidaCajaDiario">
-            <Parameter Name="CajaDiarioId" Mode="In" Type="Int32" />
-            <Parameter Name="PersonaId" Mode="In" Type="Int32" />
-            <Parameter Name="IndEntrada" Mode="In" Type="Boolean" />
-            <Parameter Name="TipoOperacionId" Mode="In" Type="Int32" />
-            <Parameter Name="Importe" Mode="In" Type="Decimal" />
-            <Parameter Name="Decripcion" Mode="In" Type="String" />
-            <Parameter Name="UsuarioId" Mode="In" Type="Int32" />
-          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
           <Property Type="Int32" Name="MovimientoDetId" Nullable="true" />
@@ -2574,6 +2703,27 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
           <Property Type="Int32" Name="Stock" Nullable="false" />
           <Property Type="String" Name="Series" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_CentralRiesgoGenerar_Result">
+          <Property Type="Int32" Name="Anio" Nullable="true" />
+          <Property Type="Int32" Name="Mes" Nullable="true" />
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="String" Name="Periodo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="Entidad" Nullable="false" MaxLength="6" />
+          <Property Type="Int32" Name="TipoDoc" Nullable="false" />
+          <Property Type="String" Name="NumDoc" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="RazonSocial" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="ApePat" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="ApeMat" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="Nombres" Nullable="false" MaxLength="70" />
+          <Property Type="Int32" Name="TipoPersona" Nullable="false" />
+          <Property Type="Int32" Name="ModalidadCredito" Nullable="false" />
+          <Property Type="String" Name="DeudaMenor30" Nullable="true" MaxLength="13" />
+          <Property Type="String" Name="DeudaMayor30" Nullable="true" MaxLength="13" />
+          <Property Type="Int32" Name="Calificacion" Nullable="false" />
+          <Property Type="Int32" Name="DiasAtrazo" Nullable="false" />
+          <Property Type="String" Name="Direccion" Nullable="true" />
+          <Property Type="String" Name="celular" Nullable="true" MaxLength="10" />
         </ComplexType>
         <ComplexType Name="usp_CuotasPendientes_Result">
           <Property Type="Int32" Name="PlanPagoId" Nullable="false" />
@@ -2609,6 +2759,23 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="PagoCuota" Nullable="true" Precision="16" Scale="2" />
           <Property Type="Int32" Name="MovimientoCajaId" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="usp_RptCredito_Result">
+          <Property Type="String" Name="Producto" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
+          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="String" Name="TipoGastoAdm" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoDesembolso" Nullable="false" Precision="16" Scale="2" />
+        </ComplexType>
         <ComplexType Name="usp_RptCreditoMorosidad_Result">
           <Property Type="Int32" Name="CreditoId" Nullable="false" />
           <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
@@ -2628,6 +2795,27 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Int32" Name="DiasAtrazo" Nullable="true" />
           <Property Type="Int32" Name="CuotasAtrazo" Nullable="true" />
           <Property Type="Decimal" Name="DeudaAtrazo" Nullable="true" Precision="16" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_RptCreditoRentabilidad_Result">
+          <Property Type="Int32" Name="CreditoId" Nullable="false" />
+          <Property Type="String" Name="Oficina" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
+          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
+          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="Int32" Name="CuotasPagadas" Nullable="true" />
+          <Property Type="Decimal" Name="SumAmortizacion" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumGastosAdm" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumInteres" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumCuota" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumMora" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="SumPago" Nullable="true" Precision="38" Scale="2" />
         </ComplexType>
         <ComplexType Name="usp_RptSaldosCaja_Result">
           <Property Type="Int32" Name="MovimientoCajaId" Nullable="false" />
@@ -2683,26 +2871,12 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Type="Decimal" Name="Rentabilidad" Nullable="true" Precision="17" Scale="2" />
           <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
         </ComplexType>
-        <ComplexType Name="usp_RptCreditoRentabilidad_Result">
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="String" Name="Oficina" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
-          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Int32" Name="CuotasPagadas" Nullable="true" />
-          <Property Type="Decimal" Name="SumAmortizacion" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumGastosAdm" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumInteres" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumCuota" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumMora" Nullable="true" Precision="38" Scale="2" />
-          <Property Type="Decimal" Name="SumPago" Nullable="true" Precision="38" Scale="2" />
+        <ComplexType Name="usp_ListarDetalleTransferencia_Result">
+          <Property Type="Int32" Name="TransferenciaId" Nullable="false" />
+          <Property Type="Int32" Name="ArticuloId" Nullable="false" />
+          <Property Type="String" Name="Articulo" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+          <Property Type="String" Name="Series" Nullable="true" />
         </ComplexType>
         <EntityType Name="Almacen">
           <Key>
@@ -2718,6 +2892,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Oficina" Relationship="VENDIXModel.FK_ALMACEN_OficinaId" FromRole="Almacen" ToRole="Oficina" />
           <NavigationProperty Name="Movimiento" Relationship="VENDIXModel.FK_ENTRADASALIDA_AlmacenId" FromRole="Almacen" ToRole="Movimiento" />
           <NavigationProperty Name="SerieArticulo" Relationship="VENDIXModel.FK_SERIEARTICULO_AlmacenId" FromRole="Almacen" ToRole="SerieArticulo" />
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK_Transferencia_ALMACEN" FromRole="Almacen" ToRole="Transferencia" />
+          <NavigationProperty Name="Transferencia1" Relationship="VENDIXModel.FK_Transferencia_ALMACEN1" FromRole="Almacen" ToRole="Transferencia" />
         </EntityType>
         <EntityType Name="Articulo">
           <Key>
@@ -2831,6 +3007,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Articulo" Relationship="VENDIXModel.FK_SERIEARTICULO_ArticuloId" FromRole="SerieArticulo" ToRole="Articulo" />
           <NavigationProperty Name="MovimientoDet" Relationship="VENDIXModel.FK_SERIEARTICULO_MOVIMIENTODET" FromRole="SerieArticulo" ToRole="MovimientoDet" />
           <NavigationProperty Name="OrdenVentaDetSerie" Relationship="VENDIXModel.FK__OrdenVent__Serie__09952E60" FromRole="SerieArticulo" ToRole="OrdenVentaDetSerie" />
+          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Serie__75AE3144" FromRole="SerieArticulo" ToRole="TransferenciaSerie" />
         </EntityType>
         <EntityType Name="TipoArticulo">
           <Key>
@@ -2856,6 +3033,43 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="IndDevolucion" Type="Boolean" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Movimiento" Relationship="VENDIXModel.FK_ENTRADASALIDA_TipoMovimientoId" FromRole="TipoMovimiento" ToRole="Movimiento" />
+        </EntityType>
+        <EntityType Name="Transferencia">
+          <Key>
+            <PropertyRef Name="TransferenciaId" />
+          </Key>
+          <Property Name="TransferenciaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AlmacenOrigenId" Type="Int32" Nullable="false" />
+          <Property Name="AlmacenDestinoId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Almacen" Relationship="VENDIXModel.FK_Transferencia_ALMACEN" FromRole="Transferencia" ToRole="Almacen" />
+          <NavigationProperty Name="Almacen1" Relationship="VENDIXModel.FK_Transferencia_ALMACEN1" FromRole="Transferencia" ToRole="Almacen" />
+          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Trans__74BA0D0B" FromRole="Transferencia" ToRole="TransferenciaSerie" />
+          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Transferencia_Usuario" FromRole="Transferencia" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="TransferenciaSerie">
+          <Key>
+            <PropertyRef Name="TransferenciaSerieId" />
+          </Key>
+          <Property Name="TransferenciaSerieId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransferenciaId" Type="Int32" Nullable="false" />
+          <Property Name="SerieArticuloId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SerieArticulo" Relationship="VENDIXModel.FK__Transfere__Serie__75AE3144" FromRole="TransferenciaSerie" ToRole="SerieArticulo" />
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK__Transfere__Trans__74BA0D0B" FromRole="TransferenciaSerie" ToRole="Transferencia" />
+        </EntityType>
+        <EntityType Name="Aprobacion">
+          <Key>
+            <PropertyRef Name="CreditoId" />
+            <PropertyRef Name="Nivel" />
+          </Key>
+          <Property Name="CreditoId" Type="Int32" Nullable="false" />
+          <Property Name="Nivel" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Aprobacion" ToRole="Credito" />
+          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Aprobacion" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Boveda">
           <Key>
@@ -2962,6 +3176,20 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__Cargo__CreditoId__109731AA" FromRole="Cargo" ToRole="Credito" />
           <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Cargo_Usuario" FromRole="Cargo" ToRole="Usuario" />
         </EntityType>
+        <EntityType Name="CentralRiesgo">
+          <Key>
+            <PropertyRef Name="Anio" />
+            <PropertyRef Name="Mes" />
+            <PropertyRef Name="CreditoId" />
+          </Key>
+          <Property Name="Anio" Type="Int32" Nullable="false" />
+          <Property Name="Mes" Type="Int32" Nullable="false" />
+          <Property Name="CreditoId" Type="Int32" Nullable="false" />
+          <Property Name="DiasAtrazo" Type="Int32" Nullable="false" />
+          <Property Name="CuotasAtrazo" Type="Int32" Nullable="false" />
+          <Property Name="DeudaAtrazo" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
+          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="CentralRiesgo" ToRole="Credito" />
+        </EntityType>
         <EntityType Name="Credito">
           <Key>
             <PropertyRef Name="CreditoId" />
@@ -2992,7 +3220,9 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="FechaVencimiento" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="OrdenVentaId" Type="Int32" />
           <Property Name="TipoCuota" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Credito" ToRole="Aprobacion" />
           <NavigationProperty Name="Cargo" Relationship="VENDIXModel.FK__Cargo__CreditoId__109731AA" FromRole="Credito" ToRole="Cargo" />
+          <NavigationProperty Name="CentralRiesgo" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="Credito" ToRole="CentralRiesgo" />
           <NavigationProperty Name="OrdenVenta" Relationship="VENDIXModel.FK__Credito__OrdenVe__3E5DFC5A" FromRole="Credito" ToRole="OrdenVenta" />
           <NavigationProperty Name="CuentaxCobrar" Relationship="VENDIXModel.FK__CuentaxCo__Credi__3D69D821" FromRole="Credito" ToRole="CuentaxCobrar" />
           <NavigationProperty Name="PlanPago" Relationship="VENDIXModel.FK__PlanPago__Credit__75592B89" FromRole="Credito" ToRole="PlanPago" />
@@ -3002,8 +3232,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Credito_Usuario3" FromRole="Credito" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="VENDIXModel.FK_Credito_Usuario4" FromRole="Credito" ToRole="Usuario" />
           <NavigationProperty Name="MovimientoCaja" Relationship="VENDIXModel.FK_MovimientoCaja_Credito" FromRole="Credito" ToRole="MovimientoCaja" />
-          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Credito" ToRole="Aprobacion" />
-          <NavigationProperty Name="CentralRiesgo" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="Credito" ToRole="CentralRiesgo" />
         </EntityType>
         <EntityType Name="CuentaxCobrar">
           <Key>
@@ -3126,6 +3354,23 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Persona" Relationship="VENDIXModel.FK_Cliente_Persona" FromRole="Cliente" ToRole="Persona" />
         </EntityType>
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="idDepa" />
+          </Key>
+          <Property Name="idDepa" Type="Int32" Nullable="false" />
+          <Property Name="departamento1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Departamento" ToRole="Provincia" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="idDist" />
+          </Key>
+          <Property Name="idDist" Type="Int32" Nullable="false" />
+          <Property Name="distrito1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idProv" Type="Int32" />
+          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Distrito" ToRole="Provincia" />
+        </EntityType>
         <EntityType Name="Menu">
           <Key>
             <PropertyRef Name="MenuId" />
@@ -3196,6 +3441,16 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK__Usuario__Persona__33C07256" FromRole="Persona" ToRole="Usuario" />
           <NavigationProperty Name="OrdenVenta" Relationship="VENDIXModel.FK_OrdenVenta_Persona" FromRole="Persona" ToRole="OrdenVenta" />
         </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="idProv" />
+          </Key>
+          <Property Name="idProv" Type="Int32" Nullable="false" />
+          <Property Name="provincia1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idDepa" Type="Int32" />
+          <NavigationProperty Name="Departamento" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Provincia" ToRole="Departamento" />
+          <NavigationProperty Name="Distrito" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Provincia" ToRole="Distrito" />
+        </EntityType>
         <EntityType Name="Rol">
           <Key>
             <PropertyRef Name="RolId" />
@@ -3248,6 +3503,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ClaveUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK_Transferencia_Usuario" FromRole="Usuario" ToRole="Transferencia" />
+          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Usuario" ToRole="Aprobacion" />
           <NavigationProperty Name="Caja" Relationship="VENDIXModel.FK_Caja_Usuario" FromRole="Usuario" ToRole="Caja" />
           <NavigationProperty Name="Caja1" Relationship="VENDIXModel.FK_Caja_Usuario1" FromRole="Usuario" ToRole="Caja" />
           <NavigationProperty Name="CajaDiario" Relationship="VENDIXModel.FK__CajaDiari__Usuar__0DEFCF29" FromRole="Usuario" ToRole="CajaDiario" />
@@ -3262,7 +3519,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="UsuarioRol" Relationship="VENDIXModel.FK__UsuarioRo__Usuar__7094766C" FromRole="Usuario" ToRole="UsuarioRol" />
           <NavigationProperty Name="OrdenVenta" Relationship="VENDIXModel.FK_OrdenVenta_Usuario" FromRole="Usuario" ToRole="OrdenVenta" />
           <NavigationProperty Name="OrdenVenta1" Relationship="VENDIXModel.FK_OrdenVenta_Usuario1" FromRole="Usuario" ToRole="OrdenVenta" />
-          <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Usuario" ToRole="Aprobacion" />
         </EntityType>
         <EntityType Name="UsuarioOficina">
           <Key>
@@ -3430,6 +3686,30 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Principal>
             <Dependent Role="SerieArticulo">
               <PropertyRef Name="AlmacenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transferencia_ALMACEN">
+          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenOrigenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transferencia_ALMACEN1">
+          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenDestinoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3613,6 +3893,66 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Transfere__Serie__75AE3144">
+          <End Type="VENDIXModel.SerieArticulo" Role="SerieArticulo" Multiplicity="1" />
+          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SerieArticulo">
+              <PropertyRef Name="SerieArticuloId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="SerieArticuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Trans__74BA0D0B">
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="1" />
+          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transferencia">
+              <PropertyRef Name="TransferenciaId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="TransferenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transferencia_Usuario">
+          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CreditoEx__Credi__5AFA3B08">
+          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
+          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="CreditoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CreditoEx__Usuar__5BEE5F41">
+          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Aprobacion">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Boveda__OficinaI__046664EF">
           <End Type="VENDIXModel.Oficina" Role="Oficina" Multiplicity="1" />
           <End Type="VENDIXModel.Boveda" Role="Boveda" Multiplicity="*" />
@@ -3754,6 +4094,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Principal>
             <Dependent Role="Cargo">
               <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CentralRi__Credi__6E0D0F7C">
+          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
+          <End Type="VENDIXModel.CentralRiesgo" Role="CentralRiesgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Credito">
+              <PropertyRef Name="CreditoId" />
+            </Principal>
+            <Dependent Role="CentralRiesgo">
+              <PropertyRef Name="CreditoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3985,6 +4337,30 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Provincia__idDep__002BBFB7">
+          <End Type="VENDIXModel.Departamento" Role="Departamento" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="idDepa" />
+            </Principal>
+            <Dependent Role="Provincia">
+              <PropertyRef Name="idDepa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Distrito__idProv__05E4990D">
+          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="0..1" />
+          <End Type="VENDIXModel.Distrito" Role="Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="idProv" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="idProv" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__RolMenu__MenuId__6BCFC14F">
           <End Type="VENDIXModel.Menu" Role="Menu" Multiplicity="0..1" />
           <End Type="VENDIXModel.RolMenu" Role="RolMenu" Multiplicity="*" />
@@ -4201,158 +4577,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="usp_RptCredito_Result">
-          <Property Type="String" Name="Producto" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="250" />
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="DateTime" Name="FechaDesembolso" Nullable="true" Precision="23" />
-          <Property Type="DateTime" Name="FechaVcto" Nullable="true" />
-          <Property Type="String" Name="FormaPago" Nullable="false" MaxLength="1" />
-          <Property Type="Int32" Name="NumeroCuotas" Nullable="false" />
-          <Property Type="Decimal" Name="Interes" Nullable="false" Precision="4" Scale="2" />
-          <Property Type="String" Name="Estado" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoProducto" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoInicial" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoCredito" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="String" Name="TipoGastoAdm" Nullable="false" MaxLength="3" />
-          <Property Type="Decimal" Name="MontoGastosAdm" Nullable="false" Precision="16" Scale="2" />
-          <Property Type="Decimal" Name="MontoDesembolso" Nullable="false" Precision="16" Scale="2" />
-        </ComplexType>
-        <EntityType Name="Aprobacion">
-          <Key>
-            <PropertyRef Name="CreditoId" />
-            <PropertyRef Name="Nivel" />
-          </Key>
-          <Property Name="CreditoId" Type="Int32" Nullable="false" />
-          <Property Name="Nivel" Type="Int32" Nullable="false" />
-          <Property Name="UsuarioId" Type="Int32" />
-          <Property Name="Fecha" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08" FromRole="Aprobacion" ToRole="Credito" />
-          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Aprobacion" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="CentralRiesgo">
-          <Key>
-            <PropertyRef Name="Anio" />
-            <PropertyRef Name="Mes" />
-            <PropertyRef Name="CreditoId" />
-          </Key>
-          <Property Name="Anio" Type="Int32" Nullable="false" />
-          <Property Name="Mes" Type="Int32" Nullable="false" />
-          <Property Name="CreditoId" Type="Int32" Nullable="false" />
-          <Property Name="DiasAtrazo" Type="Int32" Nullable="false" />
-          <Property Name="CuotasAtrazo" Type="Int32" Nullable="false" />
-          <Property Name="DeudaAtrazo" Type="Decimal" Nullable="false" Precision="15" Scale="2" />
-          <NavigationProperty Name="Credito" Relationship="VENDIXModel.FK__CentralRi__Credi__6E0D0F7C" FromRole="CentralRiesgo" ToRole="Credito" />
-        </EntityType>
-        <EntityType Name="Departamento">
-          <Key>
-            <PropertyRef Name="idDepa" />
-          </Key>
-          <Property Name="idDepa" Type="Int32" Nullable="false" />
-          <Property Name="departamento1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Departamento" ToRole="Provincia" />
-        </EntityType>
-        <EntityType Name="Distrito">
-          <Key>
-            <PropertyRef Name="idDist" />
-          </Key>
-          <Property Name="idDist" Type="Int32" Nullable="false" />
-          <Property Name="distrito1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idProv" Type="Int32" />
-          <NavigationProperty Name="Provincia" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Distrito" ToRole="Provincia" />
-        </EntityType>
-        <EntityType Name="Provincia">
-          <Key>
-            <PropertyRef Name="idProv" />
-          </Key>
-          <Property Name="idProv" Type="Int32" Nullable="false" />
-          <Property Name="provincia1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idDepa" Type="Int32" />
-          <NavigationProperty Name="Departamento" Relationship="VENDIXModel.FK__Provincia__idDep__002BBFB7" FromRole="Provincia" ToRole="Departamento" />
-          <NavigationProperty Name="Distrito" Relationship="VENDIXModel.FK__Distrito__idProv__05E4990D" FromRole="Provincia" ToRole="Distrito" />
-        </EntityType>
-        <Association Name="FK__CreditoEx__Credi__5AFA3B08">
-          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
-          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Credito">
-              <PropertyRef Name="CreditoId" />
-            </Principal>
-            <Dependent Role="Aprobacion">
-              <PropertyRef Name="CreditoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CreditoEx__Usuar__5BEE5F41">
-          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="0..1" />
-          <End Type="VENDIXModel.Aprobacion" Role="Aprobacion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="UsuarioId" />
-            </Principal>
-            <Dependent Role="Aprobacion">
-              <PropertyRef Name="UsuarioId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__CentralRi__Credi__6E0D0F7C">
-          <End Type="VENDIXModel.Credito" Role="Credito" Multiplicity="1" />
-          <End Type="VENDIXModel.CentralRiesgo" Role="CentralRiesgo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Credito">
-              <PropertyRef Name="CreditoId" />
-            </Principal>
-            <Dependent Role="CentralRiesgo">
-              <PropertyRef Name="CreditoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Provincia__idDep__002BBFB7">
-          <End Type="VENDIXModel.Departamento" Role="Departamento" Multiplicity="0..1" />
-          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Departamento">
-              <PropertyRef Name="idDepa" />
-            </Principal>
-            <Dependent Role="Provincia">
-              <PropertyRef Name="idDepa" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Distrito__idProv__05E4990D">
-          <End Type="VENDIXModel.Provincia" Role="Provincia" Multiplicity="0..1" />
-          <End Type="VENDIXModel.Distrito" Role="Distrito" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Provincia">
-              <PropertyRef Name="idProv" />
-            </Principal>
-            <Dependent Role="Distrito">
-              <PropertyRef Name="idProv" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <ComplexType Name="usp_CentralRiesgoGenerar_Result">
-          <Property Type="Int32" Name="Anio" Nullable="true" />
-          <Property Type="Int32" Name="Mes" Nullable="true" />
-          <Property Type="Int32" Name="CreditoId" Nullable="false" />
-          <Property Type="String" Name="Periodo" Nullable="true" MaxLength="6" />
-          <Property Type="String" Name="Entidad" Nullable="false" MaxLength="3" />
-          <Property Type="Int32" Name="TipoDoc" Nullable="false" />
-          <Property Type="String" Name="NumDoc" Nullable="false" MaxLength="12" />
-          <Property Type="String" Name="RazonSocial" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ApePat" Nullable="true" MaxLength="25" />
-          <Property Type="String" Name="ApeMat" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="Nombres" Nullable="true" MaxLength="30" />
-          <Property Type="Int32" Name="TipoPersona" Nullable="false" />
-          <Property Type="Int32" Name="ModalidadCredito" Nullable="false" />
-          <Property Type="String" Name="DeudaMenor30" Nullable="true" MaxLength="13" />
-          <Property Type="String" Name="DeudaMayor30" Nullable="true" MaxLength="13" />
-          <Property Type="Int32" Name="Calificacion" Nullable="true" />
-          <Property Type="Int32" Name="DiasAtrazo" Nullable="false" />
-          <Property Type="String" Name="Direccion" Nullable="true" />
-          <Property Type="String" Name="celular" Nullable="true" MaxLength="10" />
-        </ComplexType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4394,6 +4619,32 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_ActualizarSaldosBoveda" FunctionName="VENDIXModel.Store.usp_ActualizarSaldosBoveda" />
+          <FunctionImportMapping FunctionImportName="usp_CalcularTEM" FunctionName="VENDIXModel.Store.usp_CalcularTEM" />
+          <FunctionImportMapping FunctionImportName="usp_CentralRiesgoGenerar" FunctionName="VENDIXModel.Store.usp_CentralRiesgoGenerar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_CentralRiesgoGenerar_Result">
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Entidad" ColumnName="Entidad" />
+                <ScalarProperty Name="TipoDoc" ColumnName="TipoDoc" />
+                <ScalarProperty Name="NumDoc" ColumnName="NumDoc" />
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="ApePat" ColumnName="ApePat" />
+                <ScalarProperty Name="ApeMat" ColumnName="ApeMat" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="TipoPersona" ColumnName="TipoPersona" />
+                <ScalarProperty Name="ModalidadCredito" ColumnName="ModalidadCredito" />
+                <ScalarProperty Name="DeudaMenor30" ColumnName="DeudaMenor30" />
+                <ScalarProperty Name="DeudaMayor30" ColumnName="DeudaMayor30" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_Credito_Del" FunctionName="VENDIXModel.Store.usp_Credito_Del" />
           <FunctionImportMapping FunctionImportName="usp_Credito_Ins" FunctionName="VENDIXModel.Store.usp_Credito_Ins" />
           <FunctionImportMapping FunctionImportName="usp_Credito_Upd" FunctionName="VENDIXModel.Store.usp_Credito_Upd" />
@@ -4416,6 +4667,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
           <FunctionImportMapping FunctionImportName="usp_EstadoPlanPago" FunctionName="VENDIXModel.Store.usp_EstadoPlanPago">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_EstadoPlanPago_Result">
@@ -4444,6 +4696,27 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <FunctionImportMapping FunctionImportName="usp_PagarCuotas" FunctionName="VENDIXModel.Store.usp_PagarCuotas" />
           <FunctionImportMapping FunctionImportName="usp_PagarCuotasCancelacion" FunctionName="VENDIXModel.Store.usp_PagarCuotasCancelacion" />
           <FunctionImportMapping FunctionImportName="usp_ReprogramarCredito" FunctionName="VENDIXModel.Store.usp_ReprogramarCredito" />
+          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
+                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
+                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
+                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
+                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="TipoGastoAdm" ColumnName="TipoGastoAdm" />
+                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
+                <ScalarProperty Name="MontoDesembolso" ColumnName="MontoDesembolso" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_RptCreditoMorosidad" FunctionName="VENDIXModel.Store.usp_RptCreditoMorosidad">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoMorosidad_Result">
@@ -4465,6 +4738,31 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
                 <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
                 <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_RptCreditoRentabilidad" FunctionName="VENDIXModel.Store.usp_RptCreditoRentabilidad">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoRentabilidad_Result">
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Oficina" ColumnName="Oficina" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
+                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
+                <ScalarProperty Name="Interes" ColumnName="Interes" />
+                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
+                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
+                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
+                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
+                <ScalarProperty Name="CuotasPagadas" ColumnName="CuotasPagadas" />
+                <ScalarProperty Name="SumAmortizacion" ColumnName="SumAmortizacion" />
+                <ScalarProperty Name="SumGastosAdm" ColumnName="SumGastosAdm" />
+                <ScalarProperty Name="SumInteres" ColumnName="SumInteres" />
+                <ScalarProperty Name="SumCuota" ColumnName="SumCuota" />
+                <ScalarProperty Name="SumMora" ColumnName="SumMora" />
+                <ScalarProperty Name="SumPago" ColumnName="SumPago" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4503,6 +4801,8 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_AgregarPuntos" FunctionName="VENDIXModel.Store.usp_AgregarPuntos" />
+          <FunctionImportMapping FunctionImportName="usp_CanjearPuntos" FunctionName="VENDIXModel.Store.usp_CanjearPuntos" />
           <FunctionImportMapping FunctionImportName="usp_MenuLst" FunctionName="VENDIXModel.Store.usp_MenuLst">
             <ResultMapping>
               <ComplexTypeMapping TypeName="VENDIXModel.usp_MenuLst_Result">
@@ -4550,30 +4850,14 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_AgregarPuntos" FunctionName="VENDIXModel.Store.usp_AgregarPuntos" />
-          <FunctionImportMapping FunctionImportName="usp_CanjearPuntos" FunctionName="VENDIXModel.Store.usp_CanjearPuntos" />
-          <FunctionImportMapping FunctionImportName="usp_RptCreditoRentabilidad" FunctionName="VENDIXModel.Store.usp_RptCreditoRentabilidad">
+          <FunctionImportMapping FunctionImportName="usp_ListarDetalleTransferencia" FunctionName="VENDIXModel.Store.usp_ListarDetalleTransferencia">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCreditoRentabilidad_Result">
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="Oficina" ColumnName="Oficina" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
-                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
-                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
-                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
-                <ScalarProperty Name="CuotasPagadas" ColumnName="CuotasPagadas" />
-                <ScalarProperty Name="SumAmortizacion" ColumnName="SumAmortizacion" />
-                <ScalarProperty Name="SumGastosAdm" ColumnName="SumGastosAdm" />
-                <ScalarProperty Name="SumInteres" ColumnName="SumInteres" />
-                <ScalarProperty Name="SumCuota" ColumnName="SumCuota" />
-                <ScalarProperty Name="SumMora" ColumnName="SumMora" />
-                <ScalarProperty Name="SumPago" ColumnName="SumPago" />
+              <ComplexTypeMapping TypeName="VENDIXModel.usp_ListarDetalleTransferencia_Result">
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+                <ScalarProperty Name="ArticuloId" ColumnName="ArticuloId" />
+                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4711,6 +4995,37 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Transferencia">
+            <EntityTypeMapping TypeName="VENDIXModel.Transferencia">
+              <MappingFragment StoreEntitySet="Transferencia">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="AlmacenDestinoId" ColumnName="AlmacenDestinoId" />
+                <ScalarProperty Name="AlmacenOrigenId" ColumnName="AlmacenOrigenId" />
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransferenciaSerie">
+            <EntityTypeMapping TypeName="VENDIXModel.TransferenciaSerie">
+              <MappingFragment StoreEntitySet="TransferenciaSerie">
+                <ScalarProperty Name="SerieArticuloId" ColumnName="SerieArticuloId" />
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+                <ScalarProperty Name="TransferenciaSerieId" ColumnName="TransferenciaSerieId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Aprobacion">
+            <EntityTypeMapping TypeName="VENDIXModel.Aprobacion">
+              <MappingFragment StoreEntitySet="Aprobacion">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Boveda">
             <EntityTypeMapping TypeName="VENDIXModel.Boveda">
               <MappingFragment StoreEntitySet="Boveda">
@@ -4803,6 +5118,18 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="NumCuota" ColumnName="NumCuota" />
                 <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
                 <ScalarProperty Name="CargoId" ColumnName="CargoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CentralRiesgo">
+            <EntityTypeMapping TypeName="VENDIXModel.CentralRiesgo">
+              <MappingFragment StoreEntitySet="CentralRiesgo">
+                <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
+                <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
+                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
+                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Anio" ColumnName="Anio" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4948,6 +5275,23 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Departamento">
+            <EntityTypeMapping TypeName="VENDIXModel.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="departamento1" ColumnName="departamento" />
+                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distrito">
+            <EntityTypeMapping TypeName="VENDIXModel.Distrito">
+              <MappingFragment StoreEntitySet="Distrito">
+                <ScalarProperty Name="idProv" ColumnName="idProv" />
+                <ScalarProperty Name="distrito1" ColumnName="distrito" />
+                <ScalarProperty Name="idDist" ColumnName="idDist" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Menu">
             <EntityTypeMapping TypeName="VENDIXModel.Menu">
               <MappingFragment StoreEntitySet="Menu">
@@ -5002,6 +5346,15 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="ApePaterno" ColumnName="ApePaterno" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="PersonaId" ColumnName="PersonaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provincia">
+            <EntityTypeMapping TypeName="VENDIXModel.Provincia">
+              <MappingFragment StoreEntitySet="Provincia">
+                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
+                <ScalarProperty Name="provincia1" ColumnName="provincia" />
+                <ScalarProperty Name="idProv" ColumnName="idProv" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5175,102 +5528,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_CalcularTEM" FunctionName="VENDIXModel.Store.usp_CalcularTEM" />
-          <FunctionImportMapping FunctionImportName="usp_RptCredito" FunctionName="VENDIXModel.Store.usp_RptCredito">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_RptCredito_Result">
-                <ScalarProperty Name="Producto" ColumnName="Producto" />
-                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="FechaDesembolso" ColumnName="FechaDesembolso" />
-                <ScalarProperty Name="FechaVcto" ColumnName="FechaVcto" />
-                <ScalarProperty Name="FormaPago" ColumnName="FormaPago" />
-                <ScalarProperty Name="NumeroCuotas" ColumnName="NumeroCuotas" />
-                <ScalarProperty Name="Interes" ColumnName="Interes" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="MontoProducto" ColumnName="MontoProducto" />
-                <ScalarProperty Name="MontoInicial" ColumnName="MontoInicial" />
-                <ScalarProperty Name="MontoCredito" ColumnName="MontoCredito" />
-                <ScalarProperty Name="TipoGastoAdm" ColumnName="TipoGastoAdm" />
-                <ScalarProperty Name="MontoGastosAdm" ColumnName="MontoGastosAdm" />
-                <ScalarProperty Name="MontoDesembolso" ColumnName="MontoDesembolso" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <EntitySetMapping Name="Aprobacion">
-            <EntityTypeMapping TypeName="VENDIXModel.Aprobacion">
-              <MappingFragment StoreEntitySet="Aprobacion">
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
-                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CentralRiesgo">
-            <EntityTypeMapping TypeName="VENDIXModel.CentralRiesgo">
-              <MappingFragment StoreEntitySet="CentralRiesgo">
-                <ScalarProperty Name="DeudaAtrazo" ColumnName="DeudaAtrazo" />
-                <ScalarProperty Name="CuotasAtrazo" ColumnName="CuotasAtrazo" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="Mes" ColumnName="Mes" />
-                <ScalarProperty Name="Anio" ColumnName="Anio" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Departamento">
-            <EntityTypeMapping TypeName="VENDIXModel.Departamento">
-              <MappingFragment StoreEntitySet="Departamento">
-                <ScalarProperty Name="departamento1" ColumnName="departamento" />
-                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Distrito">
-            <EntityTypeMapping TypeName="VENDIXModel.Distrito">
-              <MappingFragment StoreEntitySet="Distrito">
-                <ScalarProperty Name="idProv" ColumnName="idProv" />
-                <ScalarProperty Name="distrito1" ColumnName="distrito" />
-                <ScalarProperty Name="idDist" ColumnName="idDist" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Provincia">
-            <EntityTypeMapping TypeName="VENDIXModel.Provincia">
-              <MappingFragment StoreEntitySet="Provincia">
-                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
-                <ScalarProperty Name="provincia1" ColumnName="provincia" />
-                <ScalarProperty Name="idProv" ColumnName="idProv" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_CentralRiesgoGenerar" FunctionName="VENDIXModel.Store.usp_CentralRiesgoGenerar">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_CentralRiesgoGenerar_Result">
-                <ScalarProperty Name="Anio" ColumnName="Anio" />
-                <ScalarProperty Name="Mes" ColumnName="Mes" />
-                <ScalarProperty Name="CreditoId" ColumnName="CreditoId" />
-                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
-                <ScalarProperty Name="Entidad" ColumnName="Entidad" />
-                <ScalarProperty Name="TipoDoc" ColumnName="TipoDoc" />
-                <ScalarProperty Name="NumDoc" ColumnName="NumDoc" />
-                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
-                <ScalarProperty Name="ApePat" ColumnName="ApePat" />
-                <ScalarProperty Name="ApeMat" ColumnName="ApeMat" />
-                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
-                <ScalarProperty Name="TipoPersona" ColumnName="TipoPersona" />
-                <ScalarProperty Name="ModalidadCredito" ColumnName="ModalidadCredito" />
-                <ScalarProperty Name="DeudaMenor30" ColumnName="DeudaMenor30" />
-                <ScalarProperty Name="DeudaMayor30" ColumnName="DeudaMayor30" />
-                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
-                <ScalarProperty Name="DiasAtrazo" ColumnName="DiasAtrazo" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="celular" ColumnName="celular" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_EntradaSalidaCajaDiario" FunctionName="VENDIXModel.Store.usp_EntradaSalidaCajaDiario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
