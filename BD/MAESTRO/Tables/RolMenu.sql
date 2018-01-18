@@ -1,0 +1,9 @@
+﻿CREATE TABLE [MAESTRO].[RolMenu] (
+    [RolMenuId] INT IDENTITY (1, 1) NOT NULL,
+    [RolId]     INT NULL,
+    [MenuId]    INT NULL,
+    CONSTRAINT [PK__RolMenu__8339C1FE68F354A4] PRIMARY KEY CLUSTERED ([RolMenuId] ASC),
+    CONSTRAINT [FK__RolMenu__MenuId__6BCFC14F] FOREIGN KEY ([MenuId]) REFERENCES [MAESTRO].[Menu] ([MenuId]),
+    CONSTRAINT [FK__RolMenu__RolId__6ADB9D16] FOREIGN KEY ([RolId]) REFERENCES [MAESTRO].[Rol] ([RolId])
+);
+

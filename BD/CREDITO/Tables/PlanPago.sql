@@ -1,0 +1,27 @@
+﻿CREATE TABLE [CREDITO].[PlanPago] (
+    [PlanPagoId]       INT             IDENTITY (1, 1) NOT NULL,
+    [CreditoId]        INT             NOT NULL,
+    [Numero]           INT             NOT NULL,
+    [Capital]          DECIMAL (16, 2) NOT NULL,
+    [FechaVencimiento] DATE            NOT NULL,
+    [Amortizacion]     DECIMAL (16, 2) NOT NULL,
+    [Interes]          DECIMAL (16, 2) NOT NULL,
+    [GastosAdm]        DECIMAL (16, 2) NOT NULL,
+    [Cuota]            DECIMAL (16, 2) NOT NULL,
+    [Estado]           CHAR (3)        CONSTRAINT [DF_PlanPago_EstadoId] DEFAULT ((0)) NOT NULL,
+    [DiasAtrazo]       INT             CONSTRAINT [DF_PlanPago_DiasAtrazo] DEFAULT ((0)) NOT NULL,
+    [ImporteMora]      DECIMAL (16, 2) CONSTRAINT [DF_PlanPago_ImporteMora] DEFAULT ((0)) NOT NULL,
+    [InteresMora]      DECIMAL (16, 2) CONSTRAINT [DF_PlanPago_Mora] DEFAULT ((0)) NOT NULL,
+    [PagoCuota]        DECIMAL (16, 2) NULL,
+    [FechaPagoCuota]   DATETIME        NULL,
+    [MovimientoCajaId] INT             NULL,
+    [UsuarioModId]     INT             NULL,
+    [FechaMod]         DATETIME        NULL,
+    [PagoLibre]        DECIMAL (16, 2) CONSTRAINT [DF_PlanPago_PagoLibre] DEFAULT ((0)) NOT NULL,
+    [Cargo]            DECIMAL (16, 2) CONSTRAINT [DF_PlanPago_Cargo] DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK__PlanPago__D534AF6F7370E317] PRIMARY KEY CLUSTERED ([PlanPagoId] ASC),
+    CONSTRAINT [FK__PlanPago__Credit__75592B89] FOREIGN KEY ([CreditoId]) REFERENCES [CREDITO].[Credito] ([CreditoId]),
+    CONSTRAINT [FK_PlanPago_MovimientoCaja] FOREIGN KEY ([MovimientoCajaId]) REFERENCES [CREDITO].[MovimientoCaja] ([MovimientoCajaId]),
+    CONSTRAINT [FK_PlanPago_Usuario] FOREIGN KEY ([UsuarioModId]) REFERENCES [MAESTRO].[Usuario] ([UsuarioId])
+);
+
