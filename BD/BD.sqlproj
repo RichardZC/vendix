@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{66229b49-c766-4618-a1c8-d80cba1fed07}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -75,6 +75,7 @@
     <Folder Include="ALMACEN\Stored Procedures\" />
     <Folder Include="MAESTRO\Stored Procedures\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="_CARGAINICIAL" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="CREDITO\Tables\Boveda.sql" />
@@ -169,5 +170,8 @@
     <Build Include="Security\CREDITO.sql" />
     <Build Include="Security\MAESTRO.sql" />
     <Build Include="Security\VENTAS.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_CARGAINICIAL\Script1.sql" />
   </ItemGroup>
 </Project>
