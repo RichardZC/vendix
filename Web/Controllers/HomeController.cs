@@ -4,27 +4,29 @@ using System.Web.Mvc;
 using System.Web.Security;
 using ITB.VENDIX.BL;
 using ITB.VENDIX.BE;
+using Helper;
 
 namespace VendixWeb.Controllers
 {
+    
     public class HomeController : Controller
     {
-       
+        [Autenticado]
         public ActionResult Index()
         {
            
            return View("Index");
         }
-        [AllowAnonymous]
+        [NoLogin]
         public ActionResult Login(string mensaje="")
         {
             ViewBag.cboOficina = new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion");
             ViewBag.mensaje = mensaje;
             return View("Login");
         }
-        
 
-        [AllowAnonymous]
+
+        [NoLogin]
         public ActionResult Autenticar()
         {
             string login = Request.Form["login_name"].Trim();
@@ -34,7 +36,9 @@ namespace VendixWeb.Controllers
                                          && x.OficinaId == oficinaId && x.Estado && x.Usuario.Estado, null, "Usuario,Oficina").FirstOrDefault();
             if (usuarioOficina != null )
             {
-                FormsAuthentication.SetAuthCookie(login, true);
+                //FormsAuthentication.SetAuthCookie(login, true);
+                SessionHelper.AddUserToSession(usuarioOficina.UsuarioId.ToString());
+
 
                 VendixGlobal<int>.Crear("UsuarioOficinaId", usuarioOficina.UsuarioOficinaId);
 
@@ -59,14 +63,18 @@ namespace VendixWeb.Controllers
             }
             return RedirectToAction("Login",new{mensaje="Usuario o Clave Incorrecto"});
         }
-        [AllowAnonymous]
+        [NoLogin]
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
-            FormsAuthentication.RedirectToLoginPage();
-            return RedirectToAction("Login");
+
+            SessionHelper.DestroyUserSession();
+            return RedirectToAction("Login", "Home");
+
+            //FormsAuthentication.SignOut();
+            //FormsAuthentication.RedirectToLoginPage();
+            //return RedirectToAction("Login");
         }
-        [AllowAnonymous]
+        [NoLogin]
         public ActionResult ListarOficina()
         {
             return Json(new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion"), JsonRequestBehavior.AllowGet);

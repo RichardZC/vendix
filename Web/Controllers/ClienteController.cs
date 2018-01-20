@@ -3,9 +3,11 @@ using System.Linq;
 using System.Web.Mvc;
 using ITB.VENDIX.BE;
 using ITB.VENDIX.BL;
+using Helper;
 
 namespace Web.Controllers
 {
+    [Autenticado]
     public class ClienteController : Controller
     {
         public ActionResult Index()

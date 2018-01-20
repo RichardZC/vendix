@@ -5,10 +5,11 @@ using System.IO;
 using System.Web.Script.Serialization;
 using ITB.VENDIX.BL;
 using ITB.VENDIX.BE;
+using Helper;
 
 namespace VendixWeb.Controllers
 {
-
+    [Autenticado]
     public class ArticuloController : Controller
     {
         //
