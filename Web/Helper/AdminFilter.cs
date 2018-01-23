@@ -41,21 +41,21 @@ namespace Helper
         }
     }
 
-    // Si estamos logeado ya no podemos acceder a la página de Login
-    public class NoLoginAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            base.OnActionExecuting(filterContext);
+    //Si estamos logeado ya no podemos acceder a la página de Login
+    //public class NoLoginAttribute : ActionFilterAttribute
+    //{
+    //    public override void OnActionExecuting(ActionExecutingContext filterContext)
+    //    {
+    //        base.OnActionExecuting(filterContext);
 
-            if (SessionHelper.ExistUserInSession())
-            {
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
-                {
-                    controller = "Home",
-                    action = "Index"
-                }));
-            }
-        }
-    }
+    //        if (SessionHelper.ExistUserInSession())
+    //        {
+    //            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+    //            {
+    //                controller = "Home",
+    //                action = "Index"
+    //            }));
+    //        }
+    //    }
+    //}
 }

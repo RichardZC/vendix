@@ -17,7 +17,7 @@ namespace VendixWeb.Controllers
            
            return View("Index");
         }
-        [NoLogin]
+        
         public ActionResult Login(string mensaje="")
         {
             ViewBag.cboOficina = new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion");
@@ -26,7 +26,7 @@ namespace VendixWeb.Controllers
         }
 
 
-        [NoLogin]
+      
         public ActionResult Autenticar()
         {
             string login = Request.Form["login_name"].Trim();
@@ -63,7 +63,7 @@ namespace VendixWeb.Controllers
             }
             return RedirectToAction("Login",new{mensaje="Usuario o Clave Incorrecto"});
         }
-        [NoLogin]
+        
         public ActionResult LogOff()
         {
 
@@ -74,7 +74,7 @@ namespace VendixWeb.Controllers
             //FormsAuthentication.RedirectToLoginPage();
             //return RedirectToAction("Login");
         }
-        [NoLogin]
+       
         public ActionResult ListarOficina()
         {
             return Json(new SelectList(OficinaBL.Listar(x => x.Estado), "OficinaId", "Denominacion"), JsonRequestBehavior.AllowGet);
