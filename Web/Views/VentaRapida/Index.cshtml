@@ -51,12 +51,6 @@
                     <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 50%" required placeholder="INGRESE CODIGO DEL ARTICULO LUEGO <ENTER>" autofocus />
                     <input v-on:click="agregar" type="button" value="Agregar" class="grey" />
                 </p>
-                @*<div id="divAgregar">
-                        <div id="mensaje" class="alert error sticky">
-                            <span class="icon"></span>
-                            <strong id="lblmensaje">sdsdsd</strong>
-                        </div>
-                    </div>*@
             </div>
         </div>
     </div>
@@ -86,7 +80,7 @@
 
                         <tr v-for="i,index in items">
                             <td class='center' style='width: 40px'>
-                                {{ i.Cantidad }}
+                                <input type="number" onfocus="this.select()" min="1" style="width:40px; text-align:center;    padding: 5px" class="center" v-model.number="i.Cantidad" />
                             </td>
                             <td class='center' style='width: 40px'>
                                 {{ i.Id }}
@@ -97,8 +91,8 @@
                             <td class='center' style='width: 70px'>
                                 {{ i.ValorVenta.toFixed(2)}}
                             </td>
-                            <td class='center' style='width: 30px'>
-                                <a v-on:click="descuento(index)" href="#"><b><u>{{ i.Descuento.toFixed(2)}}</u></b></a>
+                            <td v-on:click="descuento(index)" class='center' style='width: 30px'>
+                                <a href="#"><b><u>{{ i.Descuento.toFixed(2)}}</u></b></a>
                             </td>
                             <td style='width: 80px; text-align:right'>
                                 S/. {{ (i.Cantidad * (i.ValorVenta - i.Descuento)).toFixed(2)}}
@@ -123,36 +117,34 @@
         <button id="btnEnviarContado" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar al contado</button>
         <button id="btnEnviarCredito" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar a créditos</button>
 
-
-
         <!-- End of .box -->
     </div>
 
 
     @* Dialogo_Descuento*@
-    <div style="display: none;" id="dlgAgregarDesc" title="Modificar Descuento">
-        <form action="#" class="full validate">
+    <div style="display: none;" id="dlgAgregarDesc" title="Descuento">
+        <form class="full validate">
             <div class="row">
                 <label for="txtDescuento">
                     <strong>Descuento : </strong>
                 </label>
                 <div>
-                    <input type="text" id="txtDescuento" name="txtDescuento" style="width: 100px; text-align: center" />
+                    <input type="text" id="txtDescuento" v-model.number="modDescuento"
+                           v-on:keypress.enter.prevent="EditarDcto"
+                           style="width: 100px; text-align: center" />
+                    <p>
+                        <span id="lblValidarDescuento" style="color: red; text-align: center"></span>
+                    </p>
                 </div>
-                <strong>
-                    <p id="lblValidarDescuento" style="color: red; text-align: center"></p>
-                </strong>
 
             </div>
         </form>
-
         <div class="actions">
-            <div class="right">
+            <div class="left">
                 <button class="grey cancel">Salir</button>
             </div>
-
-            <div class="left">
-                <button class="submit" id="btnSubmit">Guardar</button>
+            <div class="right">
+                <button v-on:click="EditarDcto">Guardar</button>
             </div>
         </div>
 
@@ -161,6 +153,7 @@
 
 <script>
     $$.ready(function () {
+        $("#txtDescuento").numeric(2);
         $("#btnEnviarContado").click(function () {
 
             if (parseInt($.data(document.body, 'Items')) == 0) {
@@ -196,17 +189,6 @@
                     $(this).parent().css('overflow', 'visible');
                     $$.utils.forms.resize();
                 }
-            }).find('button.submit').click(function () {
-                var $el = $(this).parents('.ui-dialog-content');
-                if ($("#txtDescuento").val() <= $.data(document.body, 'PrecioVenta')) {
-                    if ($el.validate().form()) {
-                        app.data.items[0].Descuento = $("#txtDescuento").val();
-                        $el.dialog('close');
-                        Vendix.Notificar("Modificar");
-                    }
-                } else {
-                    $("#lblValidarDescuento").text("Descuento Mayor al Precio");
-                }
             }).end().find('button.cancel').click(function () {
                 var $el = $(this).parents('.ui-dialog-content');
                 $el.find('form')[0].reset();
@@ -218,6 +200,8 @@
             el: '#appx',
             data: {
                 codArticulo: "",
+                modDescuento: 0,
+                indexItem: 0,
                 items: [
                     { Id: 1, Cantidad: 9, Descripcion: "Folder", ValorVenta: 50, Descuento: 5 },
                      { Id: 2, Cantidad: 9, Descripcion: "cuaderno", ValorVenta: 20, Descuento: 2 }
@@ -234,6 +218,7 @@
                     this.items.splice(index, 1);
                 },
                 agregar() {
+                    var self = this;
                     if (this.codArticulo.length <= 0) { this.$refs.search.focus(); return; }
                     var index = -1;
                     for (var key = 0; key < this.items.length; key++) {
@@ -243,7 +228,15 @@
                         }
                     }
                     if (index < 0) {
-                        this.items.push({ Id: this.codArticulo, Cantidad: 1, Descripcion: "XXXXX", ValorVenta: 50, Descuento: 0 });
+                        $.ajax({
+                            url: "@Url.Action("AgregarOrdenVentaDetalle", "OrdenVenta")",
+                            data: { pNumeroSerie: 234, pOrdenVentaId: 1 },
+                            success: function (ret) {
+                                self.items.push({ Id: this.codArticulo, Cantidad: 1, Descripcion: "XXXXX", ValorVenta: 50, Descuento: 0 });
+                                
+                            }
+                        });
+
                     }
                     else {
                         this.items[index].Cantidad++;
@@ -254,11 +247,20 @@
                     this.$refs.search.focus();
                 },
                 descuento(index) {
+                    this.indexItem = index;
+                    this.modDescuento = null;
                     $("#lblValidarDescuento").text("");
-                    $('#txtDescuento').val(this.items[index].Descuento);
-                    $.data(document.body, 'PrecioVenta', this.items[index].ValorVenta);
                     $("#dlgAgregarDesc").dialog("open");
-                    $('#txtDescuento').select();
+                },
+                EditarDcto() {
+                    if (!this.modDescuento) this.modDescuento = 0;
+                    if (this.modDescuento > this.items[this.indexItem].ValorVenta) {
+                        $("#lblValidarDescuento").text("Descuento Mayor al Precio");
+                        return;
+                    }
+                    this.items[this.indexItem].Descuento = parseFloat(this.modDescuento);
+                    $("#dlgAgregarDesc").dialog('close');
+                    Vendix.Notificar("Modificar");
                 }
             },
             computed: {
