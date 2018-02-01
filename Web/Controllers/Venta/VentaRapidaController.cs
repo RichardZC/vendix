@@ -31,3 +31,18 @@ namespace Web.Controllers.Venta
 
     }
 }
+        [HttpPost]
+        public JsonResult RealizarPedido(int pClienteId, List<OrdenVentaBL.Pedido> pPedidos)
+        {
+            var ordenventaid = OrdenVentaBL.RealizarPedido(pClienteId,pPedidos);
+            return Json(ordenventaid);
+        }
+    }
+    //public class Pedido
+    //{
+    //    public int ArticuloId { get; set; }
+    //    public string Denominacion { get; set; }
+    //    public int Cantidad { get; set; }
+    //    public decimal Precio { get; set; }
+    //}
+}
