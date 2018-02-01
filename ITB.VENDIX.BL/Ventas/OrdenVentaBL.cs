@@ -12,38 +12,39 @@ using ITB.VENDIX.BE;
 
 namespace ITB.VENDIX.BL
 {
-    public class OrdenVentaBL:Repositorio<OrdenVenta>
+    public class OrdenVentaBL : Repositorio<OrdenVenta>
     {
         public static List<OrdenVentaBuscar> LstOrdenesVentaJGrid(GridDataRequest request, ref int pTotalItems)
         {
 
             var sClave = request.DataFilters()["Buscar"];
             var sfiltro = bool.Parse(request.DataFilters()["Entregado"]) ? "Estado==\"ENT\" || Estado==\"ANU\"" : "Estado==\"PEN\" || Estado==\"ENV\"";
-            
+
             using (var db = new VENDIXEntities())
             {
                 IQueryable<OrdenVentaBuscar> query =
                     from ov in db.OrdenVenta
-                    join c in db.Credito on ov.OrdenVentaId equals c.OrdenVentaId into gj from subpet in gj.DefaultIfEmpty()
+                    join c in db.Credito on ov.OrdenVentaId equals c.OrdenVentaId into gj
+                    from subpet in gj.DefaultIfEmpty()
                     select new OrdenVentaBuscar
-                               {
-                                   OrdenVentaId = ov.OrdenVentaId,
-                                   FechaReg = ov.FechaReg,
-                                   Cliente = ov.Persona.NombreCompleto,
-                                   TotalNeto = ov.TotalNeto,
-                                   TotalDescuento = ov.TotalDescuento,
-                                   TipoVenta = ov.TipoVenta,
-                                   Estado = ov.Estado,
-                                   Tags = SqlFunctions.StringConvert((double) ov.OrdenVentaId) + " " + ov.Persona.NombreCompleto,
-                                   EstadoCredito = (subpet == null ? String.Empty : subpet.Estado)
-                               };
+                    {
+                        OrdenVentaId = ov.OrdenVentaId,
+                        FechaReg = ov.FechaReg,
+                        Cliente = ov.Persona.NombreCompleto,
+                        TotalNeto = ov.TotalNeto,
+                        TotalDescuento = ov.TotalDescuento,
+                        TipoVenta = ov.TipoVenta,
+                        Estado = ov.Estado,
+                        Tags = SqlFunctions.StringConvert((double)ov.OrdenVentaId) + " " + ov.Persona.NombreCompleto,
+                        EstadoCredito = (subpet == null ? String.Empty : subpet.Estado)
+                    };
                 query = query.Where(sfiltro);
 
                 if (sClave != string.Empty)
                 {
                     DateTime fecha;
-                    query = DateTime.TryParse(sClave, out fecha) 
-                        ? query.Where(x => EntityFunctions.TruncateTime(x.FechaReg) == fecha.Date) 
+                    query = DateTime.TryParse(sClave, out fecha)
+                        ? query.Where(x => EntityFunctions.TruncateTime(x.FechaReg) == fecha.Date)
                         : query.Where("Tags.Contains(\"" + sClave + "\")");
                 }
 
@@ -53,8 +54,75 @@ namespace ITB.VENDIX.BL
             }
         }
 
+        public static int RealizarPedido(int pClienteId, List<Pedido> pPedidos)
+        {
 
-        
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    //using (var db = new VENDIXEntities())
+                    //{
+                    //}
+
+                    var cabecera = new OrdenVenta
+                    {
+                        OficinaId = VendixGlobal.GetOficinaId(),
+                        Subtotal = 0,
+                        TotalNeto = 0,
+                        TotalImpuesto = 0,
+                        TotalDescuento = 0,
+                        Estado = "ENV",
+                        UsuarioRegId = VendixGlobal.GetUsuarioId(),
+                        FechaReg = DateTime.Now,
+                        PersonaId = pClienteId,
+                        TipoVenta = "CON"
+                    };
+                    Guardar(cabecera);
+
+                    var detalle = new List<OrdenVentaDet>();
+                    OrdenVentaDet item;
+                    decimal tNeto = 0;
+                    decimal tDescuento = 0;
+
+                    foreach (var i in pPedidos)
+                    {
+                        item = new OrdenVentaDet();
+                        var art = ArticuloBL.Obtener(i.ArticuloId);
+                        var precio = art.ListaPrecio.First().Monto.Value;
+                        
+                        item.OrdenVentaId = cabecera.OrdenVentaId;
+                        item.ArticuloId = art.ArticuloId;
+                        item.Cantidad = i.Cantidad;
+                        item.Descripcion = art.Denominacion;
+                        item.ValorVenta = precio;
+                        item.Descuento = i.Descuento;
+                        item.Subtotal = i.Cantidad * (precio - i.Descuento);
+                        item.Estado = true;
+
+                        tNeto += item.Subtotal;
+                        tDescuento += item.Descuento;
+                    }
+                    OrdenVentaDetBL.Guardar(detalle);
+
+                    cabecera.TotalNeto = tNeto;
+                    cabecera.TotalDescuento = tDescuento;
+                    cabecera.Subtotal = tNeto / (1 + Constante.IGV);
+                    cabecera.TotalImpuesto = tNeto - cabecera.Subtotal;
+                    ActualizarParcial(cabecera, x => x.TotalNeto, x => x.TotalDescuento,
+                        x => x.Subtotal, x => x.TotalImpuesto);
+
+                    scope.Complete();
+                    return 1; //OrdenVentaId
+                }
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    throw new Exception(ex.InnerException.Message);
+                }
+            }
+        }
+
 
         public static bool EnviarOrdenVentaCredito(int pOrdenVentaId)
         {
@@ -74,26 +142,26 @@ namespace ITB.VENDIX.BL
                     glosa += ", " + Environment.NewLine;
             }
             var oCredito = new Credito
-                               {
-                                   OficinaId = VendixGlobal.GetOficinaId(),
-                                   PersonaId = orden.PersonaId,
-                                   Descripcion = glosa,
-                                   MontoProducto = orden.TotalNeto,
-                                   MontoInicial = inicial,
-                                   MontoCredito = montocredito,
-                                   ProductoId = productoId,
-                                   MontoGastosAdm = gastosadm,
-                                   Estado = "CRE",
-                                   FormaPago = "D",
-                                   NumeroCuotas = 26,
-                                   Interes = 7,
-                                   FechaPrimerPago = DateTime.Now,
-                                   FechaVencimiento = DateTime.Now,
-                                   FechaReg = DateTime.Now,
-                                   UsuarioRegId = VendixGlobal.GetUsuarioId(),
-                                   OrdenVentaId = pOrdenVentaId
-                               };
-            
+            {
+                OficinaId = VendixGlobal.GetOficinaId(),
+                PersonaId = orden.PersonaId,
+                Descripcion = glosa,
+                MontoProducto = orden.TotalNeto,
+                MontoInicial = inicial,
+                MontoCredito = montocredito,
+                ProductoId = productoId,
+                MontoGastosAdm = gastosadm,
+                Estado = "CRE",
+                FormaPago = "D",
+                NumeroCuotas = 26,
+                Interes = 7,
+                FechaPrimerPago = DateTime.Now,
+                FechaVencimiento = DateTime.Now,
+                FechaReg = DateTime.Now,
+                UsuarioRegId = VendixGlobal.GetUsuarioId(),
+                OrdenVentaId = pOrdenVentaId
+            };
+
             using (var scope = new TransactionScope())
             {
                 try
@@ -131,7 +199,7 @@ namespace ITB.VENDIX.BL
             //                  FechaReg = DateTime.Now,
             //                  UsuarioRegId = VendixGlobal.GetUsuarioId()
             //              };
-            
+
             //using (var scope = new TransactionScope())
             //{
             //    try
@@ -142,7 +210,7 @@ namespace ITB.VENDIX.BL
             //        orden.IndContado = true;
             //        orden.IndCredito = false;
             //        Actualizar(orden);
-                    
+
             //        scope.Complete();
             //    }
             //    catch (Exception ex)
@@ -182,6 +250,12 @@ namespace ITB.VENDIX.BL
             public string Cliente { get; set; }
             public string Tags { get; set; }
             public string EstadoCredito { get; set; }
+        }
+        public class Pedido
+        {
+            public int ArticuloId { get; set; }
+            public int Cantidad { get; set; }
+            public decimal Descuento { get; set; }
         }
     }
 }
