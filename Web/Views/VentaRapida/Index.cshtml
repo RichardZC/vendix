@@ -1,6 +1,5 @@
 ﻿<div id="appx">
     <div class="grid_12 profile">
-
         <div class="header">
             <div class="title">
                 <h2 id="lblNumOrden"> Orden de Venta N° : </h2>
@@ -37,9 +36,7 @@
             <!-- End of ul.info -->
         </div>
         <!-- End of .header -->
-
     </div>
-
 
     <div class="grid_12">
         <div class="box">
@@ -54,16 +51,12 @@
             </div>
         </div>
     </div>
-
     <div class="grid_12">
         <div class="box">
-
             <div class="header">
                 <h2>Detalle de la Orden de Venta</h2>
             </div>
-
             <div class="content">
-
                 <table id="tablaDetalleOrden" class="styled">
                     <thead>
                         <tr>
@@ -77,7 +70,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         <tr v-for="i,index in items">
                             <td class='center' style='width: 40px'>
                                 <input type="number" onfocus="this.select()" min="1" style="width:40px; text-align:center;    padding: 5px" class="center" v-model.number="i.Cantidad" />
@@ -108,18 +100,13 @@
                     </tbody>
                 </table>
 
-
             </div>
             <!-- End of .content -->
-
         </div>
-
         <button id="btnEnviarContado" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar al contado</button>
         <button id="btnEnviarCredito" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar a créditos</button>
-
         <!-- End of .box -->
     </div>
-
 
     @* Dialogo_Descuento*@
     <div style="display: none;" id="dlgAgregarDesc" title="Descuento">
@@ -136,7 +123,6 @@
                         <span id="lblValidarDescuento" style="color: red; text-align: center"></span>
                     </p>
                 </div>
-
             </div>
         </form>
         <div class="actions">
@@ -147,10 +133,8 @@
                 <button v-on:click="EditarDcto">Guardar</button>
             </div>
         </div>
-
     </div>
 </div>
-
 <script>
     $$.ready(function () {
         $("#txtDescuento").numeric(2);
@@ -176,7 +160,6 @@
         });
     });
 </script>
-
 @section scripts{
     <script>
         $$.ready(function () {
@@ -229,22 +212,24 @@
                     }
                     if (index < 0) {
                         $.ajax({
-                            url: "@Url.Action("AgregarOrdenVentaDetalle", "OrdenVenta")",
-                            data: { pNumeroSerie: 234, pOrdenVentaId: 1 },
+                            url: "@Url.Action("ObtenerArticulo", "VentaRapida")",
+                            data: { pCodigo: this.codArticulo },
                             success: function (ret) {
-                                self.items.push({ Id: this.codArticulo, Cantidad: 1, Descripcion: "XXXXX", ValorVenta: 50, Descuento: 0 });
-                                
+                                console.log(ret);
+                                if (ret)
+                                    self.items.push({ Id: ret.CodArticulo, Cantidad: 1, Descripcion: ret.Denominacion, ValorVenta: ret.PrecioVenta, Descuento: 0 });
+                                else 
+                                    Vendix.Mensaje("Articulo NO EXISTE!");
+                                self.codArticulo = "";
+                                self.$refs.search.focus();
                             }
                         });
-
                     }
                     else {
                         this.items[index].Cantidad++;
-                    }
-
-                    this.codArticulo = "";
-                    Vendix.Mensaje("Articulo Agregado!");
-                    this.$refs.search.focus();
+                        this.codArticulo = "";
+                        this.$refs.search.focus();
+                    }                   
                 },
                 descuento(index) {
                     this.indexItem = index;
