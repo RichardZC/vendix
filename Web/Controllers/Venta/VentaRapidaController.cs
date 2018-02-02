@@ -23,6 +23,7 @@ namespace Web.Controllers.Venta
 
             return Json(new
             {
+                ArticuloId = art.ArticuloId,
                 CodArticulo = art.CodArticulo,
                 Denominacion = art.Denominacion,
                 PrecioVenta = art.ListaPrecio.First().Monto            

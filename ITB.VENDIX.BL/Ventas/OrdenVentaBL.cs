@@ -61,10 +61,6 @@ namespace ITB.VENDIX.BL
             {
                 try
                 {
-                    //using (var db = new VENDIXEntities())
-                    //{
-                    //}
-
                     var cabecera = new OrdenVenta
                     {
                         OficinaId = VendixGlobal.GetOficinaId(),
@@ -88,7 +84,7 @@ namespace ITB.VENDIX.BL
                     foreach (var i in pPedidos)
                     {
                         item = new OrdenVentaDet();
-                        var art = ArticuloBL.Obtener(i.ArticuloId);
+                        var art = ArticuloBL.Obtener(x => x.ArticuloId == i.ArticuloId, "ListaPrecio");
                         var precio = art.ListaPrecio.First().Monto.Value;
                         
                         item.OrdenVentaId = cabecera.OrdenVentaId;
@@ -99,6 +95,7 @@ namespace ITB.VENDIX.BL
                         item.Descuento = i.Descuento;
                         item.Subtotal = i.Cantidad * (precio - i.Descuento);
                         item.Estado = true;
+                        detalle.Add(item);
 
                         tNeto += item.Subtotal;
                         tDescuento += item.Descuento;
@@ -107,13 +104,13 @@ namespace ITB.VENDIX.BL
 
                     cabecera.TotalNeto = tNeto;
                     cabecera.TotalDescuento = tDescuento;
-                    cabecera.Subtotal = tNeto / (1 + Constante.IGV);
-                    cabecera.TotalImpuesto = tNeto - cabecera.Subtotal;
+                    cabecera.Subtotal = Math.Round(tNeto / (1 + Constante.IGV), 2);
+                    cabecera.TotalImpuesto = Math.Round(tNeto - cabecera.Subtotal, 2);
                     ActualizarParcial(cabecera, x => x.TotalNeto, x => x.TotalDescuento,
                         x => x.Subtotal, x => x.TotalImpuesto);
 
                     scope.Complete();
-                    return 1; //OrdenVentaId
+                    return cabecera.OrdenVentaId;
                 }
                 catch (Exception ex)
                 {

@@ -89,7 +89,7 @@ var Vendix = {
         }
 
 
-        $('.ui-dialog-buttonpane button:eq(0)').focus();
+        $('.ui-dialog-buttonset button:eq(0)').focus();
     },
     DialogoObs: function (pMensaje, callbackOk) {
         var dlg = $('<div id="dlgBase"><p>' + pMensaje + '</p> <textarea rows="4" id="txtBase" style="width: 100%" autofocus></textarea></div>')
