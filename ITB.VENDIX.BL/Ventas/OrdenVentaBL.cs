@@ -95,6 +95,18 @@ namespace ITB.VENDIX.BL
                         item.Descuento = i.Descuento;
                         item.Subtotal = i.Cantidad * (precio - i.Descuento);
                         item.Estado = true;
+
+                        var lstSerie = SerieArticuloBL
+                            .Listar(x => x.ArticuloId == i.ArticuloId && x.EstadoId == Constante.SerieArticulo.EN_ALMACEN, x => x.OrderBy(y => y.SerieArticuloId))
+                            .Take(i.Cantidad);
+                        foreach (var l in lstSerie)
+                        {
+                            item.OrdenVentaDetSerie.Add(new OrdenVentaDetSerie { SerieArticuloId = l.SerieArticuloId });
+                            //SerieArticuloBL.ActualizarParcial(
+                            //    new SerieArticulo { SerieArticuloId = l.SerieArticuloId, EstadoId = Constante.SerieArticulo.PREVENTA },
+                            //    x => x.EstadoId);
+                        }
+                       
                         detalle.Add(item);
 
                         tNeto += item.Subtotal;
@@ -108,6 +120,14 @@ namespace ITB.VENDIX.BL
                     cabecera.TotalImpuesto = Math.Round(tNeto - cabecera.Subtotal, 2);
                     ActualizarParcial(cabecera, x => x.TotalNeto, x => x.TotalDescuento,
                         x => x.Subtotal, x => x.TotalImpuesto);
+
+
+                    int? retid;
+                    using (var db = new VENDIXEntities())
+                    {
+                        retid = db.usp_PagarCuentaxCobrar(cabecera.OrdenVentaId, 0, VendixGlobal.GetCajaDiarioId(),
+                                                      VendixGlobal.GetUsuarioId()).ToList()[0];
+                    }
 
                     scope.Complete();
                     return cabecera.OrdenVentaId;

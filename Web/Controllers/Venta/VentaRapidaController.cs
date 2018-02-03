@@ -11,22 +11,28 @@ namespace Web.Controllers.Venta
     {
         // GET: VentaRapida
         public ActionResult Index()
-        {
-            return View();
+        {            
+            var usuarioId = VendixGlobal.GetUsuarioId();
+            var cajadiario = CajaDiarioBL.Obtener(x => x.UsuarioAsignadoId == usuarioId && x.IndCierre == false, includeProperties: "Caja");
+            if (cajadiario != null)
+                VendixGlobal<int>.Crear("CajadiarioId", cajadiario.CajaDiarioId);
+
+            return View(cajadiario);
         }
         public ActionResult ObtenerArticulo(string pCodigo)
         {
-            var art = ArticuloBL.Obtener(x => x.CodArticulo == pCodigo , "ListaPrecio");
+            var art = ArticuloBL.Obtener(x => x.CodArticulo == pCodigo && x.Estado , "ListaPrecio");
             if (art == null || art.ListaPrecio.Count==0)
                 return Json(null, JsonRequestBehavior.AllowGet);
-
+            var stock = SerieArticuloBL.Contar(x => x.ArticuloId == art.ArticuloId && x.EstadoId == Constante.SerieArticulo.EN_ALMACEN);
 
             return Json(new
             {
                 ArticuloId = art.ArticuloId,
                 CodArticulo = art.CodArticulo,
                 Denominacion = art.Denominacion,
-                PrecioVenta = art.ListaPrecio.First().Monto            
+                PrecioVenta = art.ListaPrecio.First().Monto,
+                Stock = stock
             }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

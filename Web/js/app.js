@@ -42,19 +42,19 @@ var Vendix = {
 
     Notificar: function (pOpcion) {
         if (pOpcion == 'Modificar') {
-            $.jGrowl('SE MODIFICO CORRECTAMENTE!', { header: 'SOPHIX Comercial', life: 2000 });
+            $.jGrowl('SE MODIFICO CORRECTAMENTE!', { header: 'VENDIX Comercial', life: 2000 });
         } else if (pOpcion == 'Eliminar') {
-            $.jGrowl('SE ELIMINO CORRECTAMENTE!', { header: 'SOPHIX Comercial', life: 2000 });
+            $.jGrowl('SE ELIMINO CORRECTAMENTE!', { header: 'VENDIX Comercial', life: 2000 });
         } else if (pOpcion == 'Anular') {
-            $.jGrowl('SE ANULO CORRECTAMENTE!', { header: 'SOPHIX Comercial', life: 2000 });
+            $.jGrowl('SE ANULO CORRECTAMENTE!', { header: 'VENDIX Comercial', life: 2000 });
         } else if (pOpcion == 'Crear') {
-            $.jGrowl('SE CREO EL REGISTRO CORRECTAMENTE!', { header: 'SOPHIX Comercial', life: 2000 });
+            $.jGrowl('SE CREO EL REGISTRO CORRECTAMENTE!', { header: 'VENDIX Comercial', life: 2000 });
         } else {
-            $.jGrowl('Se grabaron los datos correctamente!', { header: 'SOPHIX Comercial', life: 2000 });
+            $.jGrowl('Se grabaron los datos correctamente!', { header: 'VENDIX Comercial', life: 2000 });
         }
     },
     Mensaje: function (pMensaje) {
-        $.jGrowl(pMensaje, { header: 'SOPHIX Comercial' });
+        $.jGrowl(pMensaje, { header: 'VENDIX Comercial' });
     },
     Dialogo: function (pMensaje, pOpcion, callbackOk) {
         var dlg = $('<div id="dlgBase" <p > ' + pMensaje + '</p></div>')

@@ -1,258 +1,258 @@
-﻿<div id="appx">
-    <div class="grid_12 profile">
-        <div class="header">
-            <div class="title">
-                <h2 id="lblNumOrden"> Orden de Venta N° : </h2>
-            </div>
-            <div class="avatar">
-                <img src="~/img/icons/packs/fugue/24x24/monitor-sidebar.png" />
-                <a id="lnkNuevaOrden" href="javascript:void(0);">Nueva Orden</a>
-            </div>
-            <ul class="info">
-                <li>
-                    <a href="javascript:void(0);">
-                        <strong>
-                            PENDIENTE
-                        </strong>
-                        <small>OXXXXX</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <strong>S/. <span id="lblTotalDescuento">99.00</span></strong>
-                        <small>Descuento</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0);">
-                        <strong>S/. <span id="lblTotalNeto">99.00</span></strong>
-                        <small>Total Orden Venta</small>
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("OrdenesVenta", "OrdenVenta")" class="button">Consultar Ordenes de Venta</a>
-                </li>
-            </ul>
-            <!-- End of ul.info -->
-        </div>
-        <!-- End of .header -->
-    </div>
-    <div class="grid_12">
-        <div class="box">
+﻿@model ITB.VENDIX.BE.CajaDiario
+@if (Model != null)
+{
+    <div id="appx">
+        <div class="grid_12 profile">
             <div class="header">
-                <h2>Orden de Venta</h2>
-            </div>
-            <div class="content">
-                <p>
-                    <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 50%" required placeholder="INGRESE CODIGO DEL ARTICULO LUEGO <ENTER>" autofocus />
-                    <input v-on:click="agregar" type="button" value="Agregar" class="grey" />
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="grid_12">
-        <div class="box">
-            <div class="header">
-                <h2>Detalle de la Orden de Venta</h2>
-            </div>
-            <div class="content">
-                <table id="tablaDetalleOrden" class="styled">
-                    <thead>
-                        <tr>
-                            <th>Cant</th>
-                            <th>Codigo</th>
-                            <th>Descripción</th>
-                            <th>Precio Unit.</th>
-                            <th>Dcto.</th>
-                            <th>Precio Venta</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="i,index in items">
-                            <td class='center' style='width: 40px'>
-                                <input type="number" onfocus="this.select()" min="1" style="width:40px; text-align:center;    padding: 5px" class="center" v-model.number="i.Cantidad" />
-                            </td>
-                            <td class='center' style='width: 40px'>
-                                {{ i.Codigo }}
-                            </td>
-                            <td>
-                                {{i.Descripcion}}
-                            </td>
-                            <td class='center' style='width: 70px'>
-                                {{ i.ValorVenta.toFixed(2)}}
-                            </td>
-                            <td v-on:click="descuento(index)" class='center' style='width: 30px'>
-                                <a href="#"><b><u>{{ i.Descuento.toFixed(2)}}</u></b></a>
-                            </td>
-                            <td style='width: 80px; text-align:right'>
-                                S/. {{ (i.Cantidad * (i.ValorVenta - i.Descuento)).toFixed(2)}}
-                            </td>
-                            <td class='center' style='width: 20px'>
-                                <a href='#' v-on:click="eliminar(index)" class='button small'><i class='icon-remove'></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" style='text-align: right; font-weight: bolder'>TOTAL:</td>
-                            <td colspan="2" style='width: 80px; font-size:large; font-weight: 700'>S/. {{ totalVenta.toFixed(2) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- End of .content -->
-        </div>
-        <button v-on:click="RealizarPedido" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar al contado</button>
+                <div class="title">
+                    <h2 id="lblNumOrden"> Venta Rapida - @Model.Caja.Denominacion abierto el @Model.FechaIniOperacion.ToString()</h2>
+                </div>
+                <div class="avatar">
+                    <img src="~/img/icons/packs/fugue/24x24/monitor-sidebar.png" />
+                    <a href="javascript:void(0);">Ventas</a>
+                </div>
 
-    </div>
-    @* Dialogo_Descuento*@
-    <div style="display: none;" id="dlgAgregarDesc" title="Descuento">
-        <form class="full validate">
-            <div class="row">
-                <label for="txtDescuento">
-                    <strong>Descuento : </strong>
-                </label>
-                <div>
-                    <input type="text" id="txtDescuento" v-model.number="modDescuento"
-                           v-on:keypress.enter.prevent="EditarDcto"
-                           style="width: 100px; text-align: center" />
+                <div class="content" style="margin-left:100px">
                     <p>
-                        <span id="lblValidarDescuento" style="color: red; text-align: center"></span>
+                        <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 200px" required placeholder="CODIGO ARTICULO <ENTER>" autofocus />
+                        @*<input v-on:click="agregar" type="button" value="Agregar" class="grey" />*@
+                        <input type="text" style="width: 50%" required placeholder="NOMBRE ARTICULO LUEGO <ENTER>" />
+
                     </p>
                 </div>
             </div>
-        </form>
-        <div class="actions">
-            <div class="left">
-                <button class="grey cancel">Salir</button>
+        </div>
+        @*<div class="grid_12">
+                <div class="box">
+                    <div class="header">
+                        <h2>Orden de Venta</h2>
+                    </div>
+                    <div class="content">
+                        <p>
+                            <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 50%" required placeholder="INGRESE CODIGO DEL ARTICULO LUEGO <ENTER>" autofocus />
+                            <input v-on:click="agregar" type="button" value="Agregar" class="grey" />
+                        </p>
+                    </div>
+                </div>
+            </div>*@
+        <div class="grid_12">
+            <div class="box">
+                <div class="header">
+                    <h2>Detalle de la Orden de Venta</h2>
+                </div>
+                <div class="content">
+                    <table id="tablaDetalleOrden" class="styled">
+                        <thead>
+                            <tr>
+                                <th>Cant</th>
+                                <th>Codigo</th>
+                                <th>Descripción</th>
+                                <th>Precio Unit.</th>
+                                <th>Dcto.</th>
+                                <th>Precio Venta</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="i,index in items">
+                                <td class='center' style='width: 40px'>
+                                    <input type="number" onfocus="this.select()" min="1" max="5" style="width:40px; text-align:center;    padding: 5px" class="center" v-model.number="i.Cantidad" />
+                                </td>
+                                <td class='center' style='width: 40px'>
+                                    {{ i.Codigo }}
+                                </td>
+                                <td>
+                                    {{i.Descripcion}}
+                                </td>
+                                <td class='center' style='width: 70px'>
+                                    {{ i.ValorVenta.toFixed(2)}}
+                                </td>
+                                <td v-on:click="descuento(index)" class='center' style='width: 30px'>
+                                    <a href="#"><b><u>{{ i.Descuento.toFixed(2)}}</u></b></a>
+                                </td>
+                                <td style='width: 80px; text-align:right'>
+                                    S/. {{ (i.Cantidad * (i.ValorVenta - i.Descuento)).toFixed(2)}}
+                                </td>
+                                <td class='center' style='width: 20px'>
+                                    <a href='#' v-on:click="eliminar(index)" class='button small'><i class='icon-remove'></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style='text-align: right; font-weight: bolder'>TOTAL:</td>
+                                <td colspan="2" style='width: 80px; font-size:large; font-weight: 700'>S/. {{ totalVenta.toFixed(2) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of .content -->
             </div>
-            <div class="right">
-                <button v-on:click="EditarDcto">Guardar</button>
+            <button v-on:click="RealizarPedido" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar al contado</button>
+
+        </div>
+        @* Dialogo_Descuento*@
+        <div style="display: none;" id="dlgAgregarDesc" title="Descuento">
+            <form class="full validate">
+                <div class="row">
+                    <label for="txtDescuento">
+                        <strong>Descuento : </strong>
+                    </label>
+                    <div>
+                        <input type="text" id="txtDescuento" v-model.number="modDescuento"
+                               v-on:keypress.enter.prevent="EditarDcto"
+                               style="width: 100px; text-align: center" />
+                        <p>
+                            <span id="lblValidarDescuento" style="color: red; text-align: center"></span>
+                        </p>
+                    </div>
+                </div>
+            </form>
+            <div class="actions">
+                <div class="left">
+                    <button class="grey cancel">Salir</button>
+                </div>
+                <div class="right">
+                    <button v-on:click="EditarDcto">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $$.ready(function () {
-        $("#txtDescuento").numeric(2);
-    });
-</script>
-@section scripts{
     <script>
         $$.ready(function () {
-            $("#dlgAgregarDesc").dialog({
-                autoOpen: false,
-                resizable: false,
-                modal: true,
-                width: 240,
-                open: function () {
-                    $(this).parent().css('overflow', 'visible');
-                    $$.utils.forms.resize();
-                }
-            }).end().find('button.cancel').click(function () {
-                var $el = $(this).parents('.ui-dialog-content');
-                $el.find('form')[0].reset();
-                $el.dialog('close');
-            });
-        });
-
-        var app = new Vue({
-            el: '#appx',
-            data: {
-                codArticulo: "",
-                modDescuento: 0,
-                indexItem: 0,
-                items: [
-                    //{ ArticuloId: 1, Codigo:"9999", Cantidad: 9, Descripcion: "Folder", ValorVenta: 50, Descuento: 5 },
-                    // { ArticuloId: 2, Codigo:"8888", Cantidad: 9, Descripcion: "cuaderno", ValorVenta: 20, Descuento: 2 }
-                ]
-            },
-            mounted: function () {
-                this.$refs.search.focus();
-            },
-            methods: {
-                BuscarProducto: function () {
-                    return this.message.split('').reverse().join('')
-                },
-                eliminar(index) {
-                    this.items.splice(index, 1);
-                },
-                agregar() {
-                    var self = this;
-                    if (this.codArticulo.length <= 0) { this.$refs.search.focus(); return; }
-                    var index = -1;
-                    for (var key = 0; key < this.items.length; key++) {
-                        if (this.items[key].Codigo == this.codArticulo) {
-                            index = key;
-                            break;
-                        }
-                    }
-                    if (index < 0) {
-                        $.ajax({
-                            url: "@Url.Action("ObtenerArticulo", "VentaRapida")",
-                            data: { pCodigo: this.codArticulo },
-                            success: function (ret) {
-                                console.log(ret);
-                                if (ret)
-                                    self.items.push({ArticuloId:ret.ArticuloId, Codigo: ret.CodArticulo, Cantidad: 1, Descripcion: ret.Denominacion, ValorVenta: ret.PrecioVenta, Descuento: 0 });
-                                else
-                                    Vendix.Mensaje("Articulo NO EXISTE!");
-                                self.codArticulo = "";
-                                self.$refs.search.focus();
-                            }
-                        });
-                    }
-                    else {
-                        this.items[index].Cantidad++;
-                        this.codArticulo = "";
-                        this.$refs.search.focus();
-                    }
-                },
-                descuento(index) {
-                    this.indexItem = index;
-                    this.modDescuento = null;
-                    $("#lblValidarDescuento").text("");
-                    $("#dlgAgregarDesc").dialog("open");
-                },
-                EditarDcto() {
-                    if (!this.modDescuento) this.modDescuento = 0;
-                    if (this.modDescuento > this.items[this.indexItem].ValorVenta) {
-                        $("#lblValidarDescuento").text("Descuento Mayor al Precio");
-                        return;
-                    }
-                    this.items[this.indexItem].Descuento = parseFloat(this.modDescuento);
-                    $("#dlgAgregarDesc").dialog('close');
-                    Vendix.Notificar("Modificar");
-                },
-                RealizarPedido() {
-                    if (this.items.length == 0) {
-                        Vendix.Dialogo("Error: La pedido debe contener mas de un artículo.", "Aceptar");
-                        return;
-                    }
-                    var self = this;
-                    Vendix.Dialogo("Desea generar la VENTA?", "SiNo", function () {
-
-                        pedidos = { pClienteId: 1, pPedidos: self.items };
-
-                        console.log(pedidos);
-                        $.ajax({
-                            url: '@Url.Action("RealizarPedido", "VentaRapida")',
-                            type: 'post',
-                            datatype: 'json',
-                            contenttype: 'application/json; charset=utf-8',
-                            data: pedidos,
-                            success: function (ret) {
-                                Vendix.Mensaje("Venta Realizada: " + ret);
-                                self.items = [];
-                            }
-                        });                       
-                    });
-                }
-            },
-            computed: {
-                totalVenta() {
-                    return this.items.reduce((acc, item) => acc + (item.Cantidad * (item.ValorVenta - item.Descuento)), 0);
-                }
-            }
+            $("#txtDescuento").numeric(2);
         });
     </script>
+    @section scripts{
+        <script>
+            $$.ready(function () {
+                $("#dlgAgregarDesc").dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    modal: true,
+                    width: 240,
+                    open: function () {
+                        $(this).parent().css('overflow', 'visible');
+                        $$.utils.forms.resize();
+                    }
+                }).end().find('button.cancel').click(function () {
+                    var $el = $(this).parents('.ui-dialog-content');
+                    $el.find('form')[0].reset();
+                    $el.dialog('close');
+                });
+            });
+
+            var app = new Vue({
+                el: '#appx',
+                data: {
+                    codArticulo: "",
+                    modDescuento: 0,
+                    indexItem: 0,
+                    items: [
+                        //{ ArticuloId: 1, Codigo:"9999", Cantidad: 9, Descripcion: "Folder", ValorVenta: 50, Descuento: 5 },
+                        // { ArticuloId: 2, Codigo:"8888", Cantidad: 9, Descripcion: "cuaderno", ValorVenta: 20, Descuento: 2 }
+                    ]
+                },
+                mounted: function () {
+                    this.$refs.search.focus();
+                },
+                methods: {
+                    eliminar(index) {
+                        this.items.splice(index, 1);
+                    },
+                    agregar() {
+                        var self = this;
+                        if (this.codArticulo.length <= 0) { this.$refs.search.focus(); return; }
+                        var index = -1;
+                        for (var key = 0; key < this.items.length; key++) {
+                            if (this.items[key].Codigo == this.codArticulo) {
+                                index = key;
+                                break;
+                            }
+                        }
+                        if (index < 0) {
+                            $.ajax({
+                                url: "@Url.Action("ObtenerArticulo", "VentaRapida")",
+                                data: { pCodigo: this.codArticulo },
+                                success: function (ret) {
+                                    //console.log(ret);
+                                    if (ret) {
+                                        if (ret.Stock == 0)
+                                            Vendix.Mensaje("Sin STOCK!");
+                                        else
+                                            self.items.push({ ArticuloId: ret.ArticuloId, Codigo: ret.CodArticulo, Cantidad: 1, Descripcion: ret.Denominacion, ValorVenta: ret.PrecioVenta, Descuento: 0, Stock: ret.Stock });
+                                    }
+                                    else
+                                        Vendix.Mensaje("Articulo NO EXISTE!");
+                                    self.codArticulo = "";
+                                    self.$refs.search.focus();
+                                }
+                            });
+                        }
+                        else {
+                            if (this.items[index].Cantidad < this.items[index].Stock)
+                                this.items[index].Cantidad++;
+                            else
+                                Vendix.Mensaje("Stock máximo : " + this.items[index].Stock);
+                            this.codArticulo = "";
+                            this.$refs.search.focus();
+                        }
+                    },
+                    descuento(index) {
+                        this.indexItem = index;
+                        this.modDescuento = null;
+                        $("#lblValidarDescuento").text("");
+                        $("#dlgAgregarDesc").dialog("open");
+                    },
+                    EditarDcto() {
+                        if (!this.modDescuento) this.modDescuento = 0;
+                        if (this.modDescuento > this.items[this.indexItem].ValorVenta) {
+                            $("#lblValidarDescuento").text("Descuento Mayor al Precio");
+                            return;
+                        }
+                        this.items[this.indexItem].Descuento = parseFloat(this.modDescuento);
+                        $("#dlgAgregarDesc").dialog('close');
+                        Vendix.Notificar("Modificar");
+                    },
+                    RealizarPedido() {
+                        if (this.items.length == 0) {
+                            Vendix.Dialogo("Error: La pedido debe contener mas de un artículo.", "Aceptar");
+                            return;
+                        }
+                        var self = this;
+                        Vendix.Dialogo("Desea generar la VENTA?", "SiNo", function () {
+
+                            pedidos = { pClienteId: 1, pPedidos: self.items };
+
+                            console.log(pedidos);
+                            $.ajax({
+                                url: '@Url.Action("RealizarPedido", "VentaRapida")',
+                                type: 'post',
+                                datatype: 'json',
+                                contenttype: 'application/json; charset=utf-8',
+                                data: pedidos,
+                                success: function (ret) {
+                                    Vendix.Mensaje("Venta Realizada: " + ret);
+                                    self.items = [];
+                                }
+                            });
+                        });
+                    }
+                },
+                computed: {
+                    totalVenta() {
+                        return this.items.reduce((acc, item) => acc + (item.Cantidad * (item.ValorVenta - item.Descuento)), 0);
+                    }
+                }
+            });
+        </script>
+    }
+}
+else
+{
+    <ul class="stats not-on-phone">
+
+        <li>
+            <strong>CAJA NO ASIGNADA</strong>
+            <span>ESTADO</span>
+        </li>
+    </ul>
 }
