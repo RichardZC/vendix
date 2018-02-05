@@ -16,7 +16,7 @@
                     <p>
                         <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 200px" required placeholder="CODIGO ARTICULO <ENTER>" autofocus />
                         @*<input v-on:click="agregar" type="button" value="Agregar" class="grey" />*@
-                        <input type="text" style="width: 50%" required placeholder="NOMBRE ARTICULO LUEGO <ENTER>" />
+                        <input type="text" id="txtArticulo" v-model="nomArticulo" style="width: 50%" required placeholder="BUSCAR ARTICULO..." />
 
                     </p>
                 </div>
@@ -56,7 +56,11 @@
                         <tbody>
                             <tr v-for="i,index in items">
                                 <td class='center' style='width: 40px'>
-                                    <input type="number" onfocus="this.select()" min="1" max="5" style="width:40px; text-align:center;    padding: 5px" class="center" v-model.number="i.Cantidad" />
+                                    <input type="number" min="1" v-bind:max="i.Stock" v-model.number="i.Cantidad"
+                                           @*onKeyUp="if(this.value>9){this.value='9';}else if(this.value<0){this.value='0';}"*@
+                                           v-on:keyup="ValidarStock(index)"
+                                           onfocus="this.select()" style="width:40px; text-align:center;padding: 5px" class="center" />
+
                                 </td>
                                 <td class='center' style='width: 40px'>
                                     {{ i.Codigo }}
@@ -138,18 +142,35 @@
                     $el.find('form')[0].reset();
                     $el.dialog('close');
                 });
+                $("#txtArticulo").autocomplete({
+                    source: "@Url.Action("BuscarArticuloAllSelect", "Articulo")",
+                    minLength: 2,
+                    select: function (event, ui) {
+                        // alert(ui.item.id);
+                        $.ajax({
+                            async: false,
+                            url: "@Url.Action("ObtenerArticulo", "Articulo")",
+                            data: { pArticuloId: ui.item.id },
+                            success: function (rpt) {
+                                if (rpt != null) {
+                                    app.$data.codArticulo = rpt.Articulo.CodArticulo;
+                                    app.$data.nomArticulo = "";
+                                    app.agregar();
+                                }
+                            }
+                        });
+                    }
+                });
             });
 
             var app = new Vue({
                 el: '#appx',
                 data: {
                     codArticulo: "",
+                    nomArticulo:"",
                     modDescuento: 0,
                     indexItem: 0,
-                    items: [
-                        //{ ArticuloId: 1, Codigo:"9999", Cantidad: 9, Descripcion: "Folder", ValorVenta: 50, Descuento: 5 },
-                        // { ArticuloId: 2, Codigo:"8888", Cantidad: 9, Descripcion: "cuaderno", ValorVenta: 20, Descuento: 2 }
-                    ]
+                    items: []
                 },
                 mounted: function () {
                     this.$refs.search.focus();
@@ -235,6 +256,12 @@
                                 }
                             });
                         });
+                    },
+                    ValidarStock(index) {
+                        if (this.items[index].Cantidad > this.items[index].Stock) {
+                            this.items[index].Cantidad = this.items[index].Stock;
+                            Vendix.Mensaje("Stock máximo : " + this.items[index].Stock);
+                        }
                     }
                 },
                 computed: {
