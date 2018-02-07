@@ -6,12 +6,13 @@ DELETE FROM [MAESTRO].[Oficina] DBCC CHECKIDENT ([MAESTRO.Oficina], RESEED, 0)
 DELETE FROM [MAESTRO].[Rol] DBCC CHECKIDENT ([MAESTRO.Rol], RESEED, 0)
 DELETE FROM [MAESTRO].[Usuario] DBCC CHECKIDENT ([MAESTRO.Usuario], RESEED, 0)
 DELETE FROM [MAESTRO].[Persona] DBCC CHECKIDENT ([MAESTRO.Persona], RESEED, 0)
-DELETE FROM	[MAESTRO].[Menu] DBCC CHECKIDENT ([MAESTRO.Persona], RESEED, 0)
+DELETE FROM	[MAESTRO].[Menu] DBCC CHECKIDENT ([MAESTRO.Menu], RESEED, 0)
 
 TRUNCATE TABLE MAESTRO.Ocupacion
 TRUNCATE TABLE MAESTRO.TipoOperacion
 TRUNCATE TABLE MAESTRO.ValorTabla
 DELETE FROM MAESTRO.TipoDocumento DBCC CHECKIDENT ([MAESTRO.TipoDocumento], RESEED, 0)
+DELETE FROM ALMACEN.Almacen DBCC CHECKIDENT ([ALMACEN.Almacen], RESEED, 0)
 
 DELETE FROM MAESTRO.Distrito 
 DELETE FROM MAESTRO.Provincia 
@@ -21,7 +22,6 @@ DELETE FROM CREDITO.Boveda DBCC CHECKIDENT ([CREDITO.Boveda], RESEED, 0)
 
 SET IDENTITY_INSERT [MAESTRO].[Persona] ON 
 INSERT [MAESTRO].[Persona] ([PersonaId], [Nombre], [ApePaterno], [ApeMaterno], [NombreCompleto], [TipoDocumento], [NumeroDocumento], [Sexo], [TipoPersona], [EmailPersonal], [FechaNacimiento], [Direccion], [Estado], [Celular1], [Celular2]) VALUES (1, N'admVendix', N'ADMVENDIX', N'ADMVENDIX', N'ADMVENDIX ADMVENDIX, admVendix', N'DNI', N'41901791', N'M', N'N', N'', NULL, NULL, 1, NULL, NULL)
-INSERT [MAESTRO].[Persona] ([PersonaId], [Nombre], [ApePaterno], [ApeMaterno], [NombreCompleto], [TipoDocumento], [NumeroDocumento], [Sexo], [TipoPersona], [EmailPersonal], [FechaNacimiento], [Direccion], [Estado], [Celular1], [Celular2]) VALUES (2, N'ZAHINA', N'MATOS', N'YUPANQUI', N'MATOS YUPANQUI, ZAHINA', N'DNI', N'47255020', N'F', N'N', N'', NULL, N'', 1, N'', N'')
 SET IDENTITY_INSERT [MAESTRO].[Persona] OFF
 
 
@@ -30,14 +30,25 @@ INSERT [MAESTRO].[Usuario] ([UsuarioId], [PersonaId], [NombreUsuario], [ClaveUsu
 INSERT [MAESTRO].[Usuario] ([UsuarioId], [PersonaId], [NombreUsuario], [ClaveUsuario], [Estado]) VALUES (2, 2, N'ZMATOS', N'123', 1)
 SET IDENTITY_INSERT [MAESTRO].[Usuario] OFF
 
-
-
-
-
 SET IDENTITY_INSERT [MAESTRO].[Oficina] ON 
 INSERT [MAESTRO].[Oficina] ([OficinaId], [Denominacion], [Descripcion], [Telefono], [IndPrincipal], [Estado], [UsuarioAsignadoId]) VALUES (1, N'OFICINA PRINCIPAL', N'OFICINA PRINCIPAL', N'123', 1, 1, 1)
 SET IDENTITY_INSERT [MAESTRO].[Oficina] OFF
 
+SET IDENTITY_INSERT Almacen.Almacen ON 
+INSERT Almacen.Almacen (AlmacenId, Denominacion, [Descripcion], [Estado], [OficinaId]) VALUES (1, N'ALMACEN PRINCIPAL', N'ALMACEN PRINCIPAL', 1, 1)
+SET IDENTITY_INSERT Almacen.Almacen OFF
+
+SET IDENTITY_INSERT [ALMACEN].[TipoMovimiento] ON 
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (1, N'COMPRA', N'ENTRADA DE ARTICULOS POR COMPRA', 1, 0, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (2, N'POR VENTA', N'SALIDA DE ARTICULOS POR VENTA', 0, 0, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (3, N'TRANSFERENCIA (SA)', N'SALIDA DE ARTICULOS POR TRANSFERENCIA', 0, 1, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (4, N'DEVOLUCION A PROVEEDOR', N'SALIDA DE ARTÍCULOS POR DEVOLUCIÓN A PROVEEDOR', 0, 0, 1, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (5, N'TRANSFERENCIA (EN)', N'ENTRADA DE ARTÍCULOS POR TRANSFERENCIA', 1, 1, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (6, N'DEVOLUCIÓN DE CLIENTE', N'ENTRADA DE ARTÍCULOS POR DEVOLUCIÓN DE CLIENTE', 1, 0, 1, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (7, N'POR PÉRDIDA', N'SALIDA DE ARTÍCULOS POR PÉRDIDA', 0, 0, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (8, N'ENTRADA AJUSTE INVENTARIO', N'ENTRADA POR AJUSTE DE INVENTARIO', 1, 0, 0, 1)
+INSERT [ALMACEN].[TipoMovimiento] ([TipoMovimientoId], [Denominacion], [Descripcion], [IndEntrada], [IndTransferencia], [IndDevolucion], [Estado]) VALUES (9, N'SALIDA AJUSTE INVENTARIO', N'SALIDA POR AJUSTE DE INVENTARIO', 0, 0, 0, 1)
+SET IDENTITY_INSERT [ALMACEN].[TipoMovimiento] OFF
 
 INSERT INTO	CREDITO.Boveda ( OficinaId ,SaldoInicial ,Entradas ,Salidas ,SaldoFinal ,FechaIniOperacion ,FechaFinOperacion ,IndCierre)
 VALUES  ( 1 , 0 , 0 , 0 , 0 , '20180119' ,'20180119' , 0  )

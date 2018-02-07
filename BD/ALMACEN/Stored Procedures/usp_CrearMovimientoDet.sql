@@ -77,6 +77,8 @@ BEGIN
 		IF @IndAutogenerar=1
 		BEGIN
 			SELECT @ListaSerie =CAST(MAX(CAST(NumeroSerie AS BIGINT) + 1) AS VARCHAR(20)) FROM ALMACEN.SerieArticulo
+			IF @ListaSerie IS NULL
+				SET @ListaSerie = '1'  
 		END
 		
 		SET @Limite = LEN(@ListaSerie)
