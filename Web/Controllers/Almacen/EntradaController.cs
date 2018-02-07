@@ -21,7 +21,7 @@ namespace VendixWeb.Controllers.Almacen
             ViewBag.cboAlmacen2 = new SelectList(lstalmacen, "AlmacenId", "Denominacion");
             ViewBag.cboTipoMovimiento = new SelectList(lstTipoMov, "TipoMovimientoId", "Denominacion");
             ViewBag.cboTipoMovimiento2 = new SelectList(lstTipoMov, "TipoMovimientoId", "Denominacion");
-            ViewBag.cboTipoDocumento = new SelectList(TipoDocumentoBL.Listar(x => x.Estado && x.IndAlmacen.Value && x.IndAlmacenMov == false), "TipoDocumentoId", "Denominacion");
+            ViewBag.cboTipoDocumento = new SelectList(TipoDocumentoBL.Listar(x => x.Estado && x.IndAlmacen && x.IndAlmacenMov == false), "TipoDocumentoId", "Denominacion");
             ViewBag.cboMedida = new SelectList(ValorTablaBL.Listar(x => x.TablaId == 10 && x.ItemId > 0), "ItemId","DesCorta");
             return View();
         }

@@ -138,7 +138,7 @@
           <Property Name="AlmacenDestinoId" Type="int" Nullable="false" />
           <Property Name="UsuarioId" Type="int" Nullable="false" />
           <Property Name="Fecha" Type="datetime" Nullable="false" />
-          <Property Name="Estado" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Estado" Type="char" MaxLength="3" Nullable="false" />
         </EntityType>
         <EntityType Name="TransferenciaSerie">
           <Key>
@@ -501,11 +501,11 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             <PropertyRef Name="TipoDocumentoId" />
           </Key>
           <Property Name="TipoDocumentoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Denominacion" Type="varchar" MaxLength="100" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
-          <Property Name="IndVenta" Type="bit" />
-          <Property Name="IndAlmacen" Type="bit" />
-          <Property Name="IndAlmacenMov" Type="bit" />
+          <Property Name="Denominacion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IndVenta" Type="bit" Nullable="false" />
+          <Property Name="IndAlmacen" Type="bit" Nullable="false" />
+          <Property Name="IndAlmacenMov" Type="bit" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TipoOperacion">
@@ -940,7 +940,31 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Transfere__Serie__75AE3144">
+        <Association Name="FK__Transfere__Almac__2374FBF4">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenOrigenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Almac__2469202D">
+          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenDestinoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Serie__27458CD8">
           <End Role="SerieArticulo" Type="Self.SerieArticulo" Multiplicity="1" />
           <End Role="TransferenciaSerie" Type="Self.TransferenciaSerie" Multiplicity="*" />
           <ReferentialConstraint>
@@ -952,7 +976,7 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Transfere__Trans__74BA0D0B">
+        <Association Name="FK__Transfere__Trans__2651689F">
           <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="1" />
           <End Role="TransferenciaSerie" Type="Self.TransferenciaSerie" Multiplicity="*" />
           <ReferentialConstraint>
@@ -961,6 +985,18 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Principal>
             <Dependent Role="TransferenciaSerie">
               <PropertyRef Name="TransferenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Usuar__255D4466">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1516,42 +1552,6 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Transferencia_ALMACEN">
-          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
-          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Almacen">
-              <PropertyRef Name="AlmacenId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="AlmacenOrigenId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transferencia_ALMACEN1">
-          <End Role="Almacen" Type="Self.Almacen" Multiplicity="1" />
-          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Almacen">
-              <PropertyRef Name="AlmacenId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="AlmacenDestinoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transferencia_Usuario">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="Transferencia" Type="Self.Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="UsuarioId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="UsuarioId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="usp_CrearMovimientoDet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="MovimientoId" Type="int" Mode="In" />
           <Parameter Name="MovimientoDetId" Type="int" Mode="In" />
@@ -1575,9 +1575,6 @@ advertencia 6002: La tabla o vista 'VENDIX.CREDITO.PlanPagoLibre' no tiene defin
         <Function Name="usp_GenerarKardex" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="ArticuloId" Type="int" Mode="In" />
           <Parameter Name="AlmacenId" Type="int" Mode="In" />
-        </Function>
-        <Function Name="usp_ListarDetalleTransferencia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
-          <Parameter Name="TransferenciaId" Type="int" Mode="In" />
         </Function>
         <Function Name="usp_ListarSerieKardex" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ALMACEN">
           <Parameter Name="MovimientoDetalleId" Type="int" Mode="In" />
@@ -1913,13 +1910,25 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
           </AssociationSet>
-          <AssociationSet Name="FK__Transfere__Serie__75AE3144" Association="Self.FK__Transfere__Serie__75AE3144">
+          <AssociationSet Name="FK__Transfere__Almac__2374FBF4" Association="Self.FK__Transfere__Almac__2374FBF4">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Almac__2469202D" Association="Self.FK__Transfere__Almac__2469202D">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Serie__27458CD8" Association="Self.FK__Transfere__Serie__27458CD8">
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
             <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
           </AssociationSet>
-          <AssociationSet Name="FK__Transfere__Trans__74BA0D0B" Association="Self.FK__Transfere__Trans__74BA0D0B">
+          <AssociationSet Name="FK__Transfere__Trans__2651689F" Association="Self.FK__Transfere__Trans__2651689F">
             <End Role="Transferencia" EntitySet="Transferencia" />
             <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Usuar__255D4466" Association="Self.FK__Transfere__Usuar__255D4466">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
           </AssociationSet>
           <AssociationSet Name="FK__Usuario__Persona__33C07256" Association="Self.FK__Usuario__Persona__33C07256">
             <End Role="Persona" EntitySet="Persona" />
@@ -2104,18 +2113,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK_SERIEARTICULO_MOVIMIENTODET" Association="Self.FK_SERIEARTICULO_MOVIMIENTODET">
             <End Role="MovimientoDet" EntitySet="MovimientoDet" />
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_ALMACEN" Association="Self.FK_Transferencia_ALMACEN">
-            <End Role="Almacen" EntitySet="Almacen" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_ALMACEN1" Association="Self.FK_Transferencia_ALMACEN1">
-            <End Role="Almacen" EntitySet="Almacen" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_Usuario" Association="Self.FK_Transferencia_Usuario">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -2333,8 +2330,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <EntitySet Name="SerieArticulo" EntityType="VENDIXModel.SerieArticulo" />
           <EntitySet Name="TipoArticulo" EntityType="VENDIXModel.TipoArticulo" />
           <EntitySet Name="TipoMovimiento" EntityType="VENDIXModel.TipoMovimiento" />
-          <EntitySet Name="Transferencia" EntityType="VENDIXModel.Transferencia" />
-          <EntitySet Name="TransferenciaSerie" EntityType="VENDIXModel.TransferenciaSerie" />
           <EntitySet Name="Aprobacion" EntityType="VENDIXModel.Aprobacion" />
           <EntitySet Name="Boveda" EntityType="VENDIXModel.Boveda" />
           <EntitySet Name="BovedaMov" EntityType="VENDIXModel.BovedaMov" />
@@ -2360,7 +2355,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <EntitySet Name="Provincia" EntityType="VENDIXModel.Provincia" />
           <EntitySet Name="Rol" EntityType="VENDIXModel.Rol" />
           <EntitySet Name="RolMenu" EntityType="VENDIXModel.RolMenu" />
-          <EntitySet Name="TipoDocumento" EntityType="VENDIXModel.TipoDocumento" />
           <EntitySet Name="TipoOperacion" EntityType="VENDIXModel.TipoOperacion" />
           <EntitySet Name="Usuario" EntityType="VENDIXModel.Usuario" />
           <EntitySet Name="UsuarioOficina" EntityType="VENDIXModel.UsuarioOficina" />
@@ -2384,14 +2378,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <AssociationSet Name="FK_SERIEARTICULO_AlmacenId" Association="VENDIXModel.FK_SERIEARTICULO_AlmacenId">
             <End Role="Almacen" EntitySet="Almacen" />
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_ALMACEN" Association="VENDIXModel.FK_Transferencia_ALMACEN">
-            <End Role="Almacen" EntitySet="Almacen" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_ALMACEN1" Association="VENDIXModel.FK_Transferencia_ALMACEN1">
-            <End Role="Almacen" EntitySet="Almacen" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
           </AssociationSet>
           <AssociationSet Name="FK_ARTICULO_ModeloId" Association="VENDIXModel.FK_ARTICULO_ModeloId">
             <End Role="Modelo" EntitySet="Modelo" />
@@ -2445,25 +2431,9 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="Persona" EntitySet="Persona" />
             <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
           </AssociationSet>
-          <AssociationSet Name="FK_DOCENTRADASALIDA_TipoDocumentoId" Association="VENDIXModel.FK_DOCENTRADASALIDA_TipoDocumentoId">
-            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
-            <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
-          </AssociationSet>
           <AssociationSet Name="FK__OrdenVent__Serie__09952E60" Association="VENDIXModel.FK__OrdenVent__Serie__09952E60">
             <End Role="SerieArticulo" EntitySet="SerieArticulo" />
             <End Role="OrdenVentaDetSerie" EntitySet="OrdenVentaDetSerie" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Transfere__Serie__75AE3144" Association="VENDIXModel.FK__Transfere__Serie__75AE3144">
-            <End Role="SerieArticulo" EntitySet="SerieArticulo" />
-            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Transfere__Trans__74BA0D0B" Association="VENDIXModel.FK__Transfere__Trans__74BA0D0B">
-            <End Role="Transferencia" EntitySet="Transferencia" />
-            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transferencia_Usuario" Association="VENDIXModel.FK_Transferencia_Usuario">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Transferencia" EntitySet="Transferencia" />
           </AssociationSet>
           <AssociationSet Name="FK__CreditoEx__Credi__5AFA3B08" Association="VENDIXModel.FK__CreditoEx__Credi__5AFA3B08">
             <End Role="Credito" EntitySet="Credito" />
@@ -2681,6 +2651,33 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             <End Role="TarjetaPunto" EntitySet="TarjetaPunto" />
             <End Role="TarjetaPuntoDet" EntitySet="TarjetaPuntoDet" />
           </AssociationSet>
+          <EntitySet Name="TipoDocumento" EntityType="VENDIXModel.TipoDocumento" />
+          <AssociationSet Name="FK_DOCENTRADASALIDA_TipoDocumentoId" Association="VENDIXModel.FK_DOCENTRADASALIDA_TipoDocumentoId">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="MovimientoDoc" EntitySet="MovimientoDoc" />
+          </AssociationSet>
+          <EntitySet Name="Transferencia" EntityType="VENDIXModel.Transferencia" />
+          <EntitySet Name="TransferenciaSerie" EntityType="VENDIXModel.TransferenciaSerie" />
+          <AssociationSet Name="FK__Transfere__Almac__2374FBF4" Association="VENDIXModel.FK__Transfere__Almac__2374FBF4">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Almac__2469202D" Association="VENDIXModel.FK__Transfere__Almac__2469202D">
+            <End Role="Almacen" EntitySet="Almacen" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Serie__27458CD8" Association="VENDIXModel.FK__Transfere__Serie__27458CD8">
+            <End Role="SerieArticulo" EntitySet="SerieArticulo" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Trans__2651689F" Association="VENDIXModel.FK__Transfere__Trans__2651689F">
+            <End Role="Transferencia" EntitySet="Transferencia" />
+            <End Role="TransferenciaSerie" EntitySet="TransferenciaSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transfere__Usuar__255D4466" Association="VENDIXModel.FK__Transfere__Usuar__255D4466">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Transferencia" EntitySet="Transferencia" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="usp_GenerarKardex_Result">
           <Property Type="Int32" Name="MovimientoDetId" Nullable="true" />
@@ -2892,9 +2889,9 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Oficina" Relationship="VENDIXModel.FK_ALMACEN_OficinaId" FromRole="Almacen" ToRole="Oficina" />
           <NavigationProperty Name="Movimiento" Relationship="VENDIXModel.FK_ENTRADASALIDA_AlmacenId" FromRole="Almacen" ToRole="Movimiento" />
           <NavigationProperty Name="SerieArticulo" Relationship="VENDIXModel.FK_SERIEARTICULO_AlmacenId" FromRole="Almacen" ToRole="SerieArticulo" />
-          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK_Transferencia_ALMACEN" FromRole="Almacen" ToRole="Transferencia" />
-          <NavigationProperty Name="Transferencia1" Relationship="VENDIXModel.FK_Transferencia_ALMACEN1" FromRole="Almacen" ToRole="Transferencia" />
-        </EntityType>
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK__Transfere__Almac__2374FBF4" FromRole="Almacen" ToRole="Transferencia" />
+          <NavigationProperty Name="Transferencia1" Relationship="VENDIXModel.FK__Transfere__Almac__2469202D" FromRole="Almacen" ToRole="Transferencia" />
+          </EntityType>
         <EntityType Name="Articulo">
           <Key>
             <PropertyRef Name="ArticuloId" />
@@ -3007,7 +3004,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Articulo" Relationship="VENDIXModel.FK_SERIEARTICULO_ArticuloId" FromRole="SerieArticulo" ToRole="Articulo" />
           <NavigationProperty Name="MovimientoDet" Relationship="VENDIXModel.FK_SERIEARTICULO_MOVIMIENTODET" FromRole="SerieArticulo" ToRole="MovimientoDet" />
           <NavigationProperty Name="OrdenVentaDetSerie" Relationship="VENDIXModel.FK__OrdenVent__Serie__09952E60" FromRole="SerieArticulo" ToRole="OrdenVentaDetSerie" />
-          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Serie__75AE3144" FromRole="SerieArticulo" ToRole="TransferenciaSerie" />
+          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Serie__27458CD8" FromRole="SerieArticulo" ToRole="TransferenciaSerie" />
         </EntityType>
         <EntityType Name="TipoArticulo">
           <Key>
@@ -3033,31 +3030,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="IndDevolucion" Type="Boolean" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Movimiento" Relationship="VENDIXModel.FK_ENTRADASALIDA_TipoMovimientoId" FromRole="TipoMovimiento" ToRole="Movimiento" />
-        </EntityType>
-        <EntityType Name="Transferencia">
-          <Key>
-            <PropertyRef Name="TransferenciaId" />
-          </Key>
-          <Property Name="TransferenciaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AlmacenOrigenId" Type="Int32" Nullable="false" />
-          <Property Name="AlmacenDestinoId" Type="Int32" Nullable="false" />
-          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
-          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Estado" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="Almacen" Relationship="VENDIXModel.FK_Transferencia_ALMACEN" FromRole="Transferencia" ToRole="Almacen" />
-          <NavigationProperty Name="Almacen1" Relationship="VENDIXModel.FK_Transferencia_ALMACEN1" FromRole="Transferencia" ToRole="Almacen" />
-          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Trans__74BA0D0B" FromRole="Transferencia" ToRole="TransferenciaSerie" />
-          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK_Transferencia_Usuario" FromRole="Transferencia" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="TransferenciaSerie">
-          <Key>
-            <PropertyRef Name="TransferenciaSerieId" />
-          </Key>
-          <Property Name="TransferenciaSerieId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TransferenciaId" Type="Int32" Nullable="false" />
-          <Property Name="SerieArticuloId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="SerieArticulo" Relationship="VENDIXModel.FK__Transfere__Serie__75AE3144" FromRole="TransferenciaSerie" ToRole="SerieArticulo" />
-          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK__Transfere__Trans__74BA0D0B" FromRole="TransferenciaSerie" ToRole="Transferencia" />
         </EntityType>
         <EntityType Name="Aprobacion">
           <Key>
@@ -3471,19 +3443,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="Menu" Relationship="VENDIXModel.FK__RolMenu__MenuId__6BCFC14F" FromRole="RolMenu" ToRole="Menu" />
           <NavigationProperty Name="Rol" Relationship="VENDIXModel.FK__RolMenu__RolId__6ADB9D16" FromRole="RolMenu" ToRole="Rol" />
         </EntityType>
-        <EntityType Name="TipoDocumento">
-          <Key>
-            <PropertyRef Name="TipoDocumentoId" />
-          </Key>
-          <Property Name="TipoDocumentoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Denominacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="IndVenta" Type="Boolean" />
-          <Property Name="IndAlmacen" Type="Boolean" />
-          <Property Name="IndAlmacenMov" Type="Boolean" />
-          <Property Name="Estado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MovimientoDoc" Relationship="VENDIXModel.FK_DOCENTRADASALIDA_TipoDocumentoId" FromRole="TipoDocumento" ToRole="MovimientoDoc" />
-        </EntityType>
         <EntityType Name="TipoOperacion">
           <Key>
             <PropertyRef Name="TipoOperacionId" />
@@ -3503,7 +3462,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ClaveUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK_Transferencia_Usuario" FromRole="Usuario" ToRole="Transferencia" />
           <NavigationProperty Name="Aprobacion" Relationship="VENDIXModel.FK__CreditoEx__Usuar__5BEE5F41" FromRole="Usuario" ToRole="Aprobacion" />
           <NavigationProperty Name="Caja" Relationship="VENDIXModel.FK_Caja_Usuario" FromRole="Usuario" ToRole="Caja" />
           <NavigationProperty Name="Caja1" Relationship="VENDIXModel.FK_Caja_Usuario1" FromRole="Usuario" ToRole="Caja" />
@@ -3519,6 +3477,7 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
           <NavigationProperty Name="UsuarioRol" Relationship="VENDIXModel.FK__UsuarioRo__Usuar__7094766C" FromRole="Usuario" ToRole="UsuarioRol" />
           <NavigationProperty Name="OrdenVenta" Relationship="VENDIXModel.FK_OrdenVenta_Usuario" FromRole="Usuario" ToRole="OrdenVenta" />
           <NavigationProperty Name="OrdenVenta1" Relationship="VENDIXModel.FK_OrdenVenta_Usuario1" FromRole="Usuario" ToRole="OrdenVenta" />
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK__Transfere__Usuar__255D4466" FromRole="Usuario" ToRole="Transferencia" />
         </EntityType>
         <EntityType Name="UsuarioOficina">
           <Key>
@@ -3689,30 +3648,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Transferencia_ALMACEN">
-          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
-          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Almacen">
-              <PropertyRef Name="AlmacenId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="AlmacenOrigenId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transferencia_ALMACEN1">
-          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
-          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Almacen">
-              <PropertyRef Name="AlmacenId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="AlmacenDestinoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ARTICULO_ModeloId">
           <End Type="VENDIXModel.Modelo" Role="Modelo" Multiplicity="0..1" />
           <End Type="VENDIXModel.Articulo" Role="Articulo" Multiplicity="*" />
@@ -3869,18 +3804,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DOCENTRADASALIDA_TipoDocumentoId">
-          <End Type="VENDIXModel.TipoDocumento" Role="TipoDocumento" Multiplicity="0..1" />
-          <End Type="VENDIXModel.MovimientoDoc" Role="MovimientoDoc" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TipoDocumento">
-              <PropertyRef Name="TipoDocumentoId" />
-            </Principal>
-            <Dependent Role="MovimientoDoc">
-              <PropertyRef Name="TipoDocumentoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__OrdenVent__Serie__09952E60">
           <End Type="VENDIXModel.SerieArticulo" Role="SerieArticulo" Multiplicity="0..1" />
           <End Type="VENDIXModel.OrdenVentaDetSerie" Role="OrdenVentaDetSerie" Multiplicity="*" />
@@ -3890,42 +3813,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Principal>
             <Dependent Role="OrdenVentaDetSerie">
               <PropertyRef Name="SerieArticuloId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Transfere__Serie__75AE3144">
-          <End Type="VENDIXModel.SerieArticulo" Role="SerieArticulo" Multiplicity="1" />
-          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SerieArticulo">
-              <PropertyRef Name="SerieArticuloId" />
-            </Principal>
-            <Dependent Role="TransferenciaSerie">
-              <PropertyRef Name="SerieArticuloId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Transfere__Trans__74BA0D0B">
-          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="1" />
-          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Transferencia">
-              <PropertyRef Name="TransferenciaId" />
-            </Principal>
-            <Dependent Role="TransferenciaSerie">
-              <PropertyRef Name="TransferenciaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transferencia_Usuario">
-          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="UsuarioId" />
-            </Principal>
-            <Dependent Role="Transferencia">
-              <PropertyRef Name="UsuarioId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4577,6 +4464,116 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TipoDocumento">
+          <Key>
+            <PropertyRef Name="TipoDocumentoId" />
+          </Key>
+          <Property Name="TipoDocumentoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Denominacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IndVenta" Type="Boolean" Nullable="false" />
+          <Property Name="IndAlmacen" Type="Boolean" Nullable="false" />
+          <Property Name="IndAlmacenMov" Type="Boolean" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MovimientoDoc" Relationship="VENDIXModel.FK_DOCENTRADASALIDA_TipoDocumentoId" FromRole="TipoDocumento" ToRole="MovimientoDoc" />
+        </EntityType>
+        <Association Name="FK_DOCENTRADASALIDA_TipoDocumentoId">
+          <End Type="VENDIXModel.TipoDocumento" Role="TipoDocumento" Multiplicity="0..1" />
+          <End Type="VENDIXModel.MovimientoDoc" Role="MovimientoDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoDocumento">
+              <PropertyRef Name="TipoDocumentoId" />
+            </Principal>
+            <Dependent Role="MovimientoDoc">
+              <PropertyRef Name="TipoDocumentoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Transferencia">
+          <Key>
+            <PropertyRef Name="TransferenciaId" />
+          </Key>
+          <Property Name="TransferenciaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AlmacenOrigenId" Type="Int32" Nullable="false" />
+          <Property Name="AlmacenDestinoId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Almacen" Relationship="VENDIXModel.FK__Transfere__Almac__2374FBF4" FromRole="Transferencia" ToRole="Almacen" />
+          <NavigationProperty Name="Almacen1" Relationship="VENDIXModel.FK__Transfere__Almac__2469202D" FromRole="Transferencia" ToRole="Almacen" />
+          <NavigationProperty Name="TransferenciaSerie" Relationship="VENDIXModel.FK__Transfere__Trans__2651689F" FromRole="Transferencia" ToRole="TransferenciaSerie" />
+          <NavigationProperty Name="Usuario" Relationship="VENDIXModel.FK__Transfere__Usuar__255D4466" FromRole="Transferencia" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="TransferenciaSerie">
+          <Key>
+            <PropertyRef Name="TransferenciaSerieId" />
+          </Key>
+          <Property Name="TransferenciaSerieId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransferenciaId" Type="Int32" Nullable="false" />
+          <Property Name="SerieArticuloId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SerieArticulo" Relationship="VENDIXModel.FK__Transfere__Serie__27458CD8" FromRole="TransferenciaSerie" ToRole="SerieArticulo" />
+          <NavigationProperty Name="Transferencia" Relationship="VENDIXModel.FK__Transfere__Trans__2651689F" FromRole="TransferenciaSerie" ToRole="Transferencia" />
+        </EntityType>
+        <Association Name="FK__Transfere__Almac__2374FBF4">
+          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenOrigenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Almac__2469202D">
+          <End Type="VENDIXModel.Almacen" Role="Almacen" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Almacen">
+              <PropertyRef Name="AlmacenId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="AlmacenDestinoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Serie__27458CD8">
+          <End Type="VENDIXModel.SerieArticulo" Role="SerieArticulo" Multiplicity="1" />
+          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SerieArticulo">
+              <PropertyRef Name="SerieArticuloId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="SerieArticuloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Trans__2651689F">
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="1" />
+          <End Type="VENDIXModel.TransferenciaSerie" Role="TransferenciaSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transferencia">
+              <PropertyRef Name="TransferenciaId" />
+            </Principal>
+            <Dependent Role="TransferenciaSerie">
+              <PropertyRef Name="TransferenciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transfere__Usuar__255D4466">
+          <End Type="VENDIXModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="VENDIXModel.Transferencia" Role="Transferencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Transferencia">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4850,17 +4847,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="usp_ListarDetalleTransferencia" FunctionName="VENDIXModel.Store.usp_ListarDetalleTransferencia">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="VENDIXModel.usp_ListarDetalleTransferencia_Result">
-                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
-                <ScalarProperty Name="ArticuloId" ColumnName="ArticuloId" />
-                <ScalarProperty Name="Articulo" ColumnName="Articulo" />
-                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="Series" ColumnName="Series" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="Almacen">
             <EntityTypeMapping TypeName="VENDIXModel.Almacen">
               <MappingFragment StoreEntitySet="Almacen">
@@ -4992,27 +4978,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
                 <ScalarProperty Name="TipoMovimientoId" ColumnName="TipoMovimientoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Transferencia">
-            <EntityTypeMapping TypeName="VENDIXModel.Transferencia">
-              <MappingFragment StoreEntitySet="Transferencia">
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
-                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
-                <ScalarProperty Name="AlmacenDestinoId" ColumnName="AlmacenDestinoId" />
-                <ScalarProperty Name="AlmacenOrigenId" ColumnName="AlmacenOrigenId" />
-                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TransferenciaSerie">
-            <EntityTypeMapping TypeName="VENDIXModel.TransferenciaSerie">
-              <MappingFragment StoreEntitySet="TransferenciaSerie">
-                <ScalarProperty Name="SerieArticuloId" ColumnName="SerieArticuloId" />
-                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
-                <ScalarProperty Name="TransferenciaSerieId" ColumnName="TransferenciaSerieId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5376,19 +5341,6 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TipoDocumento">
-            <EntityTypeMapping TypeName="VENDIXModel.TipoDocumento">
-              <MappingFragment StoreEntitySet="TipoDocumento">
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="IndAlmacenMov" ColumnName="IndAlmacenMov" />
-                <ScalarProperty Name="IndAlmacen" ColumnName="IndAlmacen" />
-                <ScalarProperty Name="IndVenta" ColumnName="IndVenta" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
-                <ScalarProperty Name="TipoDocumentoId" ColumnName="TipoDocumentoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TipoOperacion">
             <EntityTypeMapping TypeName="VENDIXModel.TipoOperacion">
               <MappingFragment StoreEntitySet="TipoOperacion">
@@ -5525,6 +5477,40 @@ FROM [CREDITO].[PlanPagoLibre] AS [PlanPagoLibre]</DefiningQuery>
                 <ScalarProperty Name="PagoLibre" ColumnName="PagoLibre" />
                 <ScalarProperty Name="MovimientoCajaId" ColumnName="MovimientoCajaId" />
                 <ScalarProperty Name="PlanPagoId" ColumnName="PlanPagoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoDocumento">
+            <EntityTypeMapping TypeName="VENDIXModel.TipoDocumento">
+              <MappingFragment StoreEntitySet="TipoDocumento">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IndAlmacenMov" ColumnName="IndAlmacenMov" />
+                <ScalarProperty Name="IndAlmacen" ColumnName="IndAlmacen" />
+                <ScalarProperty Name="IndVenta" ColumnName="IndVenta" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
+                <ScalarProperty Name="TipoDocumentoId" ColumnName="TipoDocumentoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transferencia">
+            <EntityTypeMapping TypeName="VENDIXModel.Transferencia">
+              <MappingFragment StoreEntitySet="Transferencia">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="AlmacenDestinoId" ColumnName="AlmacenDestinoId" />
+                <ScalarProperty Name="AlmacenOrigenId" ColumnName="AlmacenOrigenId" />
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransferenciaSerie">
+            <EntityTypeMapping TypeName="VENDIXModel.TransferenciaSerie">
+              <MappingFragment StoreEntitySet="TransferenciaSerie">
+                <ScalarProperty Name="SerieArticuloId" ColumnName="SerieArticuloId" />
+                <ScalarProperty Name="TransferenciaId" ColumnName="TransferenciaId" />
+                <ScalarProperty Name="TransferenciaSerieId" ColumnName="TransferenciaSerieId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

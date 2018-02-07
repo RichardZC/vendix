@@ -1,7 +1,12 @@
 ﻿@model ITB.VENDIX.BE.CajaDiario
 @if (Model != null)
 {
-    <div id="appx">
+
+   
+    <div id="app1">
+        
+        
+
         <div class="grid_12 profile">
             <div class="header">
                 <div class="title">
@@ -16,25 +21,13 @@
                     <p>
                         <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 200px" required placeholder="CODIGO ARTICULO <ENTER>" autofocus />
                         @*<input v-on:click="agregar" type="button" value="Agregar" class="grey" />*@
-                        <input type="text" id="txtArticulo" v-model="nomArticulo" style="width: 50%" required placeholder="BUSCAR ARTICULO..." />
+                        <input type="search" id="txtArticulo" v-model="nomArticulo" style="width: 50%" required placeholder="BUSCAR ARTICULO..." />
 
                     </p>
                 </div>
             </div>
         </div>
-        @*<div class="grid_12">
-                <div class="box">
-                    <div class="header">
-                        <h2>Orden de Venta</h2>
-                    </div>
-                    <div class="content">
-                        <p>
-                            <input v-model="codArticulo" v-on:keypress.enter.prevent="agregar" type="text" ref="search" style="width: 50%" required placeholder="INGRESE CODIGO DEL ARTICULO LUEGO <ENTER>" autofocus />
-                            <input v-on:click="agregar" type="button" value="Agregar" class="grey" />
-                        </p>
-                    </div>
-                </div>
-            </div>*@
+
         <div class="grid_12">
             <div class="box">
                 <div class="header">
@@ -90,9 +83,24 @@
                 </div>
                 <!-- End of .content -->
             </div>
-            <button v-on:click="RealizarPedido" style="float: right" class="button red block"><span class="icon icon-play"></span>Enviar al contado</button>
 
-        </div>
+            
+                <table>
+                    <tr>
+                        <td id="TipoDoc"></td>
+                        <td style="width:60%" class="center">
+                            <input id="txtBuscarxArt" style="width:85%" class="center" type="search" placeholder="BUSCAR CLIENTE" />
+                        </td>
+                        <td style="width:25%">
+                            <button v-on:click="RealizarPedido" class="button red block"><span class="icon icon-play"></span>REALIZAR VENTA</button>
+                        </td>
+                    </tr>
+                </table>
+
+           
+
+</div>
+        
         @* Dialogo_Descuento*@
         <div style="display: none;" id="dlgAgregarDesc" title="Descuento">
             <form class="full validate">
@@ -120,6 +128,7 @@
             </div>
         </div>
     </div>
+    
     <script>
         $$.ready(function () {
             $("#txtDescuento").numeric(2);
@@ -128,6 +137,8 @@
     @section scripts{
         <script>
             $$.ready(function () {
+                Vendix.CargarCombo2("@Url.Action("ListarTipoDoc", "VentaRapida")", "TipoDoc");
+
                 $("#dlgAgregarDesc").dialog({
                     autoOpen: false,
                     resizable: false,
@@ -153,21 +164,22 @@
                             data: { pArticuloId: ui.item.id },
                             success: function (rpt) {
                                 if (rpt != null) {
-                                    app.$data.codArticulo = rpt.Articulo.CodArticulo;
-                                    app.$data.nomArticulo = "";
-                                    app.agregar();
+                                    appz.$data.codArticulo = rpt.Articulo.CodArticulo;
+                                    appz.$data.nomArticulo = "";
+                                    appz.agregar();
                                 }
                             }
                         });
                     }
                 });
             });
+            
 
-            var app = new Vue({
-                el: '#appx',
+            var appz = new Vue({
+                el: '#app1',
                 data: {
                     codArticulo: "",
-                    nomArticulo:"",
+                    nomArticulo: "",
                     modDescuento: 0,
                     indexItem: 0,
                     items: []

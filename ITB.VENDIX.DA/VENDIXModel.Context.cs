@@ -38,8 +38,6 @@ namespace ITB.VENDIX.BE
         public DbSet<SerieArticulo> SerieArticulo { get; set; }
         public DbSet<TipoArticulo> TipoArticulo { get; set; }
         public DbSet<TipoMovimiento> TipoMovimiento { get; set; }
-        public DbSet<Transferencia> Transferencia { get; set; }
-        public DbSet<TransferenciaSerie> TransferenciaSerie { get; set; }
         public DbSet<Aprobacion> Aprobacion { get; set; }
         public DbSet<Boveda> Boveda { get; set; }
         public DbSet<BovedaMov> BovedaMov { get; set; }
@@ -65,7 +63,6 @@ namespace ITB.VENDIX.BE
         public DbSet<Provincia> Provincia { get; set; }
         public DbSet<Rol> Rol { get; set; }
         public DbSet<RolMenu> RolMenu { get; set; }
-        public DbSet<TipoDocumento> TipoDocumento { get; set; }
         public DbSet<TipoOperacion> TipoOperacion { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<UsuarioOficina> UsuarioOficina { get; set; }
@@ -78,6 +75,9 @@ namespace ITB.VENDIX.BE
         public DbSet<TarjetaPunto> TarjetaPunto { get; set; }
         public DbSet<TarjetaPuntoDet> TarjetaPuntoDet { get; set; }
         public DbSet<PlanPagoLibre> PlanPagoLibre { get; set; }
+        public DbSet<TipoDocumento> TipoDocumento { get; set; }
+        public DbSet<Transferencia> Transferencia { get; set; }
+        public DbSet<TransferenciaSerie> TransferenciaSerie { get; set; }
     
         public virtual int usp_CrearMovimientoDet(Nullable<int> movimientoId, Nullable<int> movimientoDetId, Nullable<int> articuloId, Nullable<bool> indAutogenerar, string listaSerie, Nullable<int> cantidad, Nullable<bool> indCorrelativo, Nullable<decimal> precioUnitario, Nullable<decimal> descuento, Nullable<int> medida)
         {

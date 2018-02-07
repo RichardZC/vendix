@@ -32,11 +32,11 @@ public partial class TipoDocumento
 
     public string Descripcion { get; set; }
 
-    public Nullable<bool> IndVenta { get; set; }
+    public bool IndVenta { get; set; }
 
-    public Nullable<bool> IndAlmacen { get; set; }
+    public bool IndAlmacen { get; set; }
 
-    public Nullable<bool> IndAlmacenMov { get; set; }
+    public bool IndAlmacenMov { get; set; }
 
     public bool Estado { get; set; }
 

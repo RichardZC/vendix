@@ -3,8 +3,7 @@
  output extension=".cs"#><#
       	 		 	
 				
-
-				 	 
+				 
 		 
 
 const string inputFile = @"..\ITB.VENDIX.DA\VENDIXModel.edmx";

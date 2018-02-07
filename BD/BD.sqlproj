@@ -170,6 +170,8 @@
     <Build Include="Security\CREDITO.sql" />
     <Build Include="Security\MAESTRO.sql" />
     <Build Include="Security\VENTAS.sql" />
+    <Build Include="ALMACEN\Tables\Transferencia.sql" />
+    <Build Include="ALMACEN\Tables\TransferenciaSerie.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_CARGAINICIAL\Script1.sql" />

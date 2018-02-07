@@ -21,8 +21,6 @@ public partial class Usuario
     public Usuario()
     {
 
-        this.Transferencia = new HashSet<Transferencia>();
-
         this.Aprobacion = new HashSet<Aprobacion>();
 
         this.Caja = new HashSet<Caja>();
@@ -51,6 +49,8 @@ public partial class Usuario
 
         this.OrdenVenta1 = new HashSet<OrdenVenta>();
 
+        this.Transferencia = new HashSet<Transferencia>();
+
     }
 
 
@@ -65,8 +65,6 @@ public partial class Usuario
     public bool Estado { get; set; }
 
 
-
-    public virtual ICollection<Transferencia> Transferencia { get; set; }
 
     public virtual ICollection<Aprobacion> Aprobacion { get; set; }
 
@@ -97,6 +95,8 @@ public partial class Usuario
     public virtual ICollection<OrdenVenta> OrdenVenta { get; set; }
 
     public virtual ICollection<OrdenVenta> OrdenVenta1 { get; set; }
+
+    public virtual ICollection<Transferencia> Transferencia { get; set; }
 
 }
 

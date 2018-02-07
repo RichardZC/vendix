@@ -14,11 +14,18 @@ namespace Web.Controllers.Venta
         {            
             var usuarioId = VendixGlobal.GetUsuarioId();
             var cajadiario = CajaDiarioBL.Obtener(x => x.UsuarioAsignadoId == usuarioId && x.IndCierre == false, includeProperties: "Caja");
-            if (cajadiario != null)
+            if (cajadiario != null) {
                 VendixGlobal<int>.Crear("CajadiarioId", cajadiario.CajaDiarioId);
+            }                
 
             return View(cajadiario);
         }
+        public ActionResult ListarTipoDoc()
+        {
+            var dta = TipoDocumentoBL.Listar(x => x.Estado && x.IndVenta, x => x.OrderBy(y => y.Denominacion)).Select(x => new { Id = x.TipoDocumentoId, Valor = x.Denominacion });
+            return Json(dta, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ObtenerArticulo(string pCodigo)
         {
             var art = ArticuloBL.Obtener(x => x.CodArticulo == pCodigo && x.Estado , "ListaPrecio");

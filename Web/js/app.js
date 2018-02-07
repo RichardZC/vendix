@@ -148,6 +148,24 @@ var Vendix = {
             }
         });
     },
+    CargarCombo2: function (strUrl, strComboId, callbackOk) {
+        $.ajax({
+            url: window.location.origin + strUrl,
+            data: {},
+            success: function (result) {
+                if (result != null) {
+                    var html = '<select id="cbo' + strComboId + '">';
+                    $.each(result, function () {
+                        html += "<option value=\"" + this.Id + "\">" + this.Valor + "</option>";
+                    });
+                    html += "</select>";
+                    $("#" + strComboId).html(html);
+                    //$("#cbo" + strComboId).trigger("liszt:updated");
+                    if (typeof callbackOk == 'function') { callbackOk.call(this); }
+                }
+            }
+        });
+    },
     TextoInline: function () {
         $('form').each(function () {
             $(this).find('label.inline').each(function () {
