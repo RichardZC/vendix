@@ -176,7 +176,9 @@ namespace ITB.VENDIX.BL
                 FechaVencimiento = DateTime.Now,
                 FechaReg = DateTime.Now,
                 UsuarioRegId = VendixGlobal.GetUsuarioId(),
-                OrdenVentaId = pOrdenVentaId
+                OrdenVentaId = pOrdenVentaId,
+                TipoGastoAdm = "CUO",
+                TipoCuota = "M"
             };
 
             using (var scope = new TransactionScope())
@@ -185,7 +187,7 @@ namespace ITB.VENDIX.BL
                 {
                     CreditoBL.Crear(oCredito);
                     orden.Estado = "ENV";
-                    orden.TipoVenta = "CRE";
+                    orden.TipoVenta = "CRE";                    
                     Actualizar(orden);
 
                     scope.Complete();

@@ -127,7 +127,7 @@
                 <table style="width: 100%;">
                     <tr>
                         <td>
-                            <input type="date" class="required maskDate" id="txtFechaCaptacion" placeholder="DD/MM/YYYY" /></td>
+                            <input type="date" class="required maskDate" id="txtFechaCaptacion" placeholder="DD/MM/YYYY" value="@DateTime.Now.ToShortDateString()" /></td>
                         <td>
                             <strong>Calificación:</strong>
                         </td>
@@ -248,7 +248,7 @@
                         $("#txtcelular1").val('');
                         $("#txtcelular2").val('');
                         $("#txtFechaNacimiento").val('');
-                        $("#txtFechaCaptacion").val('');
+                        //$("#txtFechaCaptacion").val('');
                         $("#txtDireccion").val('');
                         $("#txtDocumento").val('').focus();
                         return;
@@ -266,7 +266,7 @@
                             $("#txtcelular1").val('');
                             $("#txtcelular2").val('');
                             $("#txtFechaNacimiento").val('');
-                            $("#txtFechaCaptacion").val('');
+                            //$("#txtFechaCaptacion").val('');
                             $("#txtDireccion").val('');
                             $("#txtNombre").focus();
                             return;

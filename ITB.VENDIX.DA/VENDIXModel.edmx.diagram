@@ -23,7 +23,7 @@
         <EntityTypeShape EntityType="VENDIXModel.CajaDiario" Width="1.5" PointX="9.75" PointY="8.25" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.Cargo" Width="1.5" PointX="15" PointY="11.25" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.CentralRiesgo" Width="1.5" PointX="15" PointY="17.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="12.75" PointY="11.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="VENDIXModel.Credito" Width="1.5" PointX="12.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="VENDIXModel.CuentaxCobrar" Width="1.5" PointX="17.25" PointY="8.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.GastosAdm" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="false" />
         <EntityTypeShape EntityType="VENDIXModel.MovimientoCaja" Width="1.5" PointX="15" PointY="9.875" IsExpanded="false" />
